@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { Router, Scene, ActionConst } from 'react-native-router-flux';
 
-import { Onboarding, Login, MyDirections } from './pages';
+import { Onboarding, Login, MyDirections, ExerciseDetail, Editor } from './pages';
 
 export default class Main extends Component {
   render() {
@@ -13,7 +13,11 @@ export default class Main extends Component {
 
           <Scene key="login" component={Login} title="Login" backTitle="onboarding" />
 
-          <Scene key="myDirections" component={MyDirections} title='Mijn Directions' type={ActionConst.RESET} initial />
+          <Scene key="myDirections" component={MyDirections} title='Mijn Directions' type={ActionConst.RESET} initial  />
+
+          <Scene key="exerciseDetail" component={ExerciseDetail} title='Oefening detail' />
+
+          <Scene key="editor" component={Editor} title='Editor' />
         </Scene>
       </Router>
     );
