@@ -14,7 +14,6 @@ export default class Onboarding extends Component {
           <Button title="Registreer" color={Colors.blue} accessibilityLabel="Registreer als nieuwe trainer" onPress={() => {console.log('registreer')}} />
         </View>
       </View>
-
     )
   }
 }
