@@ -16,6 +16,30 @@ export default class ExerciseDetail extends Component {
     }
   }
 
+  sendData(){
+    fetch('http://localhost:3000/api/tests', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'name': 'bernd',
+        'description': 'bernd zijn beschrijving',
+      })
+    })
+      .then(t => {
+        return t.json();
+      })
+      .then(t => {
+        console.log(t);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+
+  }
+
   componentDidMount(){
     fetch('http://localhost:3000/api/tests')
       .then(r => r.json())
@@ -24,7 +48,7 @@ export default class ExerciseDetail extends Component {
         this.setState({exercises: r.tests});
       })
       .catch((e) => {
-        console.log(error);
+        console.log(e);
       })
   }
 
@@ -47,6 +71,7 @@ export default class ExerciseDetail extends Component {
       <View style={[styles.center, {backgroundColor: "blue"}]}>
         <Text> Detail pagina van oefening </Text>
         {this.renderDetails()}
+        <Button title="add test data" onPress={() => this.sendData()} />
       </View>
     )
   }

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Button, TouchableHighlight } from 'react-native
 import { Actions } from 'react-native-router-flux';
 
 // URL: https://medium.com/@ekryski/how-to-actually-use-socket-io-in-react-native-39082d8d6172#.p49pn24a7
-// import '../utils/UserAgent'; //Moet enkel pre 1.5.1
+import '../utils/UserAgent'; //Moet enkel pre 1.5.1
 import io from 'socket.io-client';
 import { isEmpty, range } from 'lodash';
 
@@ -19,7 +19,7 @@ export default class MyDirections extends Component {
   }
 
   componentDidMount(){
-    this.socket = io('localhost:3000', {transports: ['websocket'], query: "client=app"}); //http://stackoverflow.com/questions/13745519/send-custom-data-along-with-handshakedata-in-socket-io/13940399#13940399
+    this.socket = io('ws://localhost:3000', {jsonp: false, transports: ['websocket'], query: "client=app"}); //http://stackoverflow.com/questions/13745519/send-custom-data-along-with-handshakedata-in-socket-io/13940399#13940399
     this.socket.on('init', (directions) => this.handleWSDirections(directions));
     this.socket.on('updateDirections', (socketId) => this.handleWSupdateDirections(socketId));
     this.socket.on('directionJoined', (direction) => this.handleWSdirectionJoined(direction));

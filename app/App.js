@@ -28,6 +28,7 @@ export default class Main extends Component {
         <Scene key="root">
           <Scene key="onboarding" component={Onboarding} title="Onboarding" />
           <Scene key="login" component={Login} title="Login" backTitle="onboarding" />
+          <Scene key="exerciseDetail" component={ExerciseDetail} title='Oefening detail' />
 
           <Scene key="editor" component={Editor} title='Editor' direction="vertical"/>
 
@@ -42,7 +43,6 @@ export default class Main extends Component {
 
             <Scene key="tab3" title="Mijn Oefeningen" icon={TabIcon}>
               <Scene key="myExercises" component={MyExercises} title='Mijn Oefeningen' />
-              <Scene key="exerciseDetail" component={ExerciseDetail} title='Oefening detail' />
             </Scene>
 
             <Scene key="tab4" title="Mijn Trainingen" icon={TabIcon}>

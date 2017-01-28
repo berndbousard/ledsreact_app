@@ -4,6 +4,8 @@ import { Actions } from 'react-native-router-flux';
 
 import { Colors } from '../globals';
 
+// https://facebook.github.io/react-native/docs/textinput.html
+
 export default class Login extends Component {
   render(){
     return(
