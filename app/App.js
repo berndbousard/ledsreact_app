@@ -31,7 +31,7 @@ export default class Main extends Component {
 
           <Scene key="editor" component={Editor} title='Editor' direction="vertical"/>
 
-          <Scene key="tabbar" tabs={true} tabBarStyle={{backgroundColor: Colors.white}} initial hideBackImage={true} >
+          <Scene key="tabbar" tabs={true} tabBarStyle={{backgroundColor: Colors.white}} initial >
             <Scene key="tab1" title="Mijn Directions" icon={TabIcon} >
               <Scene key="myDirections" component={MyDirections} title='Mijn Directions' />
             </Scene>
