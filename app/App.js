@@ -36,7 +36,7 @@ class Main extends Component {
           <Scene key='login' component={Login} title='Login' backTitle='onboarding'  />
           <Scene key='exerciseDetail' component={ExerciseDetail} title='Oefening detail' />
 
-          <Scene key='editor' component={Editor} title='Editor' direction='vertical'/>
+          <Scene key='editor' component={Editor} title='Editor' direction='vertical' panHandlers={null}/>
 
           <Scene key='tabbar' tabs={true} tabBarStyle={{backgroundColor: Colors.white}} type={ActionConst.RESET} initial >
             <Scene key='tab1' title='Mijn Directions' icon={TabbarIcon} >

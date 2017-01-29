@@ -107,11 +107,15 @@ export default class MyDirections extends Component {
   }
 
   render() {
+
+    const {directions} = this.state;
+
+
     return (
       <View style={[styles.center, {backgroundColor: `pink`}]}>
         {this.generateDirections()}
         {this.generateExercises(3)}
-        <Button color={Colors.blue} title='Editor' onPress={() => {Actions.editor();}}></Button>
+        <Button color={Colors.blue} title='Editor' onPress={() => {Actions.editor({directionAmount: directions.length});}}></Button>
       </View>
     );
   }
