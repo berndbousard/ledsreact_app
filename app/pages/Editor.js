@@ -17,7 +17,9 @@ class Editor extends Component {
   }
 
   componentWillMount() {
-    this.animatedValue = new Animated.ValueXY();
+    //resource: http://browniefed.com/blog/react-native-animated-api-with-panresponder/
+
+    this.animatedValue = new Animated.ValueXY(); //Achter de schermen interpolatie toepassen.
     this.value = {x: 0, y: 0};
 
     this.animatedValue.addListener(value => this.value = value);
@@ -62,7 +64,7 @@ class Editor extends Component {
         <Animated.View
           style={
           {
-            backgroundColor: `green`,
+            backgroundColor: `black`,
             width: 50,
             height: 50,
             transform: [

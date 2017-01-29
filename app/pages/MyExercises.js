@@ -8,10 +8,6 @@ export default class MyExercises extends Component {
     super();
 
     this.database = firebase.database().ref();
-
-    this.state({
-
-    });
   }
 
   writeToFirebase() {

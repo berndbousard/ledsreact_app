@@ -94,7 +94,7 @@ export default class MyDirections extends Component {
                   <TouchableHighlight style={styles.button} onPress={() => {console.log(`Direction`);}} activeOpacity={.25} underlayColor={Colors.white} key={index}>
                     <View>
                       {/* <Text>{d.socketId}</Text> */}
-                      <Text>{`${d.batteryLevel} %`}</Text>
+                      <Text style={{fontFamily: `Circular-Std-Bold`}}>{`${d.batteryLevel} %`}</Text>
                     </View>
                   </TouchableHighlight>
                 );
