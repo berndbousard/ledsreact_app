@@ -9,6 +9,8 @@ import {isEmpty, range} from 'lodash';
 
 import {Colors} from '../globals';
 
+//Font:  style={{fontFamily: `Circular-Std-Bold`}}
+
 export default class MyDirections extends Component {
 
   constructor() {
@@ -19,7 +21,7 @@ export default class MyDirections extends Component {
   }
 
   componentDidMount() {
-    // IP adres fixed erin steken
+    // IP adres fixed erin steken om op iPad te laten werken
     this.socket = io(`ws://192.168.0.234:3000`, {jsonp: false, transports: [`websocket`], query: `client=app`}); //http://stackoverflow.com/questions/13745519/send-custom-data-along-with-handshakedata-in-socket-io/13940399#13940399
     this.socket.on(`init`, directions => this.handleWSDirections(directions));
     this.socket.on(`updateDirections`, socketId => this.handleWSupdateDirections(socketId));
@@ -65,7 +67,7 @@ export default class MyDirections extends Component {
           {
             range(amount).map((a, index) => {
               return (
-                <TouchableHighlight style={styles.button} onPress={() => {Actions.exerciseDetail();}} activeOpacity={.25} underlayColor={Colors.white} key={index}>
+                <TouchableHighlight style={styles.button} onPressIn={() => {Actions.exerciseDetail();}} activeOpacity={.25} underlayColor={Colors.white} key={index}>
                   <Text>Oefening</Text>
                 </TouchableHighlight>
               );
@@ -74,6 +76,15 @@ export default class MyDirections extends Component {
         </View>
       </View>
     );
+  }
+
+  lightUpDirection(direction) {
+
+    const {socketId} = direction;
+
+    this.socket.emit(`lightUpDirection`, {socketId});
+
+    // socket.emit(`lightUpDirection`);
   }
 
   generateDirections() {
@@ -91,10 +102,10 @@ export default class MyDirections extends Component {
             {
               directions.map((d, index) => {
                 return (
-                  <TouchableHighlight style={styles.button} onPress={() => {console.log(`Direction`);}} activeOpacity={.25} underlayColor={Colors.white} key={index}>
+                  <TouchableHighlight style={styles.button} onPress={() => {this.lightUpDirection(d);}} activeOpacity={.25} underlayColor={Colors.white} key={index}>
                     <View>
-                      {/* <Text>{d.socketId}</Text> */}
-                      <Text style={{fontFamily: `Circular-Std-Bold`}}>{`${d.batteryLevel} %`}</Text>
+                      <Text>{d.socketId}</Text>
+                      <Text>{`${d.batteryLevel} %`}</Text>
                     </View>
                   </TouchableHighlight>
                 );
