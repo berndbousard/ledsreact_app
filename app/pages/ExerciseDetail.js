@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Button} from 'react-native';
-
 import {isEmpty} from 'lodash';
+
+import {GeneralStyle} from '../styles';
 
 export default class ExerciseDetail extends Component {
 
@@ -65,20 +66,11 @@ export default class ExerciseDetail extends Component {
 
   render() {
     return (
-      <View style={[styles.center, {backgroundColor: `blue`}]}>
+      <View style={[GeneralStyle.center, {backgroundColor: `blue`}]}>
         <Text> Detail pagina van oefening </Text>
         {this.renderDetails()}
-        <Button title='add test data' onPress={() => this.sendData()} />
+        <Button title='MongoDB push' onPress={() => this.sendData()} />
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  center: {
-    flex: 1,
-    flexDirection: `column`,
-    alignItems: `center`,
-    justifyContent: `center`
-  }
-});

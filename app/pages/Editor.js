@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Animated, PanResponder, Dimensions} from 'react-native';
+import {View, Text, Animated, PanResponder, Dimensions} from 'react-native';
 import {range} from 'lodash';
 
 import {Direction} from '../components';
+import {GeneralStyle} from '../styles';
 
 const {width: deviceWidth, height: deviceHeight} = Dimensions.get(`window`);
 
@@ -56,7 +57,7 @@ class Editor extends Component {
   render() {
 
     return (
-      <View style={[styles.center, {backgroundColor: `coral`}]}>
+      <View style={[GeneralStyle.center, {backgroundColor: `coral`}]}>
         <Text> Editor </Text>
         <View style={{backgroundColor: `white`, width: 500, height: 500, flexDirection: `column`, alignItems: `flex-end`}}>
           {this.generateDirections()}
@@ -80,15 +81,6 @@ class Editor extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  center: {
-    flex: 1,
-    flexDirection: `column`,
-    alignItems: `center`,
-    justifyContent: `center`
-  }
-});
 
 Editor.propTypes = {
   directionAmount: React.PropTypes.number

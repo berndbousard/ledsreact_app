@@ -4,6 +4,7 @@ import {Actions} from 'react-native-router-flux';
 import * as firebase from 'firebase';
 
 import {Colors} from '../globals';
+import {GeneralStyle} from '../styles';
 
 // https://facebook.github.io/react-native/docs/textinput.html
 
@@ -43,8 +44,8 @@ export default class Login extends Component {
     const {email, password} = this.state;
 
     return (
-      <View style={[styles.center, {backgroundColor: `green`}]}>
-        <View style={styles.center}>
+      <View style={[GeneralStyle.center, {backgroundColor: `green`}]}>
+        <View style={GeneralStyle.center}>
           <Text>Login</Text>
           <View>
             <TextInput style={{height: 40, width: 200, borderColor: `gray`, borderWidth: 1}} autoCapitalize='none' autoCorrect={false} keyboardType='email-address' value={email} onChangeText={email => this.setState({email})} placeholder='email' />
@@ -58,12 +59,3 @@ export default class Login extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  center: {
-    flex: 1,
-    flexDirection: `column`,
-    alignItems: `center`,
-    justifyContent: `center`
-  }
-});

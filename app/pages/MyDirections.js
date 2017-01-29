@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Button, TouchableHighlight} from 'react-native';
+import {View, Text, Button, TouchableHighlight} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
 // URL: https://medium.com/@ekryski/how-to-actually-use-socket-io-in-react-native-39082d8d6172#.p49pn24a7
-import '../utils/UserAgent'; //Moet enkel pre 1.5.1
+import '../globals/UserAgent'; //Moet enkel pre 1.5.1
 import io from 'socket.io-client';
 import {isEmpty, range} from 'lodash';
 
 import {Colors} from '../globals';
-
-//Font:  style={{fontFamily: `Circular-Std-Bold`}}
+import {GeneralStyle, ComponentStyle} from '../styles';
 
 export default class MyDirections extends Component {
 
@@ -67,8 +66,8 @@ export default class MyDirections extends Component {
           {
             range(amount).map((a, index) => {
               return (
-                <TouchableHighlight style={styles.button} onPressIn={() => {Actions.exerciseDetail();}} activeOpacity={.25} underlayColor={Colors.white} key={index}>
-                  <Text>Oefening</Text>
+                <TouchableHighlight style={ComponentStyle.button} onPressIn={() => {Actions.exerciseDetail();}} activeOpacity={.25} underlayColor={Colors.white} key={index}>
+                  <Text style={{fontFamily: `Circular-Std-Bold`}}>Oefening</Text>
                 </TouchableHighlight>
               );
             })
@@ -102,7 +101,7 @@ export default class MyDirections extends Component {
             {
               directions.map((d, index) => {
                 return (
-                  <TouchableHighlight style={styles.button} onPress={() => {this.lightUpDirection(d);}} activeOpacity={.25} underlayColor={Colors.white} key={index}>
+                  <TouchableHighlight style={ComponentStyle.button} onPress={() => {this.lightUpDirection(d);}} activeOpacity={.25} underlayColor={Colors.white} key={index}>
                     <View>
                       <Text>{d.socketId}</Text>
                       <Text>{`${d.batteryLevel} %`}</Text>
@@ -123,7 +122,7 @@ export default class MyDirections extends Component {
 
 
     return (
-      <View style={[styles.center, {backgroundColor: `pink`}]}>
+      <View style={[GeneralStyle.center, {backgroundColor: `pink`}]}>
         {this.generateDirections()}
         {this.generateExercises(3)}
         <Button color={Colors.blue} title='Editor' onPress={() => {Actions.editor({directionAmount: directions.length});}}></Button>
@@ -131,19 +130,3 @@ export default class MyDirections extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  center: {
-    flex: 1,
-    flexDirection: `column`,
-    alignItems: `center`,
-    justifyContent: `center`
-  },
-  button: {
-    width: 45,
-    height: 45,
-    backgroundColor: `red`,
-    marginLeft: 10,
-    marginRight: 10
-  }
-});

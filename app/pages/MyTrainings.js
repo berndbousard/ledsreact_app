@@ -6,7 +6,7 @@ export default class MyTrainings extends Component {
   render() {
 
     return (
-      <View style={[styles.center, {backgroundColor: `crimson`}]}>
+      <View style={[styles.center, {backgroundColor: `goldenrod`}]}>
         <Text> Mijn Trainingen </Text>
       </View>
     );
