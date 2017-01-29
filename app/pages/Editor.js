@@ -1,31 +1,32 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import React, {Component} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 
-import { isEmpty } from 'lodash';
+class Editor extends Component {
 
-import { Colors } from '../globals';
+  render() {
 
-export default class Editor extends Component {
+    const {directionAmount = 0} = this.props;
 
-  render(){
-
-    let {directionAmount = 0} = this.props;
-
-    return(
-      <View style={[styles.center, {backgroundColor: "coral"}]}>
+    return (
+      <View style={[styles.center, {backgroundColor: `coral`}]}>
         <Text> Editor </Text>
         <Text> {`Je kan ${directionAmount} Directions plaatsen`} </Text>
       </View>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   center: {
     flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
+    flexDirection: `column`,
+    alignItems: `center`,
+    justifyContent: `center`
   }
 });
+
+Editor.propTypes = {
+  directionAmount: React.PropTypes.number
+};
+
+export default Editor;
