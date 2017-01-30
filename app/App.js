@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Router, Scene, ActionConst} from 'react-native-router-flux';
-import * as firebase from 'firebase';
 
 import {
   Onboarding,
@@ -18,27 +17,18 @@ import {TabbarIcon} from './components/';
 
 import {Colors} from './globals/';
 
-// Firebase
-const firebaseConfig = {
-  apiKey: `AIzaSyCfqQSKQLd2yYyw5iOy-_y86f2-tn4YS58`,
-  authDomain: `ledsreact-6f08c.firebaseapp.com`,
-  databaseURL: `https://ledsreact-6f08c.firebaseio.com`,
-  storageBucket: `ledsreact-6f08c.appspot.com`
-};
-firebase.initializeApp(firebaseConfig);
-
 class Main extends Component {
   render() {
     return (
       <Router>
         <Scene key='root'>
-          <Scene key='onboarding' component={Onboarding} title='Onboarding'  />
-          <Scene key='login' component={Login} title='Login' backTitle='onboarding'  />
+          <Scene key='onboarding' component={Onboarding} title='Onboarding'   />
+          <Scene key='login' component={Login} title='Login' backTitle='onboarding' initial />
           <Scene key='exerciseDetail' component={ExerciseDetail} title='Oefening detail' />
 
           <Scene key='editor' component={Editor} title='Editor' direction='vertical' panHandlers={null}/>
 
-          <Scene key='tabbar' tabs={true} tabBarStyle={{backgroundColor: Colors.white}} type={ActionConst.RESET} initial >
+          <Scene key='tabbar' tabs={true} tabBarStyle={{backgroundColor: Colors.white}} type={ActionConst.RESET}  >
             <Scene key='tab1' title='Mijn Directions' icon={TabbarIcon} >
               <Scene key='myDirections' component={MyDirections} title='Mijn Directions' />
             </Scene>
