@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {View, Text, Animated, PanResponder, Dimensions, Button, findNodeHandle} from 'react-native';
+import {View, Text, Animated, PanResponder, Dimensions, Button} from 'react-native';
 import {range} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
+import Svg, {Rect} from 'react-native-svg';
 
-import {Direction} from '../components';
+import {Direction, Circle} from '../components';
 import {GeneralStyle} from '../styles';
 
 const {width: deviceWidth, height: deviceHeight} = Dimensions.get(`window`);
@@ -14,7 +15,14 @@ class Editor extends Component {
     super(props);
 
     this.state = {
-      directionAmount: props.directionAmount
+      directionAmount: props.directionAmount,
+      svgElements: [
+        {
+          cx: 50,
+          cy: 50,
+          r: 10
+        }
+      ]
     };
   }
 
@@ -29,7 +37,7 @@ class Editor extends Component {
     this.panResponder = PanResponder.create({
       onMoveShouldSetResponderCapture: () => true, //Tell iOS that we are allowing the movement
       onMoveShouldSetPanResponderCapture: () => true, // Same here, tell iOS that we allow dragging
-      onPanResponderGrant: (e, gestureState) => {
+      onPanResponderGrant: () => {
         this.animatedValue.setOffset({x: this.value.x, y: this.value.y});
         this.animatedValue.setValue({x: 0, y: 0});
       },
@@ -57,6 +65,7 @@ class Editor extends Component {
   }
 
   takeScreenshot() {
+
     const artboard = this.refs[`artboard`];
 
     takeSnapshot(artboard, {
@@ -72,14 +81,39 @@ class Editor extends Component {
     });
   }
 
+  addSvgElement(e) {
+    const {svgElements} = this.state;
+    console.log(e.nativeEvent.locationX);
+    const {locationX: xPos, locationY: yPos} = e.nativeEvent;
+
+    svgElements.push({
+      cx: xPos,
+      cy: yPos,
+      r: Math.random() * 15
+    });
+
+    this.setState({svgElements});
+  }
+
+  generateSvgElements() {
+    const {svgElements} = this.state;
+
+    return (
+      svgElements.map((e, index) => {
+        return <Circle key={index} cx={e.cx} cy={e.cy} r={e.r} />;
+      })
+    );
+  }
+
   render() {
 
     return (
       <View style={[GeneralStyle.center, {backgroundColor: `coral`}]} ref='artboard'>
         <Text> Editor </Text>
-        <View style={{backgroundColor: `white`, width: 500, height: 500, flexDirection: `column`, alignItems: `flex-end`}}>
-          {this.generateDirections()}
-        </View>
+        <Svg width='500' height='500' ref='svg'>
+          <Rect x='0' y='0' width='100%' height='100%' fill='white' onPress={e => {this.addSvgElement(e);}} />
+            {this.generateSvgElements()}
+        </Svg>
         <Animated.View
           style={
           {
@@ -94,6 +128,7 @@ class Editor extends Component {
           }
             {...this.panResponder.panHandlers}
           />
+          {this.generateDirections()}
           <Button title='take screenshot' onPress={() => this.takeScreenshot()} />
       </View>
 

@@ -8,9 +8,9 @@
   },
   "dependencies": {
     "react": "~15.4.0-rc.4",
-    "react-canvas": "^1.2.1",
     "react-native": "0.40.0",
     "react-native-router-flux": "^3.37.0",
+    "react-native-svg": "^5.1.4",
     "react-native-view-shot": "^1.6.0",
     "socket.io": "^1.7.2"
   },
