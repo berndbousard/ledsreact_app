@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
-import {View, Text, Animated, PanResponder, Dimensions, Button} from 'react-native';
+import {View, Text, Animated, PanResponder, Button} from 'react-native';
 import {range} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
 import Svg, {Rect} from 'react-native-svg';
 
-import {Direction, Circle} from '../components';
+import {Direction, Circle, Path} from '../components';
 import {GeneralStyle} from '../styles';
-
-const {width: deviceWidth, height: deviceHeight} = Dimensions.get(`window`);
 
 class Editor extends Component {
 
@@ -16,36 +14,69 @@ class Editor extends Component {
 
     this.state = {
       directionAmount: props.directionAmount,
-      svgElements: [
-        {
-          cx: 50,
-          cy: 50,
-          r: 10
-        }
-      ]
+      svgElements: [],
+      directionPosition: new Animated.ValueXY(),
+      directionScale: new Animated.Value(1),
+      brushColor: `black`,
+      userDrawingFeedback: []
     };
   }
 
   componentWillMount() {
+    // resource:  http://mindthecode.com/getting-started-with-the-panresponder-in-react-native/
 
-    //resource: http://browniefed.com/blog/react-native-animated-api-with-panresponder/
+    this.dragHandler = PanResponder.create({
+      onMoveShouldSetResponderCapture: () => true, //Allow movement to the view we'll attach this panresponder to
+      onMoveShouldSetPanResponderCapture: () => true, //Same as above but for dragging
 
-    this.animatedValue = new Animated.ValueXY(); //Achter de schermen interpolatie toepassen.
-    this.value = {x: 0, y: 0};
-
-    this.animatedValue.addListener(value => this.value = value);
-    this.panResponder = PanResponder.create({
-      onMoveShouldSetResponderCapture: () => true, //Tell iOS that we are allowing the movement
-      onMoveShouldSetPanResponderCapture: () => true, // Same here, tell iOS that we allow dragging
-      onPanResponderGrant: () => {
-        this.animatedValue.setOffset({x: this.value.x, y: this.value.y});
-        this.animatedValue.setValue({x: 0, y: 0});
+      onPanResponderGrant: () => { //gets invoked when we got access to the movement of the element. Perfect for initial values.
+        const {directionPosition, directionScale} = this.state;
+        directionPosition.setOffset({x: directionPosition.x._value, y: directionPosition.y._value}); //To prevent resetting to initial value.
+        directionPosition.setValue({x: 0, y: 0});
+        Animated.spring(directionScale, {toValue: 1.25, friction: 3}).start();
       },
-      onPanResponderMove: Animated.event([
-        null, {dx: this.animatedValue.x, dy: this.animatedValue.y}
-      ]), // Creates a function to handle the movement and set offsets
-      onPanResponderRelease: () => {
-        this.animatedValue.flattenOffset(); // Flatten the offset so it resets the default positioning
+
+      onPanResponderMove: Animated.event([ //gets invoked when we move the element. Perfect for caculating the next value.
+        null, {dx: this.state.directionPosition.x, dy: this.state.directionPosition.y}
+      ]),
+
+      onPanResponderRelease: () => { //Gets invoked when we release the view.
+        const {directionPosition, directionScale} = this.state;
+        directionPosition.flattenOffset();
+        Animated.spring(directionScale, {toValue: 1, friction: 3}).start();
+      }
+    });
+
+    this.drawHandler = PanResponder.create({
+      onMoveShouldSetResponderCapture: () => true, //Allow movement to the view we'll attach this panresponder to
+      onMoveShouldSetPanResponderCapture: () => true, //Same as above but for dragging
+
+      onPanResponderGrant: () => { //gets invoked when we got access to the movement of the element. Perfect for initial values.
+        this.points = []; //Werkt als reset
+      },
+
+      onPanResponderMove: e => {
+        // this.addSvgElement(e);
+
+        // Build array of X & Y data
+        this.points.push({x: e.nativeEvent.locationX, y: e.nativeEvent.locationY});
+        this.setState({userDrawingFeedback: this.points});
+      },
+
+      onPanResponderRelease: () => { //Gets invoked when we release the view.
+        console.log(`stop met tekenen`);
+
+        const d = this.generatePathFromObject(this.points);
+
+        const {svgElements, brushColor} = this.state;
+        console.log(brushColor);
+        svgElements.push({
+          d: d,
+          stroke: brushColor
+        });
+        console.log(svgElements);
+        this.setState({svgElements});
+        this.setState({userDrawingFeedback: []});
       }
     });
   }
@@ -64,7 +95,7 @@ class Editor extends Component {
     );
   }
 
-  takeScreenshot() {
+  screenshotHandler() {
 
     const artboard = this.refs[`artboard`];
 
@@ -81,10 +112,10 @@ class Editor extends Component {
     });
   }
 
-  addSvgElement(e) {
+  addSvgCircle(e) {
     const {svgElements} = this.state;
-    console.log(e.nativeEvent.locationX);
     const {locationX: xPos, locationY: yPos} = e.nativeEvent;
+
 
     svgElements.push({
       cx: xPos,
@@ -100,36 +131,90 @@ class Editor extends Component {
 
     return (
       svgElements.map((e, index) => {
-        return <Circle key={index} cx={e.cx} cy={e.cy} r={e.r} />;
+        if (e.cx) {
+          return <Circle key={index} {...e} />;
+        }
+
+        if (e.d) {
+          return <Path key={index} {...e}/>;
+        }
       })
     );
   }
 
+  generatePathFromObject(object) {
+    let d = undefined;
+
+    object.forEach(p => {
+      if (d === undefined) {
+        d = `M${Math.round(p.x)} ${Math.round(p.y)}`;
+      }
+      d = `${d} L${Math.round(p.x)} ${Math.round(p.y)}`;
+    });
+
+    return d;
+  }
+
+  deleteLastActionHandler() {
+    const {svgElements} = this.state;
+
+    svgElements.pop();
+
+    this.setState({svgElements});
+  }
+
+  deleteActionsHandler() {
+    this.setState({svgElements: []});
+  }
+
+  generateUserDrawingFeedback() {
+    const {userDrawingFeedback, brushColor} = this.state;
+
+    const d = this.generatePathFromObject(userDrawingFeedback);
+
+    return (
+      userDrawingFeedback.map((e, index) => {
+        return <Path key={index} d={d} stroke={brushColor} />;
+      })
+    );
+  }
+
+  changeBrushColor() {
+    let {brushColor} = this.state;
+
+    if (brushColor === `black`) {
+      brushColor = `red`;
+      this.setState({brushColor});
+      return;
+    }
+
+    if (brushColor === `red`) {
+      brushColor = `black`;
+      this.setState({brushColor});
+      return;
+    }
+  }
+
   render() {
+
+    const {directionPosition, directionScale, brushColor} = this.state;
+    const [translateX, translateY] = [directionPosition.x, directionPosition.y];
 
     return (
       <View style={[GeneralStyle.center, {backgroundColor: `coral`}]} ref='artboard'>
         <Text> Editor </Text>
-        <Svg width='500' height='500' ref='svg'>
-          <Rect x='0' y='0' width='100%' height='100%' fill='white' onPress={e => {this.addSvgElement(e);}} />
-            {this.generateSvgElements()}
+        <Svg {...this.drawHandler.panHandlers} width='500' height='500' ref='svg'>
+          <Rect x='0' y='0' width='100%' height='100%' fill='white' />
+          {this.generateUserDrawingFeedback()}
+          {this.generateSvgElements()}
         </Svg>
-        <Animated.View
-          style={
-          {
-            backgroundColor: `black`,
-            width: 50,
-            height: 50,
-            transform: [
-                {translateX: this.animatedValue.x},
-                {translateY: this.animatedValue.y}
-            ]
-          }
-          }
-            {...this.panResponder.panHandlers}
-          />
+        <Animated.View {...this.dragHandler.panHandlers} style={{backgroundColor: `black`, width: 50, height: 50, borderRadius: 50, transform: [{translateX}, {translateY}, {rotate: `0deg`}, {scale: directionScale}]}}/>
           {this.generateDirections()}
-          <Button title='take screenshot' onPress={() => this.takeScreenshot()} />
+          <Button title='take screenshot' onPress={() => this.screenshotHandler()} />
+          <Button title='undo' onPress={() => this.deleteLastActionHandler()} />
+          <Button title='erase' onPress={() => this.deleteActionsHandler()} />
+          <Button title='changeColor' color={brushColor} onPress={() => this.changeBrushColor()} />
+
       </View>
 
     );
