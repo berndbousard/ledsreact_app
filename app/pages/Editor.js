@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {View, Text, Animated, PanResponder, Dimensions} from 'react-native';
+import {View, Text, Animated, PanResponder, Dimensions, Button, findNodeHandle} from 'react-native';
 import {range} from 'lodash';
+import {takeSnapshot} from "react-native-view-shot";
 
 import {Direction} from '../components';
 import {GeneralStyle} from '../styles';
@@ -18,6 +19,7 @@ class Editor extends Component {
   }
 
   componentWillMount() {
+
     //resource: http://browniefed.com/blog/react-native-animated-api-with-panresponder/
 
     this.animatedValue = new Animated.ValueXY(); //Achter de schermen interpolatie toepassen.
@@ -54,10 +56,26 @@ class Editor extends Component {
     );
   }
 
+  takeScreenshot() {
+    const artboard = this.refs[`artboard`];
+
+    takeSnapshot(artboard, {
+      format: `png`,
+      quality: 1,
+      result: `file`,
+    })
+    .then(r => {
+      console.log(r);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  }
+
   render() {
 
     return (
-      <View style={[GeneralStyle.center, {backgroundColor: `coral`}]}>
+      <View style={[GeneralStyle.center, {backgroundColor: `coral`}]} ref='artboard'>
         <Text> Editor </Text>
         <View style={{backgroundColor: `white`, width: 500, height: 500, flexDirection: `column`, alignItems: `flex-end`}}>
           {this.generateDirections()}
@@ -76,6 +94,7 @@ class Editor extends Component {
           }
             {...this.panResponder.panHandlers}
           />
+          <Button title='take screenshot' onPress={() => this.takeScreenshot()} />
       </View>
 
     );

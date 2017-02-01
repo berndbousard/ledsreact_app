@@ -22,11 +22,11 @@ class Main extends Component {
     return (
       <Router>
         <Scene key='root'>
-          <Scene key='onboarding' component={Onboarding} title='Onboarding'   />
-          <Scene key='login' component={Login} title='Login' backTitle='onboarding' initial />
+          <Scene key='onboarding' component={Onboarding} title='Onboarding' />
+          <Scene key='login' component={Login} title='Login' backTitle='onboarding' />
           <Scene key='exerciseDetail' component={ExerciseDetail} title='Oefening detail' />
 
-          <Scene key='editor' component={Editor} title='Editor' direction='vertical' panHandlers={null}/>
+          <Scene key='editor' component={Editor} title='Editor' direction='vertical' panHandlers={null} initial />
 
           <Scene key='tabbar' tabs={true} tabBarStyle={{backgroundColor: Colors.white}} type={ActionConst.RESET}  >
             <Scene key='tab1' title='Mijn Directions' icon={TabbarIcon} >
