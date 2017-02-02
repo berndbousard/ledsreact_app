@@ -23,9 +23,13 @@ class MyDirections extends Component {
     this.props.socket.on(`init`, directions => this.handleWSDirections(directions));
     this.props.socket.on(`updateDirections`, socketId => this.handleWSupdateDirections(socketId));
     this.props.socket.on(`directionJoined`, direction => this.handleWSdirectionJoined(direction));
+    this.props.socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
   }
 
   componentDidMount() {
+
+    this.props.socket.emit(`checkDirections`, {});
+
     if (false) {
       return;
     }
@@ -71,6 +75,10 @@ class MyDirections extends Component {
     const updatedDirections = connectedDirections.push(direction);
 
     this.setState({updatedDirections});
+  }
+
+  handleWScheckDirections(connectedDirections) {
+    this.setState({connectedDirections});
   }
 
   detectDirection(direction) {

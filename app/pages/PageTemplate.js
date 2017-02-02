@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
-import {View, Button} from 'react-native';
-import {Actions} from 'react-native-router-flux';
+import {View} from 'react-native';
 
 import {GeneralStyle} from '../styles';
 import {Navigation} from '../components';
 
-class MyExercises extends Component {
+class MyTrainings extends Component {
 
   constructor(props) {
     super(props);
@@ -22,9 +21,8 @@ class MyExercises extends Component {
 
         <Navigation currentPage={this.props.name} />
 
-        <View style={[GeneralStyle.center, {backgroundColor: `red`}, GeneralStyle.contentContainer]}>
+        <View style={[GeneralStyle.center, {backgroundColor: `green`}, GeneralStyle.contentContainer]}>
           {/* CONTENT */}
-          <Button title='go to exercise detail' onPress={() => Actions.exerciseDetail({exerciseId: `5893750a21e64a09c9d4a506`})} />
         </View>
 
       </View>
@@ -32,9 +30,9 @@ class MyExercises extends Component {
   }
 }
 
-MyExercises.propTypes = {
+MyTrainings.propTypes = {
   socket: React.PropTypes.object,
   name: React.PropTypes.string
 };
 
-export default MyExercises;
+export default MyTrainings;

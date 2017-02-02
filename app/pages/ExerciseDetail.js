@@ -1,76 +1,92 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
-import {isEmpty} from 'lodash';
+import {View, Button, Text} from 'react-native';
+import {Actions} from 'react-native-router-flux';
 
 import {GeneralStyle} from '../styles';
+import {DatabaseUrl} from '../globals';
 
-export default class ExerciseDetail extends Component {
+class MyTrainings extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    this.props = props;
 
     this.state = {
-      exercises: []
+      directionsNeeded: [],
+      connectedDirections: []
     };
-  }
 
-  sendData() {
-    fetch(`http://localhost:3000/api/tests`, {
-      method: `POST`,
-      headers: {
-        Accept: `application/json`,
-        'Content-Type': `application/json`,
-      },
-      body: JSON.stringify({
-        name: `bernd`,
-        description: `bernd zijn beschrijving`,
-      })
-    })
-      .then(t => {
-        return t.json();
-      })
-      .then(t => {
-        console.log(t);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-
+    this.props.socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
   }
 
   componentDidMount() {
-    fetch(`http://localhost:3000/api/tests`)
-      .then(r => r.json())
+
+    const {exerciseId} = this.props;
+
+    fetch(`${DatabaseUrl}/api/directions?exercise${exerciseId}`)
       .then(r => {
-        if (isEmpty(r)) return;
-        this.setState({exercises: r.tests});
+        return r.json();
+      })
+      .then(r => {
+        this.setState({directionsNeeded: r.r});
+
       })
       .catch(e => {
         console.log(e);
       });
+
+    this.props.socket.emit(`checkDirections`, {});
   }
 
-  renderDetails() {
-    const {exercises} = this.state;
+  handleWScheckDirections(connectedDirections) {
+    this.setState({connectedDirections});
+  }
+
+  generateDirectionsForExercise() {
+    const {directionsNeeded} = this.state;
 
     return (
-      <View>
-        {
-          exercises.map((e, index) => {
-            return <Text key={index}>{e.name}</Text>;
-          })
-        }
-      </View>
+      <Text>Voor deze oefening zijn {directionsNeeded.length} directions nodig</Text>
+    );
+  }
+
+  generateConnectedDirections() {
+    const {connectedDirections} = this.state;
+
+    return (
+      <Text>Je hebt {connectedDirections.length} directions verbonden</Text>
     );
   }
 
   render() {
+
+    let {directionsNeeded, connectedDirections} = this.state;
+    connectedDirections = 0;
+
     return (
-      <View style={[GeneralStyle.center, {backgroundColor: `blue`}]}>
-        <Text> Detail pagina van oefening </Text>
-        {this.renderDetails()}
-        <Button title='MongoDB push' onPress={() => this.sendData()} />
+      <View style={GeneralStyle.pageContainer}>
+
+        <View style={[GeneralStyle.center, {backgroundColor: `green`}, GeneralStyle.contentContainer]}>
+          <Button title='keer keer weer' onPress={() => Actions.pop()} />
+          <Button title='uitproberen' onPress={() => Actions.tryExercise()} disabled={directionsNeeded.length > connectedDirections.length ? true : false} />
+          {
+            this.generateDirectionsForExercise()
+          }
+          {
+            this.generateConnectedDirections()
+          }
+        </View>
+
       </View>
     );
   }
 }
+
+MyTrainings.propTypes = {
+  socket: React.PropTypes.object,
+  name: React.PropTypes.string,
+  exerciseId: React.PropTypes.string
+};
+
+export default MyTrainings;
