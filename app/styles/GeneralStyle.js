@@ -6,6 +6,10 @@ const GeneralStyle = StyleSheet.create({
     flexDirection: `column`,
     alignItems: `center`,
     justifyContent: `center`
+  },
+
+  contentContainer: {
+    flex: 6
   }
 });
 

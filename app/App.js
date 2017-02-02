@@ -22,7 +22,7 @@ class Main extends PureComponent {
         <Scene key='onboarding' component={Onboarding} title='Onboarding' />
         <Scene key='login' component={Login} title='Login' backTitle='onboarding' />
 
-        <Scene key='myDirections' component={MyDirections} title='MyDirections' socket={this.socket} initial />
+        <Scene key='myDirections' component={MyDirections} title='MyDirections' socket={this.socket} hideNavBar initial />
       </Router>
     );
   }

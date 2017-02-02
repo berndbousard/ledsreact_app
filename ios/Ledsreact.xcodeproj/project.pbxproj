@@ -24,10 +24,10 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		853A3CA81E43633F00C25CC3 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85DE76D71E41D8F600842C14 /* libRNSVG.a */; };
 		8554B0DE1E3E573B00BE88BD /* Circular-Std-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8554B0DC1E3E573B00BE88BD /* Circular-Std-Bold.otf */; };
 		8554B0DF1E3E573B00BE88BD /* Circular-Std-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8554B0DD1E3E573B00BE88BD /* Circular-Std-Book.otf */; };
 		857C34C11E41CCF10049968A /* libRNViewShot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 857C34C01E41CCDB0049968A /* libRNViewShot.a */; };
-		B90F5AE687CD4D978D4DC020 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82FB03072F0447CB8DDD3CBE /* libRNSVG.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -252,7 +252,6 @@
 		3B6B93C72F184AF088FF2EE3 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
-		82FB03072F0447CB8DDD3CBE /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8554B0DC1E3E573B00BE88BD /* Circular-Std-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Circular-Std-Bold.otf"; sourceTree = "<group>"; };
 		8554B0DD1E3E573B00BE88BD /* Circular-Std-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Circular-Std-Book.otf"; sourceTree = "<group>"; };
@@ -272,6 +271,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				853A3CA81E43633F00C25CC3 /* libRNSVG.a in Frameworks */,
 				857C34C11E41CCF10049968A /* libRNViewShot.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -284,7 +284,6 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				B90F5AE687CD4D978D4DC020 /* libRNSVG.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -901,6 +900,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ledsreact.app/Ledsreact";
@@ -918,6 +918,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);

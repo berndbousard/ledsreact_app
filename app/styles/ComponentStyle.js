@@ -21,6 +21,30 @@ const ComponentStyle = StyleSheet.create({
     backgroundColor: `red`,
     marginLeft: 10,
     marginRight: 10
+  },
+
+  navigation: {
+    backgroundColor: `black`,
+    flexDirection: `column`,
+    justifyContent: `center`,
+    alignItems: `center`,
+    flex: 1
+  },
+
+  navigationLink: {
+    alignSelf: `stretch`,
+  },
+
+  navigationItem: {
+    color: `white`,
+    textAlign: `center`,
+    backgroundColor: `rgba(255, 255, 255, 0.15)`,
+    paddingTop: 20,
+    paddingBottom: 20
+  },
+
+  activeNavigationLink: {
+    color: `red`
   }
 });
 
