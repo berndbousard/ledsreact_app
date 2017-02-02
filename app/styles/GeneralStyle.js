@@ -8,6 +8,11 @@ const GeneralStyle = StyleSheet.create({
     justifyContent: `center`
   },
 
+  pageContainer: {
+    flexDirection: `row`,
+    flex: 1
+  },
+
   contentContainer: {
     flex: 6
   }

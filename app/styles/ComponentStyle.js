@@ -1,10 +1,12 @@
 import {StyleSheet} from 'react-native';
 
+import Colors from './Colors';
+
 const ComponentStyle = StyleSheet.create({
   direction: {
-    backgroundColor: `black`,
+    backgroundColor: Colors.black,
     borderRadius: 100,
-    shadowColor: `black`,
+    shadowColor: Colors.black,
     shadowOffset: {
       width: 0,
       height: 10
@@ -18,20 +20,28 @@ const ComponentStyle = StyleSheet.create({
   button: {
     width: 45,
     height: 45,
-    backgroundColor: `red`,
+    backgroundColor: Colors.orange,
     marginLeft: 10,
     marginRight: 10
   },
 
   navigation: {
-    backgroundColor: `black`,
+    backgroundColor: Colors.black,
     flexDirection: `column`,
-    justifyContent: `center`,
+    justifyContent: `space-between`,
     alignItems: `center`,
     flex: 1
   },
 
   navigationLink: {
+    alignSelf: `stretch`,
+  },
+
+  mainNatigation: {
+    alignSelf: `stretch`,
+  },
+
+  subNatigation: {
     alignSelf: `stretch`,
   },
 
@@ -44,7 +54,7 @@ const ComponentStyle = StyleSheet.create({
   },
 
   activeNavigationLink: {
-    color: `red`
+    color: Colors.orange
   }
 });
 

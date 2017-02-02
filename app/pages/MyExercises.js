@@ -1,31 +1,38 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View} from 'react-native';
 
-export default class MyExercises extends Component {
+import {GeneralStyle} from '../styles';
+import {Navigation} from '../components';
 
-  constructor() {
-    super();
-  }
+class MyExercises extends Component {
 
-  writeToFirebase() {
+  constructor(props) {
+    super(props);
 
+    this.props = props;
   }
 
   render() {
 
+    console.log(`render`);
+
     return (
-      <View style={[styles.center, {backgroundColor: `aqua`}]}>
-        <Text> Mijn Oefeningen </Text>
+      <View style={GeneralStyle.pageContainer}>
+
+        <Navigation currentPage={this.props.name} />
+
+        <View style={[GeneralStyle.center, {backgroundColor: `red`}, GeneralStyle.contentContainer]}>
+          {/* CONTENT */}
+        </View>
+
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  center: {
-    flex: 1,
-    flexDirection: `column`,
-    alignItems: `center`,
-    justifyContent: `center`
-  }
-});
+MyExercises.propTypes = {
+  socket: React.PropTypes.object,
+  name: React.PropTypes.string
+};
+
+export default MyExercises;

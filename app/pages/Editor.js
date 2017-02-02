@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, Animated, PanResponder, Button} from 'react-native';
 import {range} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
+import {Actions} from "react-native-router-flux";
 import Svg, {Rect} from 'react-native-svg';
 
 import {Direction, Circle, Path} from '../components';
@@ -214,7 +215,7 @@ class Editor extends Component {
           <Button title='undo' onPress={() => this.deleteLastActionHandler()} />
           <Button title='erase' onPress={() => this.deleteActionsHandler()} />
           <Button title='changeColor' color={brushColor} onPress={() => this.changeBrushColor()} />
-
+          <Button title='back' color={brushColor} onPress={() => Actions.pop()} />
       </View>
 
     );

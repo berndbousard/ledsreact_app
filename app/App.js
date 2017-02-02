@@ -4,7 +4,7 @@ import {Router, Scene} from 'react-native-router-flux';
 import './globals/UserAgent'; //Moet enkel pre 1.5.1
 import io from 'socket.io-client';
 
-import {Onboarding, Login, MyDirections} from './pages';
+import {Onboarding, Login, MyDirections, Discover, MyExercises, MyTrainings, Analytics, Editor} from './pages';
 
 class Main extends PureComponent {
 
@@ -19,10 +19,18 @@ class Main extends PureComponent {
   render() {
     return (
       <Router>
-        <Scene key='onboarding' component={Onboarding} title='Onboarding' />
-        <Scene key='login' component={Login} title='Login' backTitle='onboarding' />
+        {/* <Scene key='onboarding' component={Onboarding} title='Onboarding' />
+        <Scene key='login' component={Login} title='Login' backTitle='onboarding' /> */}
 
-        <Scene key='myDirections' component={MyDirections} title='MyDirections' socket={this.socket} hideNavBar initial />
+        <Scene key='myDirections'>
+            <Scene key='directionOverview' component={MyDirections} title='overview' socket={this.socket} hideNavBar initial />
+            <Scene key='editor' component={Editor} title='editor' socket={this.socket} hideNavBar direction='vertical' panHandlers={null}  />
+        </Scene>
+
+        <Scene key='discover' component={Discover} title='discover' socket={this.socket} hideNavBar />
+        <Scene key='myExercises' component={MyExercises} title='discover' socket={this.socket} hideNavBar />
+        <Scene key='myTrainings' component={MyTrainings} title='myTrainings' socket={this.socket} hideNavBar />
+        <Scene key='analytics' component={Analytics} title='analytics' socket={this.socket} hideNavBar />
       </Router>
     );
   }
