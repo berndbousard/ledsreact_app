@@ -1,15 +1,6 @@
 import {AsyncStorage} from 'react-native';
 
-import {isEmpty} from 'lodash';
-
 const setItem = async (item, value) => {
-
-  console.log(item, value);
-
-  // Token
-  if (!isEmpty(value.token)) {
-    value = value.token;
-  }
 
   try {
     await AsyncStorage.setItem(item, value);
@@ -19,11 +10,14 @@ const setItem = async (item, value) => {
 };
 
 const getItem = async key => {
+
   try {
     const value = await AsyncStorage.getItem(key);
-    if (value !== null) {
-      console.log(value);
+    if (value !== null || undefined) {
+      // Promise.resolve(value);
+      return value;
     }
+    console.log(`geen value voor ${key} aanwezig`);
   } catch (error) {
     console.log(error);
   }

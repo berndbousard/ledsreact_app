@@ -6,11 +6,14 @@ import {Actions} from 'react-native-router-flux';
 import {isEmpty} from 'lodash';
 import {GeneralStyle, ComponentStyle} from '../styles';
 import {Navigation} from '../components';
+import {DatabaseUrl, ASyncStorage} from '../globals';
 
 class MyDirections extends Component {
 
   state = {
     connectedDirections: [],
+    token: ``,
+    tokenContent: ``
   };
 
   componentDidMount() {
@@ -20,9 +23,11 @@ class MyDirections extends Component {
     this.props.socket.on(`directionJoined`, direction => this.handleWSdirectionJoined(direction));
     this.props.socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
 
-    this.props.socket.emit(`checkDirections`, {});
+    this.props.socket.emit(`checkDirections`);
 
-    if (false) {
+    this.login();
+
+    if (true) {
       return;
     }
 
@@ -42,6 +47,31 @@ class MyDirections extends Component {
     const {height} = Dimensions.get(`window`);
 
     contentContainer.transition({transform: [{translateY: 0}], opacity: 0}, {transform: [{translateY: - height}], opacity: 0}, 300, `ease-out-quad`);
+  }
+
+  login() {
+    fetch(`${DatabaseUrl}/api/auth`, {
+      method: `POST`,
+      headers: {Accept: `application/json`, 'Content-Type': `application/json`},
+      body: JSON.stringify({
+        login: `bernd.bousard@gmail.com`,
+        password: `bernd`,
+        audience: `app`
+      })
+    })
+    .then(r => {
+      return r.json();
+    })
+    .then(r => {
+      ASyncStorage.setItem(`token`, r.token);
+      ASyncStorage.getItem(`token`)
+        .then(r => {
+          this.setState({token: r});
+        });
+    })
+    .catch(e => {
+      console.log(e);
+    });
   }
 
   changePageHandler(page) {
@@ -86,7 +116,6 @@ class MyDirections extends Component {
   generateConnectedDirections() {
 
     const {connectedDirections} = this.state;
-    console.log(connectedDirections);
 
     if (isEmpty(connectedDirections)) {
       return <Text>Er zijn geen Directions verbonden</Text>;
@@ -108,8 +137,6 @@ class MyDirections extends Component {
 
   render() {
 
-    console.log(`render`);
-
     return (
       <View style={GeneralStyle.pageContainer}>
 
@@ -125,9 +152,7 @@ class MyDirections extends Component {
           </View>
         </Animatable.View>
 
-
       </View>
-
     );
   }
 }

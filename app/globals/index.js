@@ -1,7 +1,9 @@
 import UserAgent from './UserAgent';
 import DatabaseUrl from './DatabaseUrl';
-import AsyncStorage from './AsyncStorage';
+import ASyncStorage from './ASyncStorage';
+import Token from './Token';
 
 exports.UserAgent = UserAgent;
 exports.DatabaseUrl = DatabaseUrl;
-exports.AsyncStorage = AsyncStorage;
+exports.ASyncStorage = ASyncStorage;
+exports.Token = Token;
