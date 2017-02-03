@@ -6,15 +6,7 @@ import {Navigation} from '../components';
 
 class Discover extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.props = props;
-  }
-
   render() {
-
-    console.log(`render`);
 
     return (
       <View style={GeneralStyle.pageContainer}>

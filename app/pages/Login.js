@@ -11,14 +11,10 @@ import {GeneralStyle} from '../styles';
 
 export default class Login extends Component {
 
-  constructor() {
-    super();
-
-    this.state = {
-      email: ``,
-      password: ``
-    };
-  }
+  state = {
+    email: ``,
+    password: ``
+  };
 
   login() {
     const {email, password} = this.state;
@@ -38,7 +34,7 @@ export default class Login extends Component {
         })
         .then(r => {
           AsyncStorage.setItem(`token`, r.token);
-          AsyncStorage.getItem(`token`);
+          Actions.myDirections();
         })
         .catch(e => {
           Alert.alert(

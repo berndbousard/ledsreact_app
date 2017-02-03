@@ -1,28 +1,30 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
-import {Actions} from 'react-native-router-flux';
+import {View} from 'react-native';
 
-import {Colors} from '../globals';
+import {GeneralStyle} from '../styles';
+import {Navigation} from '../components';
 
-export default class Onboarding extends Component {
+class MyTrainings extends Component {
+
   render() {
+
     return (
-      <View style={[styles.center, {backgroundColor: `pink`}]}>
-        <Text>Onboarding</Text>
-        <View>
-          <Button title='Inloggen' color={Colors.blue} accessibilityLabel='Inloggen als bestaande trainer' onPress={() => {Actions.login();}} />
-          <Button title='Registreer' color={Colors.blue} accessibilityLabel='Registreer als nieuwe trainer' onPress={() => {console.log(`registreer`);}} />
+      <View style={GeneralStyle.pageContainer}>
+
+        <Navigation currentPage={this.props.name} />
+
+        <View style={[GeneralStyle.center, {backgroundColor: `green`}, GeneralStyle.contentContainer]}>
+          {/* CONTENT */}
         </View>
+
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  center: {
-    flex: 1,
-    flexDirection: `column`,
-    alignItems: `center`,
-    justifyContent: `center`
-  }
-});
+MyTrainings.propTypes = {
+  socket: React.PropTypes.object,
+  name: React.PropTypes.string
+};
+
+export default MyTrainings;

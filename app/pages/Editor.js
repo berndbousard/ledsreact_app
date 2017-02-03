@@ -10,18 +10,14 @@ import {GeneralStyle} from '../styles';
 
 class Editor extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      directionAmount: props.directionAmount,
-      svgElements: [],
-      directionPosition: new Animated.ValueXY(),
-      directionScale: new Animated.Value(1),
-      brushColor: `black`,
-      userDrawingFeedback: []
-    };
-  }
+  state = {
+    directionAmount: this.props.directionAmount,
+    svgElements: [],
+    directionPosition: new Animated.ValueXY(),
+    directionScale: new Animated.Value(1),
+    brushColor: `black`,
+    userDrawingFeedback: []
+  };
 
   componentWillMount() {
     // resource:  http://mindthecode.com/getting-started-with-the-panresponder-in-react-native/

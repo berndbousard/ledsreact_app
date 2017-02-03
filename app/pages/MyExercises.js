@@ -7,15 +7,7 @@ import {Navigation} from '../components';
 
 class MyExercises extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.props = props;
-  }
-
   render() {
-
-    console.log(`render`);
 
     return (
       <View style={GeneralStyle.pageContainer}>

@@ -1,18 +1,14 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
+import {View, Text, Button} from 'react-native';
 import {isEmpty} from 'lodash';
 
 import {GeneralStyle} from '../styles';
 
 export default class ExerciseDetail extends Component {
 
-  constructor() {
-    super();
-
-    this.state = {
-      exercises: []
-    };
-  }
+  state = {
+    exercises: []
+  };
 
   sendData() {
     fetch(`http://localhost:3000/api/tests`, {

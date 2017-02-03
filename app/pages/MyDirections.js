@@ -9,24 +9,16 @@ import {Navigation} from '../components';
 
 class MyDirections extends Component {
 
-  constructor(props) {
-    super(props);
+  state = {
+    connectedDirections: [],
+  };
 
-    this.props = props;
-
-    this.state = {
-      connectedDirections: []
-    };
-
-    console.log(props);
+  componentDidMount() {
 
     this.props.socket.on(`init`, directions => this.handleWSDirections(directions));
     this.props.socket.on(`updateDirections`, socketId => this.handleWSupdateDirections(socketId));
     this.props.socket.on(`directionJoined`, direction => this.handleWSdirectionJoined(direction));
     this.props.socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
-  }
-
-  componentDidMount() {
 
     this.props.socket.emit(`checkDirections`, {});
 
@@ -40,7 +32,12 @@ class MyDirections extends Component {
     contentContainer.transition({transform: [{translateY: height}], opacity: 0}, {transform: [{translateY: 0}], opacity: 1}, 300, `ease-out-quad`);
   }
 
-  componentsWillUnmount() {
+  componentWillUnmount() {
+    this.props.socket.off(`init`);
+    this.props.socket.off(`updateDirections`);
+    this.props.socket.off(`directionJoined`);
+    this.props.socket.off(`checkDirections`);
+
     const {contentContainer} = this.refs;
     const {height} = Dimensions.get(`window`);
 

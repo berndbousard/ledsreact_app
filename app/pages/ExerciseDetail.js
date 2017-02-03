@@ -7,20 +7,14 @@ import {DatabaseUrl} from '../globals';
 
 class MyTrainings extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.props = props;
-
-    this.state = {
-      directionsNeeded: [],
-      connectedDirections: []
-    };
-
-    this.props.socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
-  }
+  state = {
+    directionsNeeded: [],
+    connectedDirections: []
+  };
 
   componentDidMount() {
+
+    this.props.socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
 
     const {exerciseId} = this.props;
 
@@ -37,6 +31,10 @@ class MyTrainings extends Component {
       });
 
     this.props.socket.emit(`checkDirections`, {});
+  }
+
+  componentWillUnmount() {
+    this.props.socket.off(`checkDirections`);
   }
 
   handleWScheckDirections(connectedDirections) {
@@ -69,7 +67,7 @@ class MyTrainings extends Component {
 
         <View style={[GeneralStyle.center, {backgroundColor: `green`}, GeneralStyle.contentContainer]}>
           <Button title='keer keer weer' onPress={() => Actions.pop()} />
-          <Button title='uitproberen' onPress={() => Actions.tryExercise()} disabled={directionsNeeded.length > connectedDirections.length ? true : false} />
+          <Button title='uitproberen' onPress={() => Actions.tryExercise()} disabled={directionsNeeded.length > connectedDirections.length ? false : true} />
           {
             this.generateDirectionsForExercise()
           }
