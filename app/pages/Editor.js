@@ -24,7 +24,10 @@ class Editor extends Component {
     directionPosition: new Animated.ValueXY(),
     directionScale: new Animated.Value(1),
     brushColor: `black`,
-    userDrawingFeedback: []
+    userDrawingFeedback: [],
+    drawer: {
+      isActive: false
+    }
   };
 
   componentDidMount() {
@@ -52,7 +55,6 @@ class Editor extends Component {
     redoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
     saveIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
     undoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-
   }
 
   componentWillMount() {
@@ -287,9 +289,41 @@ class Editor extends Component {
     this.refs.currentColor.pulse(600);
   }
 
+  addEditorPressHandler() {
+    const {drawer} = this.state;
+    const {addEditorIcon, drawerRef} = this.refs;
+
+    if (drawer.isActive) {
+      addEditorIcon.transition({transform: [{rotate: `45deg`}]}, {transform: [{rotate: `0deg`}]}, 200, `ease-out`);
+      drawerRef.transition({opacity: 1}, {opacity: 0}, 200, `ease-out`);
+      setTimeout(() => {
+        drawer.isActive = false;
+        this.setState({drawer});
+      }, 200);
+      return;
+    } else {
+      addEditorIcon.transition({transform: [{rotate: `0deg`}]}, {transform: [{rotate: `45deg`}]}, 200, `ease-out`);
+      drawer.isActive = true;
+      this.setState({drawer});
+      return;
+    }
+  }
+
+  renderDrawer() {
+    const {drawer} = this.state;
+
+    if (!drawer.isActive) {
+      return;
+    }
+
+    return (
+      <Animatable.View ref='drawerRef' duration={200} animation='pulse' easing='ease-out' style={[EditorStyle.drawer]}></Animatable.View>
+    );
+  }
+
   render() {
 
-    const {directionPosition, directionScale, brushColor, editorDirections} = this.state;
+    const {directionPosition, directionScale, brushColor, editorDirections, drawer} = this.state;
     const [translateX, translateY] = [editorDirections[0].position.x, editorDirections[0].position.y];
     const {width: innerWidth, height: innerheight} = Dimensions.get(`window`);
 
@@ -361,12 +395,23 @@ class Editor extends Component {
             </Animatable.View>
           </TouchableWithoutFeedback>
         </View>
+
+        <TouchableWithoutFeedback onPress={() => this.addEditorPressHandler()}>
+          <Animatable.Image ref='addEditorIcon' style={EditorStyle.addEditorIcon} source={require(`../assets/png/addEditorIcon.png`)} />
+        </TouchableWithoutFeedback>
+
+        {
+          this.renderDrawer()
+        }
+
+        <Animated.View style={EditorStyle.direction} {...this.dragHandler.panHandlers} index='3' style={{backgroundColor: `black`, position: `absolute`, width: 50, height: 50, borderRadius: 50, transform: [{translateX}, {translateY}, {rotate: `0deg`}, {scale: editorDirections[0].scale}]}}>
+          <Button title='test' onPress={() => {console.log(`acties`);}} />
+        </Animated.View>
+
       </View>
 
         /*
-          <Animated.View {...this.dragHandler.panHandlers} index='3' style={{backgroundColor: `black`, width: 50, height: 50, borderRadius: 50, transform: [{translateX}, {translateY}, {rotate: `0deg`}, {scale: editorDirections[0].scale}]}}>
-            <Button title='test' onPress={() => {console.log(`acties`);}} />
-          </Animated.View>
+
 
           <Animated.View {...this.dragHandler.panHandlers} index='3' style={{backgroundColor: `black`, width: 50, height: 50, borderRadius: 50, transform: [{translateX}, {translateY}, {rotate: `0deg`}, {scale: editorDirections[0].scale}]}}>
             <Button title='test' onPress={() => {console.log(`acties`);}} />

@@ -105,6 +105,28 @@ const ComponentStyle = StyleSheet.create({
 
   fieldIconText: {
     backgroundColor: Colors.white
+  },
+
+  addEditorIcon: {
+    width: 51,
+    height: 51,
+    position: `absolute`,
+    left: (Dimensions.width / 2) - 25,
+    bottom: 25
+  },
+
+  drawer: {
+    position: `absolute`,
+    left: Dimensions.width / 2 - (Dimensions.width * (3 / 4)) / 2,
+    bottom: 100,
+    borderRadius: 5,
+    shadowColor: Colors.black,
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: .05,
+    shadowRadius: 20,
+    width: Dimensions.width * (3 / 4),
+    height: 300,
+    backgroundColor: Colors.pureWhite
   }
 });
 

@@ -1,13 +1,16 @@
-import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {Component} from 'react';
+import {View} from 'react-native';
 
-import {ComponentStyle} from '../styles';
+class Direction extends Component {
 
-const Direction = ({width, height}) => {
-  return (
-    <View style={[ComponentStyle.direction, {width, height}]}></View>
-  );
-};
+  render() {
+    return (
+      <View></View>
+    );
+  }
+
+
+}
 
 Direction.propTypes = {
   selected: React.PropTypes.bool,
