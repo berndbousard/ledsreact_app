@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
-import {View, Text, Animated, PanResponder, Button, TouchableWithoutFeedback} from 'react-native';
+import {View, Text, Animated, PanResponder, Button, TouchableWithoutFeedback, Dimensions, TouchableOpacity, Image} from 'react-native';
 import {range} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
 import {Actions} from "react-native-router-flux";
+import * as Animatable from 'react-native-animatable';
 import Svg, {Rect} from 'react-native-svg';
 import {createResponder} from 'react-native-gesture-responder'; //Beter dan PanResponder - https://github.com/ldn0x7dc/react-native-gesture-responder
 
 import {Direction, Circle, Path} from '../components';
-import {GeneralStyle} from '../styles';
+import {GeneralStyle, EditorStyle, Colors} from '../styles';
 
 class Editor extends Component {
 
@@ -37,6 +38,21 @@ class Editor extends Component {
     // }
     //
     // console.log(editorDirections.length);
+
+    console.log(this.refs);
+
+    const {brushIcon, closeIcon, currentColor, deleteIcon, eraserIcon, fieldIcon, redoIcon, saveIcon, undoIcon} = this.refs;
+
+    brushIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    closeIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    currentColor.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    deleteIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    eraserIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    fieldIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    redoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    saveIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    undoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+
   }
 
   componentWillMount() {
@@ -223,7 +239,7 @@ class Editor extends Component {
     this.setState({svgElements});
   }
 
-  deleteActionsHandler() {
+  deleteAllActionsHandler() {
     this.setState({svgElements: []});
   }
 
@@ -255,19 +271,99 @@ class Editor extends Component {
     }
   }
 
+  cycleColor() {
+    this.refs.currentColor.bounceIn(800);
+    const {brushColor} = this.state;
+
+    if (brushColor === `black`) {
+      this.setState({brushColor: `red`});
+    } else {
+      this.setState({brushColor: `black`});
+    }
+
+  }
+
+  pressInColorHandler() {
+    this.refs.currentColor.pulse(600);
+  }
+
   render() {
 
     const {directionPosition, directionScale, brushColor, editorDirections} = this.state;
     const [translateX, translateY] = [editorDirections[0].position.x, editorDirections[0].position.y];
+    const {width: innerWidth, height: innerheight} = Dimensions.get(`window`);
 
     return (
-      <View style={[GeneralStyle.center, {backgroundColor: `coral`}]} ref='artboard'>
-        <Text> Editor </Text>
-        <Svg {...this.drawHandler.panHandlers} width='500' height='500' ref='svg'>
-          <Rect x='0' y='0' width='100%' height='100%' fill='white' />
+      <View style={[EditorStyle.editorContainer]} ref='artboard'>
+        <Svg style={[{zIndex: 0}]} {...this.drawHandler.panHandlers} width={innerWidth} height={innerheight} ref='svg'>
+          <Rect x='0' y='0' width='100%' height='100%' fill={Colors.white} />
           {this.generateUserDrawingFeedback()}
           {this.generateSvgElements()}
         </Svg>
+        <View style={[EditorStyle.leftControls]}>
+          <View style={[EditorStyle.leftUpperControls]}>
+            <TouchableWithoutFeedback onPressOut={() => this.cycleColor()} onPressIn={() => this.pressInColorHandler()}>
+              <Animatable.View ref='currentColor' style={[EditorStyle.colorIcon, EditorStyle.icon, {backgroundColor: brushColor}]}>
+              </Animatable.View>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback onPressOut={() => this.refs.brushIcon.bounceIn(800)} onPressIn={() => this.refs.brushIcon.pulse(600)}>
+              <Animatable.View ref='brushIcon'>
+                <Image style={[EditorStyle.brushIcon, EditorStyle.icon]} source={require(`../assets/png/brushIcon.png`)}/>
+              </Animatable.View>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback onPressOut={() => this.refs.eraserIcon.bounceIn(800)} onPressIn={() => this.refs.eraserIcon.pulse(600)}>
+              <Animatable.View ref='eraserIcon'>
+                <Image style={[EditorStyle.eraserIcon, EditorStyle.icon]} source={require(`../assets/png/eraserIcon.png`)}/>
+              </Animatable.View>
+            </TouchableWithoutFeedback>
+          </View>
+
+          <View style={[EditorStyle.leftLowerControls]}>
+            <TouchableWithoutFeedback onPress={() => this.deleteLastActionHandler()} onPressOut={() => this.refs.undoIcon.bounceIn(800)} onPressIn={() => this.refs.undoIcon.pulse(600)}>
+              <Animatable.View ref='undoIcon'>
+                <Image style={[EditorStyle.undoIcon, EditorStyle.icon]} source={require(`../assets/png/undoIcon.png`)}/>
+              </Animatable.View>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback onPressOut={() => this.refs.redoIcon.bounceIn(800)} onPressIn={() => this.refs.redoIcon.pulse(600)}>
+              <Animatable.View ref='redoIcon'>
+                <Image style={[EditorStyle.redoIcon, EditorStyle.icon]} source={require(`../assets/png/redoIcon.png`)}/>
+              </Animatable.View>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback onPress={() => this.screenshotHandler()} onPressOut={() => this.refs.saveIcon.bounceIn(800)} onPressIn={() => this.refs.saveIcon.pulse(600)}>
+              <Animatable.View ref='saveIcon'>
+                <Image style={[EditorStyle.saveIcon, EditorStyle.icon]} source={require(`../assets/png/saveIcon.png`)}/>
+              </Animatable.View>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback onPress={() => this.deleteAllActionsHandler()} onPressOut={() => this.refs.deleteIcon.bounceIn(800)} onPressIn={() => this.refs.deleteIcon.pulse(600)}>
+              <Animatable.View ref='deleteIcon'>
+                <Image style={[EditorStyle.deleteIcon, EditorStyle.icon]} source={require(`../assets/png/deleteIcon.png`)}/>
+              </Animatable.View>
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
+
+        <View style={[EditorStyle.rightControls]}>
+          <TouchableWithoutFeedback onPressOut={() => Actions.pop()} onPressIn={() => this.refs.closeIcon.pulse(600)}>
+            <Animatable.View ref='closeIcon'>
+              <Image style={[EditorStyle.closeIcon, EditorStyle.icon]} source={require(`../assets/png/closeIcon.png`)}/>
+            </Animatable.View>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback style={EditorStyle.fieldIconWrapper} onPressOut={() => this.refs.fieldIcon.bounceIn(800)} onPressIn={() => this.refs.fieldIcon.pulse(600)}>
+            <Animatable.View style={EditorStyle.fieldIconWrapper} ref='fieldIcon'>
+              <Text style={[EditorStyle.fieldIconText]}>Speelveld</Text>
+              <Image style={[EditorStyle.fieldIcon, EditorStyle.icon]} source={require(`../assets/png/fieldIcon.png`)}/>
+            </Animatable.View>
+          </TouchableWithoutFeedback>
+        </View>
+      </View>
+
+        /*
           <Animated.View {...this.dragHandler.panHandlers} index='3' style={{backgroundColor: `black`, width: 50, height: 50, borderRadius: 50, transform: [{translateX}, {translateY}, {rotate: `0deg`}, {scale: editorDirections[0].scale}]}}>
             <Button title='test' onPress={() => {console.log(`acties`);}} />
           </Animated.View>
@@ -278,10 +374,10 @@ class Editor extends Component {
           {this.generateDirections()}
           <Button title='take screenshot' onPress={() => this.screenshotHandler()} />
           <Button title='undo' onPress={() => this.deleteLastActionHandler()} />
-          <Button title='erase' onPress={() => this.deleteActionsHandler()} />
+          <Button title='erase' onPress={() => this.deleteAllActionsHandler()} />
           <Button title='changeColor' color={brushColor} onPress={() => this.changeBrushColor()} />
-          <Button title='back' color={brushColor} onPress={() => Actions.pop()} />
-      </View>
+          <Button title='back' color={brushColor} onPress={() => Actions.pop()} /> */
+      // </View>
     );
   }
 }

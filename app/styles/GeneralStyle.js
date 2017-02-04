@@ -12,7 +12,8 @@ const GeneralStyle = StyleSheet.create({
 
   pageContainer: {
     flexDirection: `row`,
-    flex: 1
+    flex: 1,
+    backgroundColor: Colors.white
   },
 
   contentContainer: {
