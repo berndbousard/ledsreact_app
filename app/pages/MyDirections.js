@@ -137,13 +137,15 @@ class MyDirections extends Component {
 
   render() {
 
+    const {connectedDirections} = this.state;
+
     return (
       <View style={GeneralStyle.pageContainer}>
 
         <Navigation currentPage={this.props.sceneKey} />
 
         <Animatable.View style={[GeneralStyle.center, {backgroundColor: `pink`}, GeneralStyle.contentContainer]} useNativeDriver={true} ref='contentContainer'>
-          <Button title='oefening maken' onPress={() => Actions.editor()} />
+          <Button title='oefening maken' onPress={() => Actions.editor({connectedDirections})} />
           <View style={{flexDirection: `column`, alignItems: `center`}}>
             <Text>Verbonden Directions</Text>
             <View style={{flexDirection: `row`, alignItems: `center`, justifyContent: `center`}}>

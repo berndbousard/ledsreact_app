@@ -23,38 +23,6 @@ const ComponentStyle = StyleSheet.create({
     backgroundColor: Colors.orange,
     marginLeft: 10,
     marginRight: 10
-  },
-
-  navigation: {
-    backgroundColor: Colors.black,
-    flexDirection: `column`,
-    justifyContent: `space-between`,
-    alignItems: `center`,
-    flex: 1
-  },
-
-  navigationLink: {
-    alignSelf: `stretch`,
-  },
-
-  mainNatigation: {
-    alignSelf: `stretch`,
-  },
-
-  subNatigation: {
-    alignSelf: `stretch`,
-  },
-
-  navigationItem: {
-    color: `white`,
-    textAlign: `center`,
-    backgroundColor: `rgba(255, 255, 255, 0.15)`,
-    paddingTop: 20,
-    paddingBottom: 20
-  },
-
-  activeNavigationLink: {
-    color: Colors.orange
   }
 });
 

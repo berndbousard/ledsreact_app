@@ -1,48 +1,72 @@
 import React from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity, Image} from 'react-native';
 import {Actions, ActionConst} from 'react-native-router-flux';
 
-import {ComponentStyle} from '../styles';
+import {NavigationStyle} from '../styles';
 
 const Navigation = ({currentPage}) => {
 
+  console.log(currentPage);
+
   return (
-    <View style={ComponentStyle.navigation}>
-      <View style={ComponentStyle.mainNatigation}>
-        <TouchableOpacity style={ComponentStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`myDirections`)} >
-          <Text style={[ComponentStyle.navigationItem, currentPage === `directionOverview` ? ComponentStyle.activeNavigationLink : ``]}>Mijn Directions</Text>
-        </TouchableOpacity>
+    <View style={NavigationStyle.navigationWrapper}>
+      <View style={NavigationStyle.navigation}>
+        <View style={NavigationStyle.mainNav}>
+          <TouchableOpacity style={NavigationStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`myDirections`)} >
+            <Image style={NavigationStyle.navigationMyDirectionsIcon} source={require(`../assets/png/myDirectionsIcon.png`)}/>
+            <Text style={[NavigationStyle.navigationText, currentPage === `myDirections` || currentPage === `directionOverview` ? NavigationStyle.activeNavigationLink : ``]}>Mijn Directions</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={ComponentStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`discover`)}>
-          <Text style={[ComponentStyle.navigationItem, currentPage === `discover` ? ComponentStyle.activeNavigationLink : ``]}>Ontdek</Text>
-        </TouchableOpacity>
+          <Image style={NavigationStyle.divider} source={require(`../assets/png/divider.png`)} />
 
-        <TouchableOpacity style={ComponentStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`exercises`)}>
-          <Text style={[ComponentStyle.navigationItem, currentPage === `myExercises` ? ComponentStyle.activeNavigationLink : ``]}>Mijn Oefeningen</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={NavigationStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`discover`)}>
+            <Image style={NavigationStyle.navigationDiscoverIcon} source={require(`../assets/png/discoverIcon.png`)}/>
+            <Text style={[NavigationStyle.navigationText, currentPage === `discover` ? NavigationStyle.activeNavigationLink : ``]}>Ontdek</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={ComponentStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`myTrainings`)}>
-          <Text style={[ComponentStyle.navigationItem, currentPage === `myTrainings` ? ComponentStyle.activeNavigationLink : ``]}>Mijn Trainingen</Text>
-        </TouchableOpacity>
+          <Image style={NavigationStyle.divider} source={require(`../assets/png/divider.png`)} />
 
-        <TouchableOpacity style={ComponentStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`analytics`)}>
-          <Text style={[ComponentStyle.navigationItem, currentPage === `analytics` ? ComponentStyle.activeNavigationLink : ``]}>Analyse</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={NavigationStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`exercises`)}>
+            <Image style={NavigationStyle.navigationMyExercisesIcon} source={require(`../assets/png/myExercisesIcon.png`)}/>
+            <Text style={[NavigationStyle.navigationText, currentPage === `myExercises` ? NavigationStyle.activeNavigationLink : ``]}>Mijn Oefeningen</Text>
+          </TouchableOpacity>
+
+          <Image style={NavigationStyle.divider} source={require(`../assets/png/divider.png`)} />
+
+          <TouchableOpacity style={NavigationStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`myTrainings`)}>
+            <Image style={NavigationStyle.navigationMyTrainingsIcon} source={require(`../assets/png/myTrainingIcon.png`)}/>
+            <Text style={[NavigationStyle.navigationText, currentPage === `myTrainings` ? NavigationStyle.activeNavigationLink : ``]}>Mijn Trainingen</Text>
+          </TouchableOpacity>
+
+          <Image style={NavigationStyle.divider} source={require(`../assets/png/divider.png`)} />
+
+          <TouchableOpacity style={NavigationStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`analytics`)}>
+            <Image style={NavigationStyle.navigationAnalyticsIcon} source={require(`../assets/png/analyticsIcon.png`)}/>
+            <Text style={[NavigationStyle.navigationText, currentPage === `analytics` ? NavigationStyle.activeNavigationLink : ``]}>Analyse</Text>
+          </TouchableOpacity>
+
+          <Image style={NavigationStyle.divider} source={require(`../assets/png/divider.png`)} />
+        </View>
+
+        <View style={NavigationStyle.subNav}>
+          <TouchableOpacity style={NavigationStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`myDirections`)}>
+            <Image style={NavigationStyle.navigationMessagesIcon} source={require(`../assets/png/messagesIcon.png`)}/>
+          </TouchableOpacity>
+
+          <Image style={NavigationStyle.divider} source={require(`../assets/png/divider.png`)} />
+
+          <TouchableOpacity style={NavigationStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`myDirections`)}>
+            <Image style={NavigationStyle.navigationNotificationsIcon} source={require(`../assets/png/notificationsIcon.png`)}/>
+          </TouchableOpacity>
+
+          <Image style={NavigationStyle.divider} source={require(`../assets/png/divider.png`)} />
+
+          <TouchableOpacity style={NavigationStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`myDirections`)}>
+            <Image style={NavigationStyle.navigationSettingsIcon} source={require(`../assets/png/settingsIcon.png`)}/>
+          </TouchableOpacity>
+        </View>
       </View>
-
-      <View style={ComponentStyle.subNatigation}>
-        <TouchableOpacity style={ComponentStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`myDirections`)}>
-          <Text style={[ComponentStyle.navigationItem, currentPage === `messages` ? ComponentStyle.activeNavigationLink : ``]}>Messages</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={ComponentStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`myDirections`)}>
-          <Text style={[ComponentStyle.navigationItem, currentPage === `notifications` ? ComponentStyle.activeNavigationLink : ``]}>Notifications</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={ComponentStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`myDirections`)}>
-          <Text style={[ComponentStyle.navigationItem, currentPage === `me` ? ComponentStyle.activeNavigationLink : ``]}>Me</Text>
-        </TouchableOpacity>
-      </View>
+      <Image style={NavigationStyle.navigationSkew} source={require(`../assets/png/navigationSkew.png`)} />
     </View>
   );
 };

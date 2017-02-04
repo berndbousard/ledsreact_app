@@ -1,5 +1,7 @@
 import {StyleSheet} from 'react-native';
 
+import Colors from './Colors';
+
 const GeneralStyle = StyleSheet.create({
   center: {
     flex: 1,
