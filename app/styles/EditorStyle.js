@@ -127,6 +127,22 @@ const ComponentStyle = StyleSheet.create({
     width: Dimensions.width * (3 / 4),
     height: 300,
     backgroundColor: Colors.pureWhite
+  },
+
+  directionWrapper: {
+    position: `absolute`,
+    justifyContent: `center`,
+    alignItems: `center`
+  },
+
+  directionLink: {
+    justifyContent: `center`,
+    alignItems: `center`
+  },
+
+  directionImage: {
+    width: 100,
+    height: 107
   }
 });
 

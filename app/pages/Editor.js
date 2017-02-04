@@ -7,13 +7,13 @@ import * as Animatable from 'react-native-animatable';
 import Svg, {Rect} from 'react-native-svg';
 import {createResponder} from 'react-native-gesture-responder'; //Beter dan PanResponder - https://github.com/ldn0x7dc/react-native-gesture-responder
 
-import {Direction, Circle, Path} from '../components';
+import {Circle, Path, Direction} from '../components';
 import {GeneralStyle, EditorStyle, Colors} from '../styles';
 
 class Editor extends Component {
 
   state = {
-    directionAmount: this.props.directionAmount,
+    connectedDirections: this.props.connectedDirections,
     svgElements: [],
     editorDirections: [
       {
@@ -317,14 +317,29 @@ class Editor extends Component {
     }
 
     return (
-      <Animatable.View ref='drawerRef' duration={200} animation='pulse' easing='ease-out' style={[EditorStyle.drawer]}></Animatable.View>
+      <Animatable.View ref='drawerRef' duration={200} animation='pulse' easing='ease-out' style={[EditorStyle.drawer]}>
+        {
+          this.renderDirections()
+        }
+      </Animatable.View>
+    );
+  }
+
+  renderDirections() {
+
+    const {connectedDirections} = this.state;
+
+    return (
+      connectedDirections.map((e, index) => {
+        return <Direction key={index} index={index} />;
+      })
     );
   }
 
   render() {
 
-    const {directionPosition, directionScale, brushColor, editorDirections, drawer} = this.state;
-    const [translateX, translateY] = [editorDirections[0].position.x, editorDirections[0].position.y];
+    const {brushColor} = this.state;
+
     const {width: innerWidth, height: innerheight} = Dimensions.get(`window`);
 
     return (
@@ -388,7 +403,7 @@ class Editor extends Component {
             </Animatable.View>
           </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback style={EditorStyle.fieldIconWrapper} onPressOut={() => this.refs.fieldIcon.bounceIn(800)} onPressIn={() => this.refs.fieldIcon.pulse(600)}>
+          <TouchableWithoutFeedback style={EditorStyle.fieldIconWrapper}>
             <Animatable.View style={EditorStyle.fieldIconWrapper} ref='fieldIcon'>
               <Text style={[EditorStyle.fieldIconText]}>Speelveld</Text>
               <Image style={[EditorStyle.fieldIcon, EditorStyle.icon]} source={require(`../assets/png/fieldIcon.png`)}/>
@@ -404,15 +419,9 @@ class Editor extends Component {
           this.renderDrawer()
         }
 
-        <Animated.View style={EditorStyle.direction} {...this.dragHandler.panHandlers} index='3' style={{backgroundColor: `black`, position: `absolute`, width: 50, height: 50, borderRadius: 50, transform: [{translateX}, {translateY}, {rotate: `0deg`}, {scale: editorDirections[0].scale}]}}>
-          <Button title='test' onPress={() => {console.log(`acties`);}} />
-        </Animated.View>
-
       </View>
 
         /*
-
-
           <Animated.View {...this.dragHandler.panHandlers} index='3' style={{backgroundColor: `black`, width: 50, height: 50, borderRadius: 50, transform: [{translateX}, {translateY}, {rotate: `0deg`}, {scale: editorDirections[0].scale}]}}>
             <Button title='test' onPress={() => {console.log(`acties`);}} />
           </Animated.View>
@@ -428,7 +437,7 @@ class Editor extends Component {
 }
 
 Editor.propTypes = {
-  directionAmount: React.PropTypes.number
+  connectedDirections: React.PropTypes.array
 };
 
 export default Editor;
