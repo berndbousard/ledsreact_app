@@ -5,6 +5,7 @@ import EditorStyle from './EditorStyle';
 import Colors from './Colors';
 import Fonts from './Fonts';
 import Dimensions from './Dimensions';
+import TextStyles from './TextStyles';
 
 exports.GeneralStyle = GeneralStyle;
 exports.ComponentStyle = ComponentStyle;
@@ -13,3 +14,4 @@ exports.EditorStyle = EditorStyle;
 exports.Colors = Colors;
 exports.Fonts = Fonts;
 exports.Dimensions = Dimensions;
+exports.TextStyles = TextStyles;

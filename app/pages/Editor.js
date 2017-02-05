@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView} from 'react-native';
-import {range} from 'lodash';
+import {range, indexOf} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
 import {Actions} from "react-native-router-flux";
 import * as Animatable from 'react-native-animatable';
 import Svg, {Rect} from 'react-native-svg';
 
 import {Circle, Path, Direction} from '../components';
-import {EditorStyle, Colors, Dimensions} from '../styles';
+import {EditorStyle, Colors, Dimensions, TextStyles} from '../styles';
 
 class Editor extends Component {
 
@@ -23,8 +23,8 @@ class Editor extends Component {
       colors: [Colors.black, Colors.orange]
     },
     field: {
-      index: 0,
-      images: [`soccer`],
+      currentIndex: 0,
+      images: [`blanco`, `soccer`, `basket`, `tennis`, `rugby`, `volleyball`],
       drawer: {
         isActive: false
       }
@@ -36,15 +36,15 @@ class Editor extends Component {
 
     const {brushIcon, closeIcon, currentColor, deleteIcon, eraserIcon, fieldIcon, redoIcon, saveIcon, undoIcon} = this.refs;
 
-    // brushIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // closeIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // currentColor.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // deleteIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // eraserIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // fieldIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // redoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // saveIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // undoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    brushIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    closeIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    currentColor.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    deleteIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    eraserIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    fieldIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    redoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    saveIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    undoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
   }
 
   componentWillMount() {
@@ -244,9 +244,17 @@ class Editor extends Component {
 
     const {connectedDirections} = this.state;
 
+    const objectsDrawerBounds = {
+      xMin: Dimensions.width / 2 - (Dimensions.width * (3 / 4)) / 2,
+      yMin: (Dimensions.height - 100) - 300,
+      xMax: (Dimensions.width / 2 - (Dimensions.width * (3 / 4)) / 2) + Dimensions.width * (3 / 4),
+      yMax: Dimensions.height - 100
+    };
+
     return (
       connectedDirections.map((e, index) => {
-        return <Direction key={index} index={index} />;
+
+        return <Direction key={index} index={index} bounds={objectsDrawerBounds} />;
       })
     );
   }
@@ -255,11 +263,42 @@ class Editor extends Component {
 
     const {field} = this.state;
 
-    const url = field.images[field.index];
+    let url = field.images[field.currentIndex];
 
     if (url === `soccer`) {
-      return <Image style={{position: `absolute`, left: 0, top: 0, width: Dimensions.width, height: Dimensions.height, opacity: 0.04, zIndex: 0}} source={require(`../assets/png/soccerBackground.png`)} />;
+      url = require(`../assets/png/soccerBackground.png`);
     }
+
+    if (url === `basket`) {
+      url = require(`../assets/png/basketBackground.png`);
+    }
+
+    if (url === `tennis`) {
+      url = require(`../assets/png/tennisBackground.png`);
+    }
+
+    if (url === `rugby`) {
+      url = require(`../assets/png/rugbyBackground.png`);
+    }
+
+    if (url === `volleyball`) {
+      url = require(`../assets/png/volleyballBackground.png`);
+    }
+
+    if (url === `blanco`) {
+      return;
+    }
+
+    return <Animatable.Image style={[EditorStyle.field]} source={url} />;
+  }
+
+  fieldsThumbnailHandler(image) {
+    const {field} = this.state;
+    const index = indexOf(field.images, image);
+
+    field.currentIndex = index;
+
+    this.setState({field});
   }
 
   renderFieldsDrawer() {
@@ -268,13 +307,86 @@ class Editor extends Component {
 
     if (field.drawer.isActive) {
       return (
-        <Animatable.View ref='fieldsDrawerRef' duration={200} animation='pulse' easing='ease-out' style={[EditorStyle.fieldsDrawer]}>
-          <Text style={[EditorStyle.fieldsDrawerTitle]}>Speelveld</Text>
-          <ScrollView>
-              <View>
-                <View>
-                  <Image source={require(`../assets/png/blancoIcon.png`)} />
-                  <Text>Blanco speelveld</Text>
+        <Animatable.View style={[EditorStyle.fieldsDrawer]} ref='fieldsDrawerRef' duration={200} animation='pulse' easing='ease-out'>
+          <Text style={[TextStyles.title, EditorStyle.fieldsDrawerTitle]}>{`Speelveld`.toUpperCase()}</Text>
+          <ScrollView style={[EditorStyle.fieldsDrawerScrollview]}>
+              <View style={[EditorStyle.fieldsDrawerScrollviewContent]}>
+                <View style={[EditorStyle.fieldsDrawerItem]}>
+                  <View style={[EditorStyle.fieldsDrawerItemHeader]}>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={require(`../assets/png/blancoIcon.png`)} />
+                    <Text style={[TextStyles.subTitle]}>{`blanco`.toUpperCase()}</Text>
+                  </View>
+
+                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`blanco`)}>
+                    <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 0 ? Colors.orange : `transparent`}]}>
+                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={require(`../assets/png/blancoFieldThumbnail.png`)} />
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
+
+                <View style={[EditorStyle.fieldsDrawerItem]}>
+                  <View style={[EditorStyle.fieldsDrawerItemHeader]}>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={require(`../assets/png/soccerIcon.png`)} />
+                    <Text style={[TextStyles.subTitle]}>{`voetbal`.toUpperCase()}</Text>
+                  </View>
+
+                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`soccer`)}>
+                    <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 1 ? Colors.orange : `transparent`}]}>
+                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={require(`../assets/png/soccerFieldThumbnail.png`)} />
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
+
+                <View style={[EditorStyle.fieldsDrawerItem]}>
+                  <View style={[EditorStyle.fieldsDrawerItemHeader]}>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={require(`../assets/png/basketballIcon.png`)} />
+                    <Text style={[TextStyles.subTitle]}>{`basket`.toUpperCase()}</Text>
+                  </View>
+
+                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`basket`)}>
+                    <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 2 ? Colors.orange : `transparent`}]}>
+                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={require(`../assets/png/basketFieldThumbnail.png`)} />
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
+
+                <View style={[EditorStyle.fieldsDrawerItem]}>
+                  <View style={[EditorStyle.fieldsDrawerItemHeader]}>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={require(`../assets/png/tennisIcon.png`)} />
+                    <Text style={[TextStyles.subTitle]}>{`tennis`.toUpperCase()}</Text>
+                  </View>
+
+                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`tennis`)}>
+                    <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 3 ? Colors.orange : `transparent`}]}>
+                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={require(`../assets/png/tennisFieldThumbnail.png`)} />
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
+
+                <View style={[EditorStyle.fieldsDrawerItem]}>
+                  <View style={[EditorStyle.fieldsDrawerItemHeader]}>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={require(`../assets/png/rugbyIcon.png`)} />
+                    <Text style={[TextStyles.subTitle]}>{`rugby`.toUpperCase()}</Text>
+                  </View>
+
+                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`rugby`)}>
+                    <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 4 ? Colors.orange : `transparent`}]}>
+                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={require(`../assets/png/rugbyFieldThumbnail.png`)} />
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
+
+                <View style={[EditorStyle.fieldsDrawerItem]}>
+                  <View style={[EditorStyle.fieldsDrawerItemHeader]}>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={require(`../assets/png/volleyBallIcon.png`)} />
+                    <Text style={[TextStyles.subTitle]}>{`volleybal`.toUpperCase()}</Text>
+                  </View>
+
+                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`volleyball`)}>
+                    <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 5 ? Colors.orange : `transparent`}]}>
+                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={require(`../assets/png/volleyballFieldThumbnail.png`)} />
+                    </View>
+                  </TouchableWithoutFeedback>
                 </View>
               </View>
           </ScrollView>
@@ -396,9 +508,6 @@ class Editor extends Component {
   }
 
   render() {
-
-    const {brush} = this.state;
-
     return (
       <View style={[EditorStyle.editorContainer]} ref='artboard'>
         <Svg style={[{zIndex: 1}]} {...this.drawHandler.panHandlers} width={Dimensions.width} height={Dimensions.height} ref='svg'>

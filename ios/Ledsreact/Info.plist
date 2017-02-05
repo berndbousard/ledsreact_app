@@ -39,6 +39,8 @@
 	<array>
 		<string>Circular-Std-Book.otf</string>
 		<string>Circular-Std-Bold.otf</string>
+		<string>Trade Gothic LT Bold Oblique.ttf</string>
+		<string>Trade Gothic LT Bold.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

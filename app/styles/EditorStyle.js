@@ -11,12 +11,6 @@ const ComponentStyle = StyleSheet.create({
     height: Dimensions.height
   },
 
-  overlay: {
-    position: `absolute`,
-    flexDirection: `row`,
-    justifyContent: `space-between`
-  },
-
   leftControls: {
     width: 100,
     height: Dimensions.height,
@@ -138,6 +132,16 @@ const ComponentStyle = StyleSheet.create({
     zIndex: 2
   },
 
+  field: {
+    position: `absolute`,
+    left: 0,
+    top: 0,
+    width: Dimensions.width,
+    height: Dimensions.height,
+    opacity: 0.04,
+    zIndex: 0
+  },
+
   fieldsDrawer: {
     position: `absolute`,
     left: Dimensions.width / 2 - (Dimensions.width * (9 / 10)) / 2,
@@ -149,14 +153,17 @@ const ComponentStyle = StyleSheet.create({
     shadowRadius: 20,
     width: Dimensions.width * (9 / 10),
     height: Dimensions.height * (9 / 10),
-    backgroundColor: Colors.pureWhite,
-    zIndex: 2
+    backgroundColor: Colors.white,
+    zIndex: 2,
+    justifyContent: `center`,
+    alignItems: `center`
   },
 
   directionWrapper: {
-    position: `absolute`,
     justifyContent: `center`,
-    alignItems: `center`
+    alignItems: `center`,
+    width: 100,
+    height: 107
   },
 
   directionLink: {
@@ -169,9 +176,56 @@ const ComponentStyle = StyleSheet.create({
     height: 107
   },
 
+  fieldsDrawerWrapper: {
+    flexDirection: `column`,
+    justifyContent: `center`
+  },
+
   fieldsDrawerTitle: {
-    color: Colors.orange,
-    fontSize: Fonts.size.title
+    marginTop: 25
+  },
+
+  fieldsDrawerItem: {
+    flexDirection: `column`,
+    marginBottom: 50,
+    marginLeft: 10,
+    marginRight: 10
+  },
+
+  fieldsDrawerItemHeader: {
+    flexDirection: `row`
+  },
+
+  fieldsDrawerItemHeaderImage: {
+    width: 25,
+    height: 25,
+    marginRight: 10
+  },
+
+  fielsDrawerItemImageWrapper: {
+    paddingTop: 15,
+    paddingBottom: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 5,
+    marginTop: 10,
+    backgroundColor: Colors.pureWhite,
+    borderWidth: 3,
+    borderColor: `transparent`
+  },
+
+  fielsDrawerItemImage: {
+    width: 236,
+    height: 177
+  },
+
+  fieldsDrawerScrollviewContent: {
+    flexDirection: `row`,
+    justifyContent: `space-between`,
+    flexWrap: `wrap`,
+    alignItems: `flex-start`,
+    flex: 1,
+    marginTop: 40
   }
 });
 

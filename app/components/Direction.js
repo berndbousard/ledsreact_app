@@ -8,10 +8,20 @@ class Direction extends Component {
   state = {
     position: new Animated.ValueXY(),
     scale: new Animated.Value(1),
-    index: this.props.index
+    index: this.props.index,
+    bounds: {
+      xMin: this.props.bounds.xMin,
+      yMin: this.props.bounds.yMin,
+      xMax: this.props.bounds.xMax,
+      yMax: this.props.bounds.yMax
+    },
+    onTheBoard: false
   }
 
   componentWillMount() {
+
+    console.log(this.state.bounds);
+
     this.dragHandler = PanResponder.create({
       onMoveShouldSetResponderCapture: () => true, //Allow movement to the view we'll attach this panresponder to
       onMoveShouldSetPanResponderCapture: () => true, //Same as above but for dragging
@@ -28,10 +38,39 @@ class Direction extends Component {
         null, {dx: this.state.position.x, dy: this.state.position.y}
       ]),
 
-      onPanResponderRelease: () => { //Gets invoked when we release the view.
-        const {position, scale} = this.state;
+      onPanResponderRelease: (e, gestureState) => { //Gets invoked when we release the view.
+        const {position, scale, bounds} = this.state;
+        let {onTheBoard} = this.state;
+
         position.flattenOffset();
         Animated.spring(scale, {toValue: 1, friction: 3}).start();
+
+        console.log(gestureState.moveX, bounds.xMin, bounds.xMax);
+        console.log(gestureState.moveY, bounds.yMin, bounds.yMax);
+
+        // X
+        if (gestureState.moveX < bounds.xMin || gestureState.moveX > bounds.xMax) {
+          onTheBoard = true;
+        } else {
+          onTheBoard = false;
+        }
+
+        // Y
+        if (gestureState.moveY < bounds.yMin || gestureState.moveY > bounds.yMax) {
+          onTheBoard = true;
+        } else {
+          onTheBoard = false;
+        }
+
+        if (!onTheBoard) {
+          // SNAP BACK
+          // console.log(gestureState.moveX, gestureState.moveY);
+
+          Animated.spring(position, {toValue: 0, friction: 7}).start();
+        }
+
+        console.log(onTheBoard);
+
       }
     });
   }
@@ -58,7 +97,8 @@ Direction.propTypes = {
   title: React.PropTypes.string,
   width: React.PropTypes.number,
   height: React.PropTypes.number,
-  index: React.PropTypes.number
+  index: React.PropTypes.number,
+  bounds: React.PropTypes.object
 };
 
 export default Direction;

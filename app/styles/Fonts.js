@@ -4,9 +4,15 @@ export default {
     bold: `Circular-Std-Bold`
   },
 
+  tradeGothic: {
+    bold: `TradeGothicLT-Bold`,
+    oblique: `TradeGothicLT-BoldOblique`
+  },
+
   size: {
     copy: 10,
     navCopy: 12,
-    title: 15
+    title: 25,
+    subtitle: 20
   }
 };
