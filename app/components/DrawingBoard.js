@@ -1,21 +1,14 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Animated, PanResponder} from 'react-native';
-import Svg, {Rect} from 'react-native-svg';
+import {View, PanResponder} from 'react-native';
 
-import {ComponentStyle, Dimensions} from '../styles';
 import {Circle, Path} from '../components';
 
 class DrawingBoard extends Component {
-
   state = {
-    svgElements: [],
-    brushColor: `black`,
-    userDrawingFeedback: []
+
   }
 
   componentWillMount() {
-    console.log(this.props);
-
     this.drawHandler = PanResponder.create({
       onMoveShouldSetResponderCapture: () => true, //Allow movement to the view we'll attach this panresponder to
       onMoveShouldSetPanResponderCapture: () => true, //Same as above but for dragging
@@ -50,6 +43,20 @@ class DrawingBoard extends Component {
     });
   }
 
+  addSvgCircle(e) {
+    const {svgElements} = this.state;
+    const {locationX: xPos, locationY: yPos} = e.nativeEvent;
+
+
+    svgElements.push({
+      cx: xPos,
+      cy: yPos,
+      r: Math.random() * 15
+    });
+
+    this.setState({svgElements});
+  }
+
   generateSvgElements() {
     const {svgElements} = this.state;
 
@@ -66,22 +73,25 @@ class DrawingBoard extends Component {
     );
   }
 
+  generatePathFromObject(object) {
+    let d = undefined;
+
+    object.forEach(p => {
+      if (d === undefined) {
+        d = `M${Math.round(p.x)} ${Math.round(p.y)}`;
+      }
+      d = `${d} L${Math.round(p.x)} ${Math.round(p.y)}`;
+    });
+
+    return d;
+  }
+
   render() {
     return (
-      <Svg style={[{zIndex: 0}]} {...this.drawHandler.panHandlers} width={Dimensions.width} height={Dimensions.height} ref='svg'>
-        <Rect x='0' y='0' width='100%' height='100%' fill='pink' />
-        {this.generateUserDrawingFeedback()}
-        {this.generateSvgElements()}
-      </Svg>
+      <View>
+      </View>
     );
   }
 }
-
-DrawingBoard.propTypes = {
-  selected: React.PropTypes.bool,
-  title: React.PropTypes.string,
-  width: React.PropTypes.number,
-  height: React.PropTypes.number
-};
 
 export default DrawingBoard;

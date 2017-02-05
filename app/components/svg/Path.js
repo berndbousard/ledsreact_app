@@ -1,9 +1,9 @@
 import React from 'react';
 import {Path as PathSVGElement}  from 'react-native-svg';
 
-const Path = ({d, fill = `none`, stroke = `black`, strokeWidth = `3`}) => {
+const Path = ({d, fill = `none`, stroke = `black`, strokeWidth = `3`, strokeCap = `round`}) => {
   return (
-    <PathSVGElement d={d} fill={fill} stroke={stroke} strokeWidth={strokeWidth} />
+    <PathSVGElement d={d} fill={fill} stroke={stroke} strokeWidth={strokeWidth} strokeLinecap={strokeCap} />
   );
 };
 

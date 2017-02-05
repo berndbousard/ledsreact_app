@@ -62,3 +62,5 @@ Direction.propTypes = {
 };
 
 export default Direction;
+
+// resource:  http://mindthecode.com/getting-started-with-the-panresponder-in-react-native/

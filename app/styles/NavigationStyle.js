@@ -105,7 +105,8 @@ const NavigationStyle = StyleSheet.create({
   activeNavigationLink: {
     borderLeftWidth: 30,
     borderLeftColor: Colors.orange,
-    color: Colors.orange
+    color: Colors.orange,
+    fontFamily: Fonts.circular.bold
   }
 });
 

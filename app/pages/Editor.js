@@ -7,7 +7,7 @@ import * as Animatable from 'react-native-animatable';
 import Svg, {Rect} from 'react-native-svg';
 import {createResponder} from 'react-native-gesture-responder'; //Beter dan PanResponder - https://github.com/ldn0x7dc/react-native-gesture-responder
 
-import {Circle, Path, Direction} from '../components';
+import {Circle, Path, Direction, Image as SVGImage} from '../components';
 import {GeneralStyle, EditorStyle, Colors} from '../styles';
 
 class Editor extends Component {
@@ -15,33 +15,17 @@ class Editor extends Component {
   state = {
     connectedDirections: this.props.connectedDirections,
     svgElements: [],
-    editorDirections: [
-      {
-        position: new Animated.ValueXY(),
-        scale: new Animated.Value(1)
-      }
-    ],
-    directionPosition: new Animated.ValueXY(),
-    directionScale: new Animated.Value(1),
-    brushColor: `black`,
     userDrawingFeedback: [],
     drawer: {
       isActive: false
+    },
+    brush: {
+      index: 0,
+      colors: [Colors.black, Colors.orange]
     }
   };
 
   componentDidMount() {
-    // const {editorDirections} = this.state;
-    //
-    // for (let i = 0;i < 4;i ++) {
-    //   editorDirections.push({
-    //     position: new Animated.ValueXY(),
-    //     scale: new Animated.Value(1)
-    //   });
-    // }
-    //
-    // console.log(editorDirections.length);
-
     console.log(this.refs);
 
     const {brushIcon, closeIcon, currentColor, deleteIcon, eraserIcon, fieldIcon, redoIcon, saveIcon, undoIcon} = this.refs;
@@ -58,73 +42,6 @@ class Editor extends Component {
   }
 
   componentWillMount() {
-    console.log(this.props);
-    // resource:  http://mindthecode.com/getting-started-with-the-panresponder-in-react-native/
-
-    this.dragHandler = PanResponder.create({
-      onMoveShouldSetResponderCapture: () => true, //Allow movement to the view we'll attach this panresponder to
-      onMoveShouldSetPanResponderCapture: () => true, //Same as above but for dragging
-
-      onPanResponderGrant: (e, gestureState) => { //gets invoked when we got access to the movement of the element. Perfect for initial values.
-        console.log(e.target, gestureState);
-        const {editorDirections} = this.state;
-
-        editorDirections[0].position.setOffset({x: editorDirections[0].position.x._value, y: editorDirections[0].position.y._value}); //To prevent resetting to initial value.
-        editorDirections[0].position.setValue({x: 0, y: 0});
-        Animated.spring(editorDirections[0].scale, {toValue: 1.25, friction: 3}).start();
-      },
-
-      onPanResponderMove: Animated.event([ //gets invoked when we move the element. Perfect for calculating the next value.
-        null, {dx: this.state.editorDirections[0].position.x, dy: this.state.editorDirections[0].position.y}
-      ]),
-
-      onPanResponderRelease: () => { //Gets invoked when we release the view.
-        const {editorDirections} = this.state;
-        editorDirections[0].position.flattenOffset();
-        Animated.spring(editorDirections[0].scale, {toValue: 1, friction: 3}).start();
-      }
-    });
-
-    // this.gestureResponder = createResponder({
-    //   onStartShouldSetResponder: (evt, gestureState) => true,
-    //   onStartShouldSetResponderCapture: (evt, gestureState) => true,
-    //   onMoveShouldSetResponder: (evt, gestureState) => true,
-    //   onMoveShouldSetResponderCapture: (evt, gestureState) => true,
-    //
-    //   onResponderGrant: (evt, gestureState) => {
-    //     const {directionPosition, directionScale} = this.state;
-    //
-    //     console.log(`blaaaa`);
-    //
-    //     directionPosition.setOffset({x: directionPosition.x._value, y: directionPosition.y._value}); //To prevent resetting to initial value.
-    //     directionPosition.setValue({x: 0, y: 0});
-    //     Animated.spring(directionScale, {toValue: 1.25, friction: 3}).start();
-    //   },
-    //
-    //   onResponderMove: (evt, gestureState) => {
-    //     console.log(`move`);
-    //   },
-    //
-    //   onResponderTerminationRequest: (evt, gestureState) => true,
-    //
-    //   onResponderRelease: (evt, gestureState) => {
-    //     const {directionPosition, directionScale} = this.state;
-    //     directionPosition.flattenOffset();
-    //     Animated.spring(directionScale, {toValue: 1, friction: 3}).start();
-    //   },
-    //
-    //   onResponderTerminate: (evt, gestureState) => {
-    //     console.log(`terminate`);
-    //   },
-    //
-    //   onResponderSingleTapConfirmed: (evt, gestureState) => {
-    //     console.log(`tap`);
-    //   },
-    //
-    //   moveThreshold: 2,
-    //   debug: false
-    // });
-
     this.drawHandler = PanResponder.create({
       onMoveShouldSetResponderCapture: () => true, //Allow movement to the view we'll attach this panresponder to
       onMoveShouldSetPanResponderCapture: () => true, //Same as above but for dragging
@@ -146,11 +63,10 @@ class Editor extends Component {
 
         const d = this.generatePathFromObject(this.points);
 
-        const {svgElements, brushColor} = this.state;
-        console.log(brushColor);
+        const {svgElements, brush} = this.state;
         svgElements.push({
           d: d,
-          stroke: brushColor
+          stroke: brush.colors[brush.index]
         });
         console.log(svgElements);
         this.setState({svgElements});
@@ -246,43 +162,36 @@ class Editor extends Component {
   }
 
   generateUserDrawingFeedback() {
-    const {userDrawingFeedback, brushColor} = this.state;
+    const {userDrawingFeedback, brush} = this.state;
 
     const d = this.generatePathFromObject(userDrawingFeedback);
 
     return (
       userDrawingFeedback.map((e, index) => {
-        return <Path key={index} d={d} stroke={brushColor} />;
+        return <Path key={index} d={d} stroke={brush.colors[brush.index]} />;
       })
     );
   }
 
   changeBrushColor() {
-    let {brushColor} = this.state;
+    const {brush} = this.state;
 
-    if (brushColor === `black`) {
-      brushColor = `red`;
-      this.setState({brushColor});
-      return;
-    }
+    brush.index++;
 
-    if (brushColor === `red`) {
-      brushColor = `black`;
-      this.setState({brushColor});
-      return;
-    }
+    this.setState({brush});
   }
 
-  cycleColor() {
+  changeColorHandler() {
     this.refs.currentColor.bounceIn(800);
-    const {brushColor} = this.state;
+    const {brush} = this.state;
 
-    if (brushColor === `black`) {
-      this.setState({brushColor: `red`});
+    if (brush.index === brush.colors.length - 1) {
+      brush.index = 0;
     } else {
-      this.setState({brushColor: `black`});
+      brush.index++;
     }
 
+    this.setState({brush});
   }
 
   pressInColorHandler() {
@@ -336,9 +245,16 @@ class Editor extends Component {
     );
   }
 
+  generateField() {
+    return (
+      // <Circle cx={50} cy={50} r={50} />
+      <SVGImage x={50} y={50} />
+    );
+  }
+
   render() {
 
-    const {brushColor} = this.state;
+    const {brush} = this.state;
 
     const {width: innerWidth, height: innerheight} = Dimensions.get(`window`);
 
@@ -348,11 +264,12 @@ class Editor extends Component {
           <Rect x='0' y='0' width='100%' height='100%' fill={Colors.white} />
           {this.generateUserDrawingFeedback()}
           {this.generateSvgElements()}
+          {this.generateField()}
         </Svg>
         <View style={[EditorStyle.leftControls]}>
           <View style={[EditorStyle.leftUpperControls]}>
-            <TouchableWithoutFeedback onPressOut={() => this.cycleColor()} onPressIn={() => this.pressInColorHandler()}>
-              <Animatable.View ref='currentColor' style={[EditorStyle.colorIcon, EditorStyle.icon, {backgroundColor: brushColor}]}>
+            <TouchableWithoutFeedback onPressOut={() => this.changeColorHandler()} onPressIn={() => this.pressInColorHandler()}>
+              <Animatable.View ref='currentColor' style={[EditorStyle.colorIcon, EditorStyle.icon, {backgroundColor: brush.colors[brush.index]}]}>
               </Animatable.View>
             </TouchableWithoutFeedback>
 
