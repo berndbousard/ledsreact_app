@@ -16,6 +16,31 @@ const TextStyles = StyleSheet.create({
     color: Colors.black,
     textAlign: `center`,
     fontSize: Fonts.size.subtitle
+  },
+
+  directionTitle: {
+    fontFamily: Fonts.tradeGothic.bold,
+    color: Colors.white,
+    textAlign: `center`,
+    fontSize: Fonts.size.directionTitle
+  },
+
+  directionFuncTitle: {
+    fontFamily: Fonts.tradeGothic.bold,
+    color: Colors.black,
+    textAlign: `center`,
+    fontSize: Fonts.size.directionFuncTitle
+  },
+
+  directionFuncSubTitle: {
+    fontFamily: Fonts.tradeGothic.bold,
+    color: Colors.black,
+    textAlign: `center`,
+    fontSize: Fonts.size.directionFuncSubTitle
+  },
+
+  directionParamsText: {
+    marginTop: 15
   }
 });
 

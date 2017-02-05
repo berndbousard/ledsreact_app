@@ -3609,6 +3609,10 @@ react-native-animatable@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.1.0.tgz#1ca3e8a00e441979d5711805651ff62a2d3b245a"
 
+react-native-chooser@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-chooser/-/react-native-chooser-1.2.0.tgz#52deaff86daafc7e79b189afa3384dbb33bbac4c"
+
 react-native-experimental-navigation@0.26.x:
   version "0.26.10"
   resolved "https://registry.yarnpkg.com/react-native-experimental-navigation/-/react-native-experimental-navigation-0.26.10.tgz#355e37929a2bfb84088dca331f34bc575297df68"

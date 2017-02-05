@@ -13,6 +13,9 @@ export default {
     copy: 10,
     navCopy: 12,
     title: 25,
-    subtitle: 20
+    subtitle: 20,
+    directionTitle: 16,
+    directionFuncTitle: 16,
+    directionFuncSubTitle: 14
   }
 };

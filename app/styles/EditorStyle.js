@@ -162,12 +162,11 @@ const ComponentStyle = StyleSheet.create({
   directionWrapper: {
     justifyContent: `center`,
     alignItems: `center`,
-    // width: 100,
-    // height: 107,
     zIndex: 1,
     position: `absolute`,
     left: (Dimensions.width / 2) - (100 / 2),
-    top: (Dimensions.height / 2) - (107 / 2)
+    top: (Dimensions.height / 2) - (107 / 2),
+    width: 125
   },
 
   directionLink: {
@@ -207,10 +206,7 @@ const ComponentStyle = StyleSheet.create({
   },
 
   fielsDrawerItemImageWrapper: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 15,
-    paddingRight: 15,
+    padding: 15,
     borderRadius: 5,
     marginTop: 10,
     backgroundColor: Colors.pureWhite,
@@ -235,6 +231,89 @@ const ComponentStyle = StyleSheet.create({
   directionDrawerImage: {
     width: 100,
     height: 107
+  },
+
+  directionPopup: {
+    flexDirection: `column`,
+    alignItems: `center`,
+    width: 125,
+    backgroundColor: Colors.pureWhite,
+    borderRadius: 4,
+    paddingBottom: 10
+  },
+
+  directionPopupHeader: {
+    flexDirection: `row`,
+    justifyContent: `space-between`,
+    alignItems: `center`,
+    width: 125,
+    padding: 10
+  },
+
+  directionPopupHeaderTitle: {
+    flex: 1
+  },
+
+  directionPopupHeaderCloseIcon: {
+    width: 20, height: 20
+  },
+
+  directionPopupFuncWrapper: {
+    flexDirection: `column`,
+    alignItems: `center`
+  },
+
+  directionPopupFuncTitle: {
+    marginTop: 10
+  },
+
+  directionPopupFuncToggle: {
+    borderWidth: 1,
+    borderColor: Colors.black
+  },
+
+  timerIconsWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `space-around`,
+    width: 125,
+    marginTop: 10
+  },
+
+  timerIcon: {
+    width: 30, height: 30,
+    // transform: [{scale: .2}]
+  },
+
+  timerText: {
+    flex: 3
+  },
+
+  directionsParamsWrapper: {
+    marginTop: 10,
+    flexDirection: `column`,
+    justifyContent: `center`,
+    alignItems: `center`,
+    marginBottom: 10
+  },
+
+  directionsParamsMiddleWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `space-around`,
+    width: 125
+  },
+
+  colorParamWrapper: {
+    flexDirection: `row`,
+    justifyContent: `space-around`,
+    flexWrap: `wrap`
+  },
+
+  colorParamSwatch: {
+    width: 30, height: 30,
+    margin: 5,
+    borderRadius: 20
   }
 });
 
