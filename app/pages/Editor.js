@@ -13,6 +13,7 @@ class Editor extends Component {
 
   state = {
     connectedDirections: this.props.connectedDirections,
+    directionsInEditor: 0,
     svgElements: [],
     userDrawingFeedback: [],
     drawer: {
@@ -34,10 +35,9 @@ class Editor extends Component {
   componentDidMount() {
     console.log(this.refs);
 
-    const {brushIcon, closeIcon, currentColor, deleteIcon, eraserIcon, fieldIcon, redoIcon, saveIcon, undoIcon} = this.refs;
+    const {brushIcon, currentColor, deleteIcon, eraserIcon, fieldIcon, redoIcon, saveIcon, undoIcon} = this.refs;
 
     brushIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    closeIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
     currentColor.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
     deleteIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
     eraserIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
@@ -77,6 +77,38 @@ class Editor extends Component {
         console.log(svgElements);
         this.setState({svgElements});
         this.setState({userDrawingFeedback: []});
+      }
+    });
+
+    this.newDirectionDragHandler = PanResponder.create({
+      onMoveShouldSetResponderCapture: () => true, //Allow movement to the view we'll attach this panresponder to
+      onMoveShouldSetPanResponderCapture: () => true, //Same as above but for dragging
+
+      onPanResponderGrant: () => { //gets invoked when we got access to the movement of the element. Perfect for initial values.
+        // this.points = []; //Werkt als reset
+      },
+
+      onPanResponderMove: e => {
+        // this.addSvgElement(e);
+
+        // Build array of X & Y data
+        // this.points.push({x: e.nativeEvent.locationX, y: e.nativeEvent.locationY});
+        // this.setState({userDrawingFeedback: this.points});
+      },
+
+      onPanResponderRelease: () => { //Gets invoked when we release the view.
+        // console.log(`stop met tekenen`);
+        //
+        // const d = this.generatePathFromObject(this.points);
+        //
+        // const {svgElements, brush} = this.state;
+        // svgElements.push({
+        //   d: d,
+        //   stroke: brush.colors[brush.index]
+        // });
+        // console.log(svgElements);
+        // this.setState({svgElements});
+        // this.setState({userDrawingFeedback: []});
       }
     });
   }
@@ -204,7 +236,7 @@ class Editor extends Component {
     this.refs.currentColor.pulse(600);
   }
 
-  addEditorPressHandler() {
+  addObjectsButtonPressHandler() {
     const {drawer} = this.state;
     const {addEditorIcon, drawerRef} = this.refs;
 
@@ -224,6 +256,14 @@ class Editor extends Component {
     }
   }
 
+  directionDrawerImagePressHandler() {
+    let {directionsInEditor} = this.state;
+
+    directionsInEditor ++;
+
+    this.setState({directionsInEditor});
+  }
+
   renderObjectsDrawer() {
     const {drawer} = this.state;
 
@@ -233,9 +273,9 @@ class Editor extends Component {
 
     return (
       <Animatable.View ref='drawerRef' duration={200} animation='pulse' easing='ease-out' style={[EditorStyle.drawer]}>
-        {
-          this.renderDirections()
-        }
+        <TouchableWithoutFeedback onPress={() => this.directionDrawerImagePressHandler()}>
+          <Image style={[EditorStyle.directionDrawerImage]} source={require(`../assets/png/direction.png`)} />
+        </TouchableWithoutFeedback>
       </Animatable.View>
     );
   }
@@ -475,6 +515,13 @@ class Editor extends Component {
   renderRightControls() {
     const {field} = this.state;
 
+    let url = ``;
+    if (field.drawer.isActive) {
+      url = require(`../assets/png/closeIcon.png`);
+    } else {
+      url = require(`../assets/png/fieldIcon.png`);
+    }
+
     return (
       <View style={[EditorStyle.rightControls]}>
         <TouchableWithoutFeedback onPressOut={() => Actions.pop()} onPressIn={() => this.refs.closeIcon.pulse(600)}>
@@ -485,9 +532,9 @@ class Editor extends Component {
 
         <TouchableWithoutFeedback style={EditorStyle.fieldIconWrapper}>
           <Animatable.View style={EditorStyle.fieldIconWrapper}>
-            <Text style={[EditorStyle.fieldIconText]}>Speelveld</Text>
+            <Text style={[EditorStyle.fieldIconText, {opacity: field.drawer.isActive ? 0 : 1}]}>Speelveld</Text>
             <TouchableWithoutFeedback onPress={() => this.fieldIconPressHandler()} onPressOut={() => this.refs.fieldIcon.bounceIn(800)} onPressIn={() => this.refs.fieldIcon.pulse(600)}>
-              <Animatable.Image ref='fieldIcon' style={[EditorStyle.fieldIcon, EditorStyle.icon]} source={require(`../assets/png/fieldIcon.png`)}/>
+              <Animatable.Image ref='fieldIcon' style={[EditorStyle.fieldIcon, EditorStyle.icon]} source={url}/>
             </TouchableWithoutFeedback>
           </Animatable.View>
         </TouchableWithoutFeedback>
@@ -500,11 +547,28 @@ class Editor extends Component {
 
     if (!field.drawer.isActive) {
       return (
-        <TouchableWithoutFeedback onPress={() => this.addEditorPressHandler()}>
+        <TouchableWithoutFeedback onPress={() => this.addObjectsButtonPressHandler()}>
           <Animatable.Image ref='addEditorIcon' style={EditorStyle.addEditorIcon} source={require(`../assets/png/addEditorIcon.png`)} />
         </TouchableWithoutFeedback>
       );
     }
+  }
+
+  renderEditorDirections() {
+    const {directionsInEditor} = this.state;
+
+    const bounds = {
+      xMin: 100,
+      yMin: 0,
+      xMax: Dimensions.width - 150,
+      yMax: Dimensions.height
+    };
+
+    return (
+      range(directionsInEditor).map((e, index) => {
+        return <Direction style={[{left: 0, top: 0, zIndex: 5}]} bounds={bounds} key={index} />;
+      })
+    );
   }
 
   render() {
@@ -527,6 +591,10 @@ class Editor extends Component {
 
         {
           this.renderFieldsDrawer()
+        }
+
+        {
+          this.renderEditorDirections()
         }
       </View>
     );

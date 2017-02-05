@@ -127,9 +127,9 @@ const ComponentStyle = StyleSheet.create({
     shadowOpacity: .05,
     shadowRadius: 20,
     width: Dimensions.width * (3 / 4),
-    height: 300,
     backgroundColor: Colors.pureWhite,
-    zIndex: 2
+    zIndex: 2,
+    padding: 20
   },
 
   field: {
@@ -162,8 +162,12 @@ const ComponentStyle = StyleSheet.create({
   directionWrapper: {
     justifyContent: `center`,
     alignItems: `center`,
-    width: 100,
-    height: 107
+    // width: 100,
+    // height: 107,
+    zIndex: 1,
+    position: `absolute`,
+    left: (Dimensions.width / 2) - (100 / 2),
+    top: (Dimensions.height / 2) - (107 / 2)
   },
 
   directionLink: {
@@ -226,6 +230,11 @@ const ComponentStyle = StyleSheet.create({
     alignItems: `flex-start`,
     flex: 1,
     marginTop: 40
+  },
+
+  directionDrawerImage: {
+    width: 100,
+    height: 107
   }
 });
 

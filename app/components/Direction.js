@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Animated, PanResponder, TouchableWithoutFeedback, Image} from 'react-native';
+import {Animated, PanResponder, TouchableWithoutFeedback, Text, Picker} from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 import {EditorStyle} from '../styles';
 
@@ -9,18 +10,15 @@ class Direction extends Component {
     position: new Animated.ValueXY(),
     scale: new Animated.Value(1),
     index: this.props.index,
-    bounds: {
-      xMin: this.props.bounds.xMin,
-      yMin: this.props.bounds.yMin,
-      xMax: this.props.bounds.xMax,
-      yMax: this.props.bounds.yMax
+    bounds: this.props.bounds,
+    settings: {
+      isActive: false,
+      currentIndex: 0,
+      functions: [`richting`, `kleur`, `timer`]
     },
-    onTheBoard: false
   }
 
   componentWillMount() {
-
-    console.log(this.state.bounds);
 
     this.dragHandler = PanResponder.create({
       onMoveShouldSetResponderCapture: () => true, //Allow movement to the view we'll attach this panresponder to
@@ -39,40 +37,53 @@ class Direction extends Component {
       ]),
 
       onPanResponderRelease: (e, gestureState) => { //Gets invoked when we release the view.
-        const {position, scale, bounds} = this.state;
-        let {onTheBoard} = this.state;
+        const {position, scale} = this.state;
+        // const {moveX, moveY} = gestureState;
 
         position.flattenOffset();
         Animated.spring(scale, {toValue: 1, friction: 3}).start();
 
-        console.log(gestureState.moveX, bounds.xMin, bounds.xMax);
-        console.log(gestureState.moveY, bounds.yMin, bounds.yMax);
-
-        // X
-        if (gestureState.moveX < bounds.xMin || gestureState.moveX > bounds.xMax) {
-          onTheBoard = true;
-        } else {
-          onTheBoard = false;
-        }
-
-        // Y
-        if (gestureState.moveY < bounds.yMin || gestureState.moveY > bounds.yMax) {
-          onTheBoard = true;
-        } else {
-          onTheBoard = false;
-        }
-
-        if (!onTheBoard) {
-          // SNAP BACK
-          // console.log(gestureState.moveX, gestureState.moveY);
-
-          Animated.spring(position, {toValue: 0, friction: 7}).start();
-        }
-
-        console.log(onTheBoard);
-
+        // previousPosition = position;
       }
     });
+  }
+
+  renderSettings() {
+    const {settings} = this.state;
+
+    if (settings.isActive) {
+      return (
+        <Animatable.View ref='settingsRef' animation='fadeInUp' easing='ease-out-quad' duration={300} style={[{backgroundColor: `pink`, flexDirection: `column`, width: 100, height: 100}]}>
+          {/* <Picker
+            selectedValue={settings.functions[settings.currentIndex]}
+            onValueChange={value => console.log(value)}>
+            <Picker.Item label={settings.functions[0]} value={settings.functions[0]} />
+            <Picker.Item label={settings.functions[1]} value={settings.functions[1]} />
+          </Picker> */}
+        </Animatable.View>
+      );
+    }
+  }
+
+  toggleSettings() {
+    const {settings} = this.state;
+    const {direction, settingsRef} = this.refs;
+
+    settings.isActive = !settings.isActive;
+
+    if (settings.isActive) {
+      // direction.transitionTo({marginTop: - 100}, 300, `ease-out-quad`);
+    } else {
+      // direction.transitionTo({marginTop: 0}, 300, `ease-out-quad`);
+      settingsRef.transitionTo({transform: [{translateY: 25}], opacity: 0}, 200, `ease-in-quad`);
+      setTimeout(() => {
+        this.setState({settings});
+      }, 200);
+      return;
+    }
+
+    this.setState({settings});
+
   }
 
   render() {
@@ -82,14 +93,15 @@ class Direction extends Component {
 
     return (
       <Animated.View {...this.dragHandler.panHandlers} style={[EditorStyle.directionWrapper, {transform: [{translateX}, {translateY}, {rotate: `0deg`}, {scale: scale}]}]}>
-        <TouchableWithoutFeedback style={[EditorStyle.directionLink]} onPress={() => console.log(`test`)}>
-          <Image style={[EditorStyle.directionImage]} source={require(`../assets/png/direction.png`)} />
+        <TouchableWithoutFeedback style={[EditorStyle.directionLink]} onPress={() => this.toggleSettings()}>
+          <Animatable.Image ref='direction' animation='bounceIn' easing='ease-out' style={[EditorStyle.directionImage]} source={require(`../assets/png/direction.png`)} />
         </TouchableWithoutFeedback>
+        {
+          this.renderSettings()
+        }
       </Animated.View>
     );
   }
-
-
 }
 
 Direction.propTypes = {
