@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
-import {View, Text, Animated, PanResponder, Button, TouchableWithoutFeedback, Dimensions, TouchableOpacity, Image} from 'react-native';
+import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView} from 'react-native';
 import {range} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
 import {Actions} from "react-native-router-flux";
 import * as Animatable from 'react-native-animatable';
 import Svg, {Rect} from 'react-native-svg';
-import {createResponder} from 'react-native-gesture-responder'; //Beter dan PanResponder - https://github.com/ldn0x7dc/react-native-gesture-responder
 
-import {Circle, Path, Direction, Image as SVGImage} from '../components';
-import {GeneralStyle, EditorStyle, Colors} from '../styles';
+import {Circle, Path, Direction} from '../components';
+import {EditorStyle, Colors, Dimensions} from '../styles';
 
 class Editor extends Component {
 
@@ -22,6 +21,13 @@ class Editor extends Component {
     brush: {
       index: 0,
       colors: [Colors.black, Colors.orange]
+    },
+    field: {
+      index: 0,
+      images: [`soccer`],
+      drawer: {
+        isActive: false
+      }
     }
   };
 
@@ -30,15 +36,15 @@ class Editor extends Component {
 
     const {brushIcon, closeIcon, currentColor, deleteIcon, eraserIcon, fieldIcon, redoIcon, saveIcon, undoIcon} = this.refs;
 
-    brushIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    closeIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    currentColor.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    deleteIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    eraserIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    fieldIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    redoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    saveIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    undoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // brushIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // closeIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // currentColor.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // deleteIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // eraserIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // fieldIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // redoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // saveIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // undoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
   }
 
   componentWillMount() {
@@ -218,7 +224,7 @@ class Editor extends Component {
     }
   }
 
-  renderDrawer() {
+  renderObjectsDrawer() {
     const {drawer} = this.state;
 
     if (!drawer.isActive) {
@@ -246,26 +252,62 @@ class Editor extends Component {
   }
 
   generateField() {
-    return (
-      // <Circle cx={50} cy={50} r={50} />
-      <SVGImage x={50} y={50} />
-    );
+
+    const {field} = this.state;
+
+    const url = field.images[field.index];
+
+    if (url === `soccer`) {
+      return <Image style={{position: `absolute`, left: 0, top: 0, width: Dimensions.width, height: Dimensions.height, opacity: 0.04, zIndex: 0}} source={require(`../assets/png/soccerBackground.png`)} />;
+    }
   }
 
-  render() {
+  renderFieldsDrawer() {
 
-    const {brush} = this.state;
+    const {field} = this.state;
 
-    const {width: innerWidth, height: innerheight} = Dimensions.get(`window`);
+    if (field.drawer.isActive) {
+      return (
+        <Animatable.View ref='fieldsDrawerRef' duration={200} animation='pulse' easing='ease-out' style={[EditorStyle.fieldsDrawer]}>
+          <Text style={[EditorStyle.fieldsDrawerTitle]}>Speelveld</Text>
+          <ScrollView>
+              <View>
+                <View>
+                  <Image source={require(`../assets/png/blancoIcon.png`)} />
+                  <Text>Blanco speelveld</Text>
+                </View>
+              </View>
+          </ScrollView>
+        </Animatable.View>
+      );
+    }
+  }
 
-    return (
-      <View style={[EditorStyle.editorContainer]} ref='artboard'>
-        <Svg style={[{zIndex: 0}]} {...this.drawHandler.panHandlers} width={innerWidth} height={innerheight} ref='svg'>
-          <Rect x='0' y='0' width='100%' height='100%' fill={Colors.white} />
-          {this.generateUserDrawingFeedback()}
-          {this.generateSvgElements()}
-          {this.generateField()}
-        </Svg>
+  fieldIconPressHandler() {
+    const {field} = this.state;
+    const {fieldsDrawerRef} = this.refs;
+
+    field.drawer.isActive = !field.drawer.isActive;
+
+    if (!field.drawer.isActive) {
+      fieldsDrawerRef.transition({opacity: 1}, {opacity: 0}, 200, `ease-out`);
+      setTimeout(() => {
+        field.drawer.isActive = false;
+        this.setState({field});
+      }, 200);
+      return;
+    }
+
+    this.setState({field});
+    return;
+  }
+
+  renderLeftControls() {
+
+    const {brush, field} = this.state;
+
+    if (!field.drawer.isActive) {
+      return (
         <View style={[EditorStyle.leftControls]}>
           <View style={[EditorStyle.leftUpperControls]}>
             <TouchableWithoutFeedback onPressOut={() => this.changeColorHandler()} onPressIn={() => this.pressInColorHandler()}>
@@ -312,43 +354,72 @@ class Editor extends Component {
             </TouchableWithoutFeedback>
           </View>
         </View>
+      );
+    }
 
-        <View style={[EditorStyle.rightControls]}>
-          <TouchableWithoutFeedback onPressOut={() => Actions.pop()} onPressIn={() => this.refs.closeIcon.pulse(600)}>
-            <Animatable.View ref='closeIcon'>
-              <Image style={[EditorStyle.closeIcon, EditorStyle.icon]} source={require(`../assets/png/closeIcon.png`)}/>
-            </Animatable.View>
-          </TouchableWithoutFeedback>
+    return;
+  }
 
-          <TouchableWithoutFeedback style={EditorStyle.fieldIconWrapper}>
-            <Animatable.View style={EditorStyle.fieldIconWrapper} ref='fieldIcon'>
-              <Text style={[EditorStyle.fieldIconText]}>Speelveld</Text>
-              <Image style={[EditorStyle.fieldIcon, EditorStyle.icon]} source={require(`../assets/png/fieldIcon.png`)}/>
-            </Animatable.View>
-          </TouchableWithoutFeedback>
-        </View>
+  renderRightControls() {
+    const {field} = this.state;
 
+    return (
+      <View style={[EditorStyle.rightControls]}>
+        <TouchableWithoutFeedback onPressOut={() => Actions.pop()} onPressIn={() => this.refs.closeIcon.pulse(600)}>
+          <Animatable.View style={[{opacity: field.drawer.isActive ? 0 : 1}]} ref='closeIcon'>
+            <Image style={[EditorStyle.closeIcon, EditorStyle.icon]} source={require(`../assets/png/closeIcon.png`)}/>
+          </Animatable.View>
+        </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback style={EditorStyle.fieldIconWrapper}>
+          <Animatable.View style={EditorStyle.fieldIconWrapper}>
+            <Text style={[EditorStyle.fieldIconText]}>Speelveld</Text>
+            <TouchableWithoutFeedback onPress={() => this.fieldIconPressHandler()} onPressOut={() => this.refs.fieldIcon.bounceIn(800)} onPressIn={() => this.refs.fieldIcon.pulse(600)}>
+              <Animatable.Image ref='fieldIcon' style={[EditorStyle.fieldIcon, EditorStyle.icon]} source={require(`../assets/png/fieldIcon.png`)}/>
+            </TouchableWithoutFeedback>
+          </Animatable.View>
+        </TouchableWithoutFeedback>
+      </View>
+    );
+  }
+
+  renderAddObjectsButton() {
+    const {field} = this.state;
+
+    if (!field.drawer.isActive) {
+      return (
         <TouchableWithoutFeedback onPress={() => this.addEditorPressHandler()}>
           <Animatable.Image ref='addEditorIcon' style={EditorStyle.addEditorIcon} source={require(`../assets/png/addEditorIcon.png`)} />
         </TouchableWithoutFeedback>
+      );
+    }
+  }
+
+  render() {
+
+    const {brush} = this.state;
+
+    return (
+      <View style={[EditorStyle.editorContainer]} ref='artboard'>
+        <Svg style={[{zIndex: 1}]} {...this.drawHandler.panHandlers} width={Dimensions.width} height={Dimensions.height} ref='svg'>
+          <Rect x='0' y='0' width='100%' height='100%' fill='transparent' />
+          {this.generateUserDrawingFeedback()}
+          {this.generateSvgElements()}
+        </Svg>
+        {this.generateField()}
+        {this.renderLeftControls()}
+        {this.renderRightControls()}
+
+        {this.renderAddObjectsButton()}
 
         {
-          this.renderDrawer()
+          this.renderObjectsDrawer()
         }
 
+        {
+          this.renderFieldsDrawer()
+        }
       </View>
-
-        /*
-          <Animated.View {...this.dragHandler.panHandlers} index='3' style={{backgroundColor: `black`, width: 50, height: 50, borderRadius: 50, transform: [{translateX}, {translateY}, {rotate: `0deg`}, {scale: editorDirections[0].scale}]}}>
-            <Button title='test' onPress={() => {console.log(`acties`);}} />
-          </Animated.View>
-          {this.generateDirections()}
-          <Button title='take screenshot' onPress={() => this.screenshotHandler()} />
-          <Button title='undo' onPress={() => this.deleteLastActionHandler()} />
-          <Button title='erase' onPress={() => this.deleteAllActionsHandler()} />
-          <Button title='changeColor' color={brushColor} onPress={() => this.changeBrushColor()} />
-          <Button title='back' color={brushColor} onPress={() => Actions.pop()} /> */
-      // </View>
     );
   }
 }

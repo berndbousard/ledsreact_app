@@ -24,7 +24,7 @@ class Main extends PureComponent {
 
         <Scene key='myDirections'>
             <Scene key='directionOverview' component={MyDirections} title='overview' socket={this.socket} hideNavBar initial />
-            <Scene key='editor' component={Editor} title='editor' socket={this.socket} hideNavBar direction='vertical' panHandlers={null}  />
+            <Scene key='editor' component={Editor} title='editor' hideNavBar direction='vertical' panHandlers={null}  />
         </Scene>
 
         <Scene key='discover' component={Discover} title='discover' socket={this.socket} hideNavBar />

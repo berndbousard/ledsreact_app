@@ -1,10 +1,14 @@
 import {StyleSheet} from 'react-native';
-import Dimensions from './Dimensions';
 
 import Colors from './Colors';
+import Dimensions from './Dimensions';
+import Fonts from './Fonts';
 
 const ComponentStyle = StyleSheet.create({
   editorContainer: {
+    backgroundColor: Colors.white,
+    width: Dimensions.width,
+    height: Dimensions.height
   },
 
   overlay: {
@@ -18,7 +22,8 @@ const ComponentStyle = StyleSheet.create({
     height: Dimensions.height,
     position: `absolute`,
     flexDirection: `column`,
-    justifyContent: `space-between`
+    justifyContent: `space-between`,
+    zIndex: 2
   },
 
   leftUpperControls: {
@@ -40,7 +45,8 @@ const ComponentStyle = StyleSheet.create({
     right: 0,
     flexDirection: `column`,
     justifyContent: `space-between`,
-    alignItems: `flex-end`
+    alignItems: `flex-end`,
+    zIndex: 3
   },
 
   colorIcon: {
@@ -104,7 +110,8 @@ const ComponentStyle = StyleSheet.create({
   },
 
   fieldIconText: {
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
+    fontFamily: Fonts.circular.book
   },
 
   addEditorIcon: {
@@ -112,7 +119,8 @@ const ComponentStyle = StyleSheet.create({
     height: 51,
     position: `absolute`,
     left: (Dimensions.width / 2) - 25,
-    bottom: 25
+    bottom: 25,
+    zIndex: 2
   },
 
   drawer: {
@@ -126,7 +134,23 @@ const ComponentStyle = StyleSheet.create({
     shadowRadius: 20,
     width: Dimensions.width * (3 / 4),
     height: 300,
-    backgroundColor: Colors.pureWhite
+    backgroundColor: Colors.pureWhite,
+    zIndex: 2
+  },
+
+  fieldsDrawer: {
+    position: `absolute`,
+    left: Dimensions.width / 2 - (Dimensions.width * (9 / 10)) / 2,
+    bottom: Dimensions.height / 2 - (Dimensions.height * (9 / 10)) / 2,
+    borderRadius: 5,
+    shadowColor: Colors.black,
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: .05,
+    shadowRadius: 20,
+    width: Dimensions.width * (9 / 10),
+    height: Dimensions.height * (9 / 10),
+    backgroundColor: Colors.pureWhite,
+    zIndex: 2
   },
 
   directionWrapper: {
@@ -143,6 +167,11 @@ const ComponentStyle = StyleSheet.create({
   directionImage: {
     width: 100,
     height: 107
+  },
+
+  fieldsDrawerTitle: {
+    color: Colors.orange,
+    fontSize: Fonts.size.title
   }
 });
 

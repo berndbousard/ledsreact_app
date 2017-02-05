@@ -6,6 +6,7 @@ export default {
 
   size: {
     copy: 10,
-    navCopy: 12
+    navCopy: 12,
+    title: 15
   }
 };
