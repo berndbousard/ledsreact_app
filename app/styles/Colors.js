@@ -4,5 +4,7 @@ export default {
   gradientOrange: `#FF500D`,
   white: `#F8F8F8`,
   pureWhite: `#FFFFFF`,
+  lightGrey: `#efefef`,
+  grey: `#bbbbbb`,
   opacityWhite: `rgba(255, 255, 255, .1)`
 };

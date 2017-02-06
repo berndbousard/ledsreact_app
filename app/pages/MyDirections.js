@@ -14,7 +14,10 @@ class MyDirections extends Component {
   state = {
     connectedDirections: [],
     token: ``,
-    tokenContent: ``
+    tokenContent: ``,
+    currentRecentTab: 0,
+    myExercises: [],
+    myTrainings: []
   };
 
   componentDidMount() {
@@ -25,6 +28,21 @@ class MyDirections extends Component {
     this.props.socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
 
     this.props.socket.emit(`checkDirections`);
+
+    this.fetchExercises();
+  }
+
+  fetchExercises() {
+    fetch(`${DatabaseUrl}/api/exercises`)
+      .then(r => {
+        return r.json();
+      })
+      .then(({exercises}) => {
+        this.setState({myExercises: exercises});
+      })
+      .catch(e => {
+        console.log(e);
+      });
   }
 
   componentWillUnmount() {
@@ -153,12 +171,71 @@ class MyDirections extends Component {
         );
       })
     );
+  }
 
+  toggleRecentTab(index) {
+    let {currentRecentTab} = this.state;
+
+    currentRecentTab = index;
+
+    this.setState({currentRecentTab});
+  }
+
+  generateRecentContent() {
+    const {currentRecentTab, myTrainings, myExercises, connectedDirections} = this.state;
+
+    if (currentRecentTab === 0) {
+      // Oefeningen
+      if (isEmpty(myExercises)) {
+        return <Text style={[TextStyles.copy, MyDirectionsStyle.recentEmptyText]}>Je hebt nog geen oefeningen gemaakt.</Text>;
+      }
+
+      return myExercises.map((e, index) => {
+        if (index > 2) return;
+        return (
+          <Animatable.View animation='fadeInUp' duration={600} delay={8 * index} key={index} style={MyDirectionsStyle.ExerciseCard}>
+            <View style={MyDirectionsStyle.ExerciseCardHeader}>
+              <Image style={MyDirectionsStyle.ExerciseCardSportIcon} source={require(`../assets/png/soccerIcon.png`)} />
+              <Text style={[TextStyles.subTitle, MyDirectionsStyle.ExerciseCardTitle]}>{`Aanvallen op de flank`.toUpperCase()}</Text>
+            </View>
+
+            <View style={MyDirectionsStyle.ExerciseCardImageWrapper}>
+              <View style={MyDirectionsStyle.ExerciseCardImage}></View>
+
+              <View style={MyDirectionsStyle.ExerciseCardSpecsWrapper}>
+                <View style={MyDirectionsStyle.ExerciseCardSpec}>
+                  <Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/directionIcon.png`)} />
+                  <Text style={TextStyles.copy}>5</Text>
+                </View>
+
+                <View style={[MyDirectionsStyle.ExerciseCardSpec, MyDirectionsStyle.ExerciseCardSpecIconMiddle]}>
+                  <Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/groupSizeIcon.png`)} />
+                  <Text style={TextStyles.copy}>5- 10</Text>
+                </View>
+
+                <View style={[MyDirectionsStyle.ExerciseCardSpec, MyDirectionsStyle.ExerciseCardSpecIconLast]}>
+                  <Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/intensivityIcon.png`)} />
+                  <Text style={TextStyles.copy}>Makkelijk</Text>
+                </View>
+              </View>
+            </View>
+
+          </Animatable.View>
+        );
+      });
+    }
+
+    if (currentRecentTab === 1) {
+      // Trainings
+      if (isEmpty(myTrainings)) {
+        return <Text style={[TextStyles.copy, MyDirectionsStyle.recentEmptyText]}>Je hebt geen trainingen gepland voor vandaag</Text>;
+      }
+    }
   }
 
   render() {
 
-    const {connectedDirections} = this.state;
+    const {connectedDirections, currentRecentTab} = this.state;
 
     return (
       <View style={GeneralStyle.pageContainer}>
@@ -190,7 +267,7 @@ class MyDirections extends Component {
               </View>
             </View>
 
-            <ScrollView horizontal={true}>
+            <ScrollView style={[MyDirectionsStyle.directionsListScroller]} horizontal={true} removeClippedSubviews={true} >
               <View style={[MyDirectionsStyle.directionsListWrapper]}>
                 {this.generateDirections()}
               </View>
@@ -198,7 +275,21 @@ class MyDirections extends Component {
           </View>
 
           <View>
+            <View style={MyDirectionsStyle.recentTabbar}>
+              <TouchableOpacity style={[MyDirectionsStyle.recentTabbarTitleWrapper, {borderBottomColor: currentRecentTab === 0 ? Colors.orange : Colors.lightGrey}]} onPress={() => this.toggleRecentTab(0)}>
+                <Text style={[TextStyles.title, MyDirectionsStyle.recentTabbarTitle, {color: currentRecentTab === 0 ? Colors.orange : Colors.grey}]}>{`jouw laatste oefeningen`.toUpperCase()}</Text>
+              </TouchableOpacity>
 
+              <TouchableOpacity style={[MyDirectionsStyle.recentTabbarTitleWrapper, {borderBottomColor: currentRecentTab === 1 ? Colors.orange : Colors.lightGrey}]} onPress={() => this.toggleRecentTab(1)}>
+                <Text style={[TextStyles.title, MyDirectionsStyle.recentTabbarTitle, {color: currentRecentTab === 1 ? Colors.orange : Colors.grey}]}>{`jouw laatste training`.toUpperCase()}</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={[MyDirectionsStyle.recentWrapper]}>
+              {this.generateRecentContent()}
+              {this.generateRecentContent()}
+              {this.generateRecentContent()}
+            </View>
           </View>
         </Animatable.View>
 

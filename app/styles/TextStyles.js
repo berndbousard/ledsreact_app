@@ -15,8 +15,9 @@ const TextStyles = StyleSheet.create({
   subTitle: {
     fontFamily: Fonts.tradeGothic.bold,
     color: Colors.black,
-    textAlign: `center`,
-    fontSize: Fonts.size.subtitle
+    textAlign: `left`,
+    fontSize: Fonts.size.subtitle,
+    letterSpacing: - .3
   },
 
   copy: {
