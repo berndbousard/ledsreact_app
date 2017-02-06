@@ -159,26 +159,6 @@ const ComponentStyle = StyleSheet.create({
     alignItems: `center`
   },
 
-  directionWrapper: {
-    justifyContent: `center`,
-    alignItems: `center`,
-    zIndex: 1,
-    position: `absolute`,
-    left: (Dimensions.width / 2) - (100 / 2),
-    top: (Dimensions.height / 2) - (107 / 2),
-    width: 125
-  },
-
-  directionLink: {
-    justifyContent: `center`,
-    alignItems: `center`
-  },
-
-  directionImage: {
-    width: 100,
-    height: 107
-  },
-
   fieldsDrawerWrapper: {
     flexDirection: `column`,
     justifyContent: `center`
@@ -228,34 +208,67 @@ const ComponentStyle = StyleSheet.create({
     marginTop: 40
   },
 
+
+  //-------------------------------{ Direction }---------------------------------
+
   directionDrawerImage: {
     width: 100,
     height: 107
   },
 
+  directionWrapper: {
+    justifyContent: `center`,
+    alignItems: `center`,
+    zIndex: 1,
+    position: `absolute`,
+    left: (Dimensions.width / 2) - (100 / 2),
+    top: (Dimensions.height / 2) - (107 / 2),
+    width: 100
+  },
+
+  directionImage: {
+    width: 100,
+    height: 107
+  },
+
+  //-------------------------------{Direction Popup}---------------------------------
+
   directionPopup: {
     flexDirection: `column`,
     alignItems: `center`,
-    width: 125,
+    width: 200, //Hier kan je popup mee vergroten
     backgroundColor: Colors.pureWhite,
     borderRadius: 4,
     paddingBottom: 10
   },
 
-  directionPopupHeader: {
+  directionPopupHeaderWrapper: {
     flexDirection: `row`,
-    justifyContent: `space-between`,
+    justifyContent: `center`,
     alignItems: `center`,
-    width: 125,
-    padding: 10
+    padding: 10,
+    flex: 1
+  },
+
+  directionPopupHeaderLink: {
+    flex: 1
+  },
+
+  directionPopupPageIndicatorWrapper: {
+    flexDirection: `row`,
+    justifyContent: `center`,
+    marginTop: 7
+  },
+
+  directionPopupPageIndicator: {
+    width: 6, height: 6,
+    backgroundColor: Colors.white,
+    borderRadius: 6,
+    marginLeft: 3, marginRight: 3,
   },
 
   directionPopupHeaderTitle: {
     flex: 1
-  },
-
-  directionPopupHeaderCloseIcon: {
-    width: 20, height: 20
   },
 
   directionPopupFuncWrapper: {
@@ -267,13 +280,33 @@ const ComponentStyle = StyleSheet.create({
     marginTop: 10
   },
 
+  //-------------------------------{Direction Params}---------------------------------
+
+  directionParamsWrapper: {
+    marginTop: 10
+  },
+
+  directionsParamsDirectionWrapper: {
+    flexDirection: `column`,
+    justifyContent: `space-between`,
+    alignItems: `center`,
+    marginBottom: 10
+  },
+
+  directionsParamsDirectionMiddleWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `space-between`,
+    width: 110,
+  },
+
   directionPopupFuncToggle: {
     borderWidth: 1,
     borderColor: Colors.black
   },
 
   timerIconsWrapper: {
-    flexDirection: `row`,
+    flexDirection: `row-reverse`,
     alignItems: `center`,
     justifyContent: `space-around`,
     width: 125,
@@ -281,39 +314,24 @@ const ComponentStyle = StyleSheet.create({
   },
 
   timerIcon: {
-    width: 30, height: 30,
-    // transform: [{scale: .2}]
+    width: 35, height: 35
   },
 
   timerText: {
     flex: 3
   },
 
-  directionsParamsWrapper: {
-    marginTop: 10,
-    flexDirection: `column`,
-    justifyContent: `center`,
-    alignItems: `center`,
-    marginBottom: 10
-  },
-
-  directionsParamsMiddleWrapper: {
-    flexDirection: `row`,
-    alignItems: `center`,
-    justifyContent: `space-around`,
-    width: 125
-  },
-
   colorParamWrapper: {
     flexDirection: `row`,
     justifyContent: `space-around`,
-    flexWrap: `wrap`
+    flexWrap: `wrap`,
+    padding: 10
   },
 
   colorParamSwatch: {
     width: 30, height: 30,
-    margin: 5,
-    borderRadius: 20
+    borderRadius: 20,
+    margin: 5
   }
 });
 

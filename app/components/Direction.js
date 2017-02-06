@@ -1,18 +1,16 @@
 import React, {Component} from 'react';
-import {Animated, PanResponder, TouchableWithoutFeedback, Text, PickerIOS, Image, View, TouchableOpacity} from 'react-native';
+import {Animated, PanResponder, TouchableWithoutFeedback, Text, Image, View, TouchableOpacity} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {EditorStyle, TextStyles, Colors} from '../styles';
-import {indexOf} from 'lodash';
 
 class Direction extends Component {
 
   state = {
     position: new Animated.ValueXY(),
     scale: new Animated.Value(1),
-    index: this.props.index,
-    bounds: this.props.bounds,
+    index: this.props.directionIndex,
     settings: {
       isActive: false,
       currentIndex: 0,
@@ -23,8 +21,7 @@ class Direction extends Component {
         right: false,
         forward: false,
         backward: false
-      },
-      colors: [`green`, `red`, `blue`, `yellow`, `orange`]
+      }
     }
   }
 
@@ -46,7 +43,7 @@ class Direction extends Component {
         null, {dx: this.state.position.x, dy: this.state.position.y}
       ]),
 
-      onPanResponderRelease: (e, gestureState) => { //Gets invoked when we release the view.
+      onPanResponderRelease: () => { //Gets invoked when we release the view.
         const {position, scale} = this.state;
         // const {moveX, moveY} = gestureState;
 
@@ -56,27 +53,6 @@ class Direction extends Component {
         // previousPosition = position;
       }
     });
-  }
-
-  changeFuncHandler(func) {
-    const {settings} = this.state;
-
-    const index = indexOf(settings.functions, func);
-    settings.currentIndex = index;
-
-    this.setState({settings});
-  }
-
-  toggleFunction() {
-    const {settings} = this.state;
-
-    settings.currentIndex++;
-
-    if (settings.currentIndex > settings.functions.length - 1) {
-      settings.currentIndex = 0;
-    }
-
-    this.setState({settings});
   }
 
   toggleLeft() {
@@ -124,30 +100,29 @@ class Direction extends Component {
 
   renderFunctionParams() {
     const {settings} = this.state;
-
     console.log(settings.directions);
 
-    if (settings.currentIndex === 0) {
+    if (this.props.function.currentIndex === 0) {
       // Richting
       return (
-        <View>
-          <View style={[EditorStyle.directionsParamsWrapper]}>
+        <View style={[EditorStyle.directionParamsWrapper]}>
+          <View style={[EditorStyle.directionsParamsDirectionWrapper]}>
             <TouchableWithoutFeedback onPress={() => this.toggleForward()}>
               <View style={[{transform: [{rotate: `0deg`}]}, {backgroundColor: settings.directions.forward ? Colors.orange : `transparent`}, {borderRadius: 100}]}>
                 <Image style={EditorStyle.timerIcon} source={require(`../assets/png/arrowBlackIcon.png`)} />
               </View>
             </TouchableWithoutFeedback>
 
-            <View style={[EditorStyle.directionsParamsMiddleWrapper]}>
+            <View style={[EditorStyle.directionsParamsDirectionMiddleWrapper]}>
               <TouchableWithoutFeedback onPress={() => this.toggleLeft()}>
-                <View style={[{transform: [{rotate: `-90deg`}]}, {backgroundColor: settings.directions.left ? Colors.orange : `transparent`}, {borderRadius: 100}]}>
-                  <Image style={[EditorStyle.timerIcon, EditorStyle.directionParamsIcon]} source={require(`../assets/png/arrowBlackIcon.png`)} />
+                <View style={[EditorStyle.timerIcon, {transform: [{rotate: `-90deg`}]}, {backgroundColor: settings.directions.left ? Colors.orange : `transparent`}, {borderRadius: 100}]}>
+                  <Image style={[EditorStyle.timerIcon]} source={require(`../assets/png/arrowBlackIcon.png`)} />
                 </View>
               </TouchableWithoutFeedback>
 
               <TouchableWithoutFeedback onPress={() => this.toggleRight()}>
-                <View style={[{transform: [{rotate: `90deg`}]}, {backgroundColor: settings.directions.right ? Colors.orange : `transparent`}, {borderRadius: 100}]}>
-                  <Image style={[EditorStyle.timerIcon, EditorStyle.directionParamsIcon]} source={require(`../assets/png/arrowBlackIcon.png`)} />
+                <View style={[EditorStyle.timerIcon, {transform: [{rotate: `90deg`}]}, {backgroundColor: settings.directions.right ? Colors.orange : `transparent`}, {borderRadius: 100}]}>
+                  <Image style={[EditorStyle.timerIcon]} source={require(`../assets/png/arrowBlackIcon.png`)} />
                 </View>
               </TouchableWithoutFeedback>
             </View>
@@ -168,45 +143,31 @@ class Direction extends Component {
       );
     }
 
-    if (settings.currentIndex === 1) {
+    if (this.props.function.currentIndex === 1) {
       // Kleur
       return (
-        <View>
+        <View style={[EditorStyle.directionsParamsWrapper]}>
           <Text style={[TextStyles.directionFuncTitle, EditorStyle.directionPopupFuncTitle]}>{`Kies een kleur`.toUpperCase()}</Text>
           <View style={[EditorStyle.colorParamWrapper]}>
-            <TouchableWithoutFeedback>
-              <View style={[EditorStyle.colorParamSwatch, {backgroundColor: settings.colors[0]}]}>
-              </View>
-            </TouchableWithoutFeedback>
-
-            <TouchableWithoutFeedback>
-              <View style={[EditorStyle.colorParamSwatch, {backgroundColor: settings.colors[1]}]}>
-              </View>
-            </TouchableWithoutFeedback>
-
-            <TouchableWithoutFeedback>
-              <View style={[EditorStyle.colorParamSwatch, {backgroundColor: settings.colors[2]}]}>
-              </View>
-            </TouchableWithoutFeedback>
-
-            <TouchableWithoutFeedback>
-              <View style={[EditorStyle.colorParamSwatch, {backgroundColor: settings.colors[3]}]}>
-              </View>
-            </TouchableWithoutFeedback>
-
-            <TouchableWithoutFeedback>
-              <View style={[EditorStyle.colorParamSwatch, {backgroundColor: settings.colors[4]}]}>
-              </View>
-            </TouchableWithoutFeedback>
+            {
+              this.props.colors.map((c, index) => {
+                return (
+                  <TouchableWithoutFeedback key={index} onPress={() => this.props.changeDirectionColorHandler(this.props.directionIndex, index)}>
+                    <View style={[EditorStyle.colorParamSwatch, {backgroundColor: this.props.colors[index].name}, {opacity: this.props.colors[index].isActive ? 1 : .25}]}>
+                    </View>
+                  </TouchableWithoutFeedback>
+                );
+              })
+            }
           </View>
         </View>
       );
     }
 
-    if (settings.currentIndex === 2) {
+    if (this.props.function.currentIndex === 2) {
       // Timer
       return (
-        <View>
+        <View style={[EditorStyle.directionsParamsWrapper]}>
           <Text style={[TextStyles.directionFuncTitle, EditorStyle.directionPopupFuncTitle]}>{`interval`.toUpperCase()}</Text>
           <View style={[EditorStyle.timerIconsWrapper]}>
             <TouchableWithoutFeedback onPress={() => this.changeInterval(1)}>
@@ -243,36 +204,25 @@ class Direction extends Component {
     if (settings.isActive) {
       return (
         <Animatable.View style={[EditorStyle.directionPopup]} ref='settingsRef' animation='fadeInUp' easing='ease-out-quad' duration={300}>
-          {/* <Picker
-            onValueChange={value => console.log(value)}>
-            <Picker.Item label={settings.functions[0]} value={settings.functions[0]} />
-            <Picker.Item label={settings.functions[1]} value={settings.functions[1]} />
-            <Picker.Item label={settings.functions[1]} value={settings.functions[1]} />
-            <Picker.Item label={settings.functions[1]} value={settings.functions[1]} />
-          </Picker> */}
-          {/* <PickerIOS selectedValue={settings.functions[settings.currentIndex]} onValueChange={func => this.changeFuncHandler(func)}>
-            <PickerIOS.Item value='richting' label='richting'/>
-            <PickerIOS.Item value='kleur' label='kleur'/>
-            <PickerIOS.Item value='timer' label='timer'/>
-          </PickerIOS> */}
-          <LinearGradient style={[EditorStyle.directionPopupHeader]} colors={[Colors.orange, Colors.gradientOrange]}>
-            <TouchableOpacity style={[{flex: 1}]} onPress={() => this.toggleFunction()}>
+          <LinearGradient style={[EditorStyle.directionPopupHeaderWrapper]} colors={[Colors.orange, Colors.gradientOrange]}>
+            <TouchableOpacity style={[EditorStyle.directionPopupHeaderLink]} onPress={() => this.props.changeDirectionFunctionHandler(this.props.directionIndex)}>
               <View style={[{flex: 1}]}>
-                <Text style={[TextStyles.directionTitle, EditorStyle.directionPopupHeaderTitle, {backgroundColor: `transparent`}]}>{settings.functions[settings.currentIndex].toUpperCase()}</Text>
+                <Text style={[TextStyles.directionTitle, EditorStyle.directionPopupHeaderTitle, {backgroundColor: `transparent`}]}>{this.props.function.functionLabels[this.props.function.currentIndex].toUpperCase()}</Text>
+                <View style={[EditorStyle.directionPopupPageIndicatorWrapper]}>
+                  {
+                    this.props.function.functionLabels.map((f, index) => {
+                      return (
+                        <View key={index} style={[EditorStyle.directionPopupPageIndicator, {opacity: this.props.function.currentIndex === index ? 1 : .25}]}>
+
+                        </View>
+                      );
+                    })
+                  }
+                </View>
+
               </View>
             </TouchableOpacity>
-            {/* <TouchableWithoutFeedback>
-              <Image style={[EditorStyle.directionPopupHeaderCloseIcon]} source={require(`../assets/png/closeIconSmallWhite.png`)} />
-            </TouchableWithoutFeedback> */}
           </LinearGradient>
-          {/* <View style={[EditorStyle.directionPopupFuncWrapper]}>
-            <Text style={[EditorStyle.directionPopupFuncTitle, TextStyles.directionFuncTitle]}>{`functie`.toUpperCase()}</Text>
-            <TouchableWithoutFeedback style={[EditorStyle.directionPopupFuncToggle]}>
-              <View>
-                <Text>Toggle</Text>
-              </View>
-            </TouchableWithoutFeedback>
-          </View> */}
           {
             this.renderFunctionParams()
           }
@@ -308,7 +258,7 @@ class Direction extends Component {
     const [translateX, translateY] = [position.x, position.y];
 
     return (
-      <Animated.View {...this.dragHandler.panHandlers} style={[EditorStyle.directionWrapper, {transform: [{translateX}, {translateY}, {rotate: `0deg`}, {scale: scale}]}]}>
+      <Animated.View {...this.dragHandler.panHandlers} style={[EditorStyle.directionWrapper, {transform: [{translateX}, {translateY}, {scale}]}]}>
         <TouchableWithoutFeedback style={[EditorStyle.directionLink]} onPress={() => this.toggleSettings()}>
           <Animatable.Image ref='direction' animation='bounceIn' easing='ease-out' style={[EditorStyle.directionImage]} source={require(`../assets/png/direction.png`)} />
         </TouchableWithoutFeedback>
@@ -326,7 +276,12 @@ Direction.propTypes = {
   width: React.PropTypes.number,
   height: React.PropTypes.number,
   index: React.PropTypes.number,
-  bounds: React.PropTypes.object
+  bounds: React.PropTypes.object,
+  directionIndex: React.PropTypes.number,
+  function: React.PropTypes.object,
+  colors: React.PropTypes.array,
+  changeDirectionColorHandler: React.PropTypes.func,
+  changeDirectionFunctionHandler: React.PropTypes.func
 };
 
 export default Direction;

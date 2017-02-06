@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView} from 'react-native';
-import {range, indexOf} from 'lodash';
+import {indexOf} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
 import {Actions} from "react-native-router-flux";
 import * as Animatable from 'react-native-animatable';
@@ -8,6 +8,7 @@ import Svg, {Rect} from 'react-native-svg';
 
 import {Circle, Path, Direction} from '../components';
 import {EditorStyle, Colors, Dimensions, TextStyles} from '../styles';
+import {DatabaseUrl} from '../globals';
 
 class Editor extends Component {
 
@@ -29,7 +30,11 @@ class Editor extends Component {
       drawer: {
         isActive: false
       }
-    }
+    },
+    editorDirections: [
+
+    ],
+    functionValues: []
   };
 
   componentDidMount() {
@@ -45,6 +50,27 @@ class Editor extends Component {
     redoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
     saveIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
     undoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+
+    fetch(`${DatabaseUrl}/api/directionFunctions`)
+      .then(r => {
+        return r.json();
+      })
+      .then(({directionFunctions}) => {
+        const newFunctionValues = [];
+
+        directionFunctions.map(d => {
+          newFunctionValues.push(d._id);
+        });
+
+        let {functionValues} = this.state;
+
+        functionValues = newFunctionValues;
+
+        this.setState({functionValues});
+      })
+      .catch(e => {
+        console.log(e);
+      });
   }
 
   componentWillMount() {
@@ -79,52 +105,6 @@ class Editor extends Component {
         this.setState({userDrawingFeedback: []});
       }
     });
-
-    this.newDirectionDragHandler = PanResponder.create({
-      onMoveShouldSetResponderCapture: () => true, //Allow movement to the view we'll attach this panresponder to
-      onMoveShouldSetPanResponderCapture: () => true, //Same as above but for dragging
-
-      onPanResponderGrant: () => { //gets invoked when we got access to the movement of the element. Perfect for initial values.
-        // this.points = []; //Werkt als reset
-      },
-
-      onPanResponderMove: e => {
-        // this.addSvgElement(e);
-
-        // Build array of X & Y data
-        // this.points.push({x: e.nativeEvent.locationX, y: e.nativeEvent.locationY});
-        // this.setState({userDrawingFeedback: this.points});
-      },
-
-      onPanResponderRelease: () => { //Gets invoked when we release the view.
-        // console.log(`stop met tekenen`);
-        //
-        // const d = this.generatePathFromObject(this.points);
-        //
-        // const {svgElements, brush} = this.state;
-        // svgElements.push({
-        //   d: d,
-        //   stroke: brush.colors[brush.index]
-        // });
-        // console.log(svgElements);
-        // this.setState({svgElements});
-        // this.setState({userDrawingFeedback: []});
-      }
-    });
-  }
-
-  generateDirections() {
-    const {directionAmount = 0} = this.state;
-
-    return (
-      <View style={{flexDirection: `row`}}>
-        {
-          range(directionAmount).map((d, index) => {
-            return <Direction width={50} height={50} key={index} />;
-          })
-        }
-      </View>
-    );
   }
 
   screenshotHandler() {
@@ -257,11 +237,49 @@ class Editor extends Component {
   }
 
   directionDrawerImagePressHandler() {
-    let {directionsInEditor} = this.state;
+    const {editorDirections} = this.state;
 
-    directionsInEditor ++;
+    // Initial Values
+    const newDirection = {
+      colors: [
+        {
+          name: `green`,
+          isActive: false
+        },
+        {
+          name: `red`,
+          isActive: false
+        },
+        {
+          name: `blue`,
+          isActive: false
+        },
+        {
+          name: `yellow`,
+          isActive: false
+        },
+        {
+          name: `orange`,
+          isActive: false
+        }
+      ],
 
-    this.setState({directionsInEditor});
+      directions: {
+        left: false,
+        right: false,
+        forward: false,
+        backward: false
+      },
+
+      function: {
+        currentIndex: 0,
+        functionLabels: [`richting`, `kleur`, `timer`]
+      }
+    };
+
+    editorDirections.push(newDirection);
+
+    this.setState({editorDirections});
   }
 
   renderObjectsDrawer() {
@@ -555,31 +573,52 @@ class Editor extends Component {
   }
 
   renderEditorDirections() {
-    const {directionsInEditor} = this.state;
-
-    const bounds = {
-      xMin: 100,
-      yMin: 0,
-      xMax: Dimensions.width - 150,
-      yMax: Dimensions.height
-    };
+    const {editorDirections} = this.state;
 
     return (
-      range(directionsInEditor).map((e, index) => {
-        return <Direction style={[{left: 0, top: 0, zIndex: 5}]} bounds={bounds} key={index} />;
+      editorDirections.map((e, index) => {
+        return <Direction style={[{left: 0, top: 0, zIndex: 5}]} {...e} key={index} directionIndex={index}
+          changeDirectionFunctionHandler={directionIndex => this.changeDirectionFunctionHandler(directionIndex)}
+          changeDirectionColorHandler={(directionIndex, colorIndex) => this.changeDirectionColorHandler(directionIndex, colorIndex)} />;
       })
     );
   }
 
+  changeDirectionFunctionHandler(directionIndex) {
+    const {editorDirections} = this.state;
+    console.log(this.state.functionValues);
+
+    editorDirections [directionIndex].function.currentIndex++;
+
+    if (editorDirections [directionIndex].function.currentIndex > editorDirections [directionIndex].function.functionLabels.length - 1) {
+      editorDirections [directionIndex].function.currentIndex = 0;
+    }
+
+    this.setState({editorDirections});
+  }
+
+  changeDirectionColorHandler(directionIndex, colorIndex) {
+    const {editorDirections} = this.state;
+
+    editorDirections[directionIndex].colors[colorIndex].isActive = !editorDirections[directionIndex].colors[colorIndex].isActive;
+
+    this.setState({editorDirections});
+  }
+
   render() {
     return (
-      <View style={[EditorStyle.editorContainer]} ref='artboard'>
-        <Svg style={[{zIndex: 1}]} {...this.drawHandler.panHandlers} width={Dimensions.width} height={Dimensions.height} ref='svg'>
-          <Rect x='0' y='0' width='100%' height='100%' fill='transparent' />
-          {this.generateUserDrawingFeedback()}
-          {this.generateSvgElements()}
-        </Svg>
-        {this.generateField()}
+      <View style={[EditorStyle.editorContainer]}>
+        <View style={{position: `absolute`}} ref='artboard'>
+
+          <Svg style={[{zIndex: 1}]} {...this.drawHandler.panHandlers} width={Dimensions.width} height={Dimensions.height} ref='svg'>
+            <Rect x='0' y='0' width='100%' height='100%' fill={Colors.white} />
+            {this.generateUserDrawingFeedback()}
+            {this.generateSvgElements()}
+          </Svg>
+          {this.generateField()}
+          {this.renderEditorDirections()}
+
+        </View>
         {this.renderLeftControls()}
         {this.renderRightControls()}
 
@@ -591,10 +630,6 @@ class Editor extends Component {
 
         {
           this.renderFieldsDrawer()
-        }
-
-        {
-          this.renderEditorDirections()
         }
       </View>
     );
