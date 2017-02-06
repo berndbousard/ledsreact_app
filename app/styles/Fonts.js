@@ -16,6 +16,8 @@ export default {
     subtitle: 18,
     mainTitle: 25,
     button: 16,
+    commentAuthor: 18,
+    commentDate: 14,
 
     directionTitle: 18,
     directionFuncTitle: 16,

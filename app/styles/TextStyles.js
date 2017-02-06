@@ -35,6 +35,20 @@ const TextStyles = StyleSheet.create({
     fontSize: Fonts.size.copy
   },
 
+  commentAuthor: {
+    fontFamily: Fonts.circular.bold,
+    color: Colors.black,
+    textAlign: `left`,
+    fontSize: Fonts.size.commentAuthor
+  },
+
+  commentDate: {
+    fontFamily: Fonts.circular.book,
+    color: Colors.darkGrey,
+    textAlign: `left`,
+    fontSize: Fonts.size.commentDate
+  },
+
   primaryButton: {
     fontFamily: Fonts.tradeGothic.bold,
     color: Colors.white,
@@ -60,10 +74,16 @@ const TextStyles = StyleSheet.create({
     fontSize: Fonts.size.directionBatteryLevel
   },
 
-
   directionTitle: {
     fontFamily: Fonts.tradeGothic.bold,
     color: Colors.white,
+    textAlign: `center`,
+    fontSize: Fonts.size.directionTitle
+  },
+
+  author: {
+    fontFamily: Fonts.circular.bold,
+    color: Colors.orange,
     textAlign: `center`,
     fontSize: Fonts.size.directionTitle
   },

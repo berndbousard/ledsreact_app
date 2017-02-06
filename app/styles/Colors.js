@@ -7,5 +7,7 @@ export default {
   pureWhite: `#FFFFFF`,
   lightGrey: `#efefef`,
   grey: `#bbbbbb`,
+  darkGrey: `#a6a6a6`,
+  green: `#49E900`,
   opacityWhite: `rgba(255, 255, 255, .1)`
 };
