@@ -1,90 +1,103 @@
 import React, {Component} from 'react';
-import {View, Button, Text} from 'react-native';
-import {Actions} from 'react-native-router-flux';
 
-import {GeneralStyle} from '../styles';
-import {DatabaseUrl} from '../globals';
+import {View, Image, Text, TouchableOpacity, ScrollView} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
-class MyTrainings extends Component {
+import {GeneralStyle, ExerciseDetailStyle, Colors, TextStyles, ButtonStyles} from '../styles';
 
-  state = {
-    directionsNeeded: [],
-    connectedDirections: []
-  };
+class ExerciseDetail extends Component {
 
-  componentDidMount() {
-
-    this.props.socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
-
-    const {exerciseId} = this.props;
-
-    fetch(`${DatabaseUrl}/api/directions?exercise${exerciseId}`)
-      .then(r => {
-        return r.json();
-      })
-      .then(r => {
-        this.setState({directionsNeeded: r.r});
-
-      })
-      .catch(e => {
-        console.log(e);
-      });
-
-    this.props.socket.emit(`checkDirections`, {});
-  }
-
-  componentWillUnmount() {
-    this.props.socket.off(`checkDirections`);
-  }
-
-  handleWScheckDirections(connectedDirections) {
-    this.setState({connectedDirections});
-  }
-
-  generateDirectionsForExercise() {
-    const {directionsNeeded} = this.state;
-
+  renderHeader() {
     return (
-      <Text>Voor deze oefening zijn {directionsNeeded.length} directions nodig</Text>
-    );
-  }
+      <View style={ExerciseDetailStyle.headerWrapper}>
+        <View style={ExerciseDetailStyle.backButtonWrapper}>
+          <Image style={ExerciseDetailStyle.backButtonIcon} source={require(`../assets/png/backArrowOrange.png`)} />
+          <Text style={[TextStyles.title, ExerciseDetailStyle.backButtonText]} >{`terug naar overzicht`.toUpperCase()}</Text>
+        </View>
 
-  generateConnectedDirections() {
-    const {connectedDirections} = this.state;
+        <View style={ExerciseDetailStyle.headerButtonsWrapper}>
 
-    return (
-      <Text>Je hebt {connectedDirections.length} directions verbonden</Text>
+          <TouchableOpacity style={[ExerciseDetailStyle.headerSmallButtonWrapper, ExerciseDetailStyle.headerUploadWrapper]}>
+            <Image style={ExerciseDetailStyle.headerUploadIcon} source={require(`../assets/png/uploadIconWhite.png`)} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[ExerciseDetailStyle.headerSmallButtonWrapper, ExerciseDetailStyle.headerEditWrapper]}>
+            <Image style={ExerciseDetailStyle.headerEditIcon} source={require(`../assets/png/editIconWhite.png`)} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[ExerciseDetailStyle.headerSmallButtonWrapper, ExerciseDetailStyle.headerShareWrapper]}>
+            <Image style={ExerciseDetailStyle.headerShareIcon} source={require(`../assets/png/shareIconWhite.png`)} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={ExerciseDetailStyle.headerSmallButtonWrapper}>
+            <Image style={ExerciseDetailStyle.headerAddIcon} source={require(`../assets/png/addIconWhite.png`)} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={ExerciseDetailStyle.primaryButtonWrapper} onPressOut={() => console.log(`uitproberen`)}>
+            <LinearGradient style={[ButtonStyles.primaryButton, ExerciseDetailStyle.buttonWrapper]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
+              <Image style={[ExerciseDetailStyle.primaryButtonImage]} source={require(`../assets/png/playIconWhite.png`)} />
+              <Text style={[TextStyles.primaryButton, ExerciseDetailStyle.primaryButtonText]}>{`uitproberen`.toUpperCase()}</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   }
 
   render() {
 
-    let {directionsNeeded, connectedDirections} = this.state;
-    connectedDirections = 0;
-
     return (
-      <View style={GeneralStyle.pageContainer}>
+      <View style={[GeneralStyle.pageContainer, ExerciseDetailStyle.pageContainer]}>
+        <View>
+          {this.renderHeader()}
 
-        <View style={[GeneralStyle.center, {backgroundColor: `green`}, GeneralStyle.contentContainer]}>
-          <Button title='keer keer weer' onPress={() => Actions.pop()} />
-          <Button title='uitproberen' onPress={() => Actions.tryExercise()} disabled={directionsNeeded.length > connectedDirections.length ? false : true} />
-          {
-            this.generateDirectionsForExercise()
-          }
-          {
-            this.generateConnectedDirections()
-          }
+          <ScrollView>
+            <View style={ExerciseDetailStyle.scrollContent}>
+
+              <Image style={ExerciseDetailStyle.background} source={require(`../assets/png/detailBackground.png`)} />
+
+              <View style={ExerciseDetailStyle.card}>
+                <View style={ExerciseDetailStyle.cardHeader}>
+
+                  <View style={ExerciseDetailStyle.cardTitle}>
+                    <Image style={ExerciseDetailStyle.cardTitleIcon} source={require(`../assets/png/soccerIconWhite.png`)} />
+                    <View>
+                      <Text style={[TextStyles.mainTitle, ExerciseDetailStyle.titleText]}>{`aanvallen via midden`.toUpperCase()}</Text>
+                      <Text style={[TextStyles.copy, ExerciseDetailStyle.titleSubText]}>gedeeld met 1 persoon</Text>
+                    </View>
+                  </View>
+
+                  <View style={ExerciseDetailStyle.seperator}></View>
+
+                  <View style={ExerciseDetailStyle.ratingWrapper}>
+                    <Text style={[TextStyles.title, ExerciseDetailStyle.ratingTitle]}>{`Beoordeling`.toUpperCase()}</Text>
+                    <View style={ExerciseDetailStyle.starWrapper}>
+                      <Image style={ExerciseDetailStyle.starIcon} source={require(`../assets/png/starIconFull.png`)} />
+                      <Image style={ExerciseDetailStyle.starIcon} source={require(`../assets/png/starIconFull.png`)} />
+                      <Image style={ExerciseDetailStyle.starIcon} source={require(`../assets/png/starIconFull.png`)} />
+                      <Image style={ExerciseDetailStyle.starIcon} source={require(`../assets/png/starIconFull.png`)} />
+                      <Image style={ExerciseDetailStyle.starIcon} source={require(`../assets/png/starIconFull.png`)} />
+                    </View>
+                  </View>
+
+                </View>
+
+                <View>
+                  
+                </View>
+              </View>
+
+            </View>
+          </ScrollView>
         </View>
-
       </View>
     );
   }
 }
 
-MyTrainings.propTypes = {
+ExerciseDetail.propTypes = {
   socket: React.PropTypes.object,
-  name: React.PropTypes.string,
-  exerciseId: React.PropTypes.string
+  name: React.PropTypes.string
 };
 
-export default MyTrainings;
+export default ExerciseDetail;

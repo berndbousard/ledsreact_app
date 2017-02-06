@@ -12,6 +12,14 @@ const TextStyles = StyleSheet.create({
     letterSpacing: - .5
   },
 
+  mainTitle: {
+    fontFamily: Fonts.tradeGothic.bold,
+    color: Colors.white,
+    textAlign: `center`,
+    fontSize: Fonts.size.mainTitle,
+    letterSpacing: - .5
+  },
+
   subTitle: {
     fontFamily: Fonts.tradeGothic.bold,
     color: Colors.black,

@@ -1,5 +1,6 @@
 export default {
-  black: `#061A24`,
+  black: `#1E1E1E`,
+  lightBlack: `#232323`,
   orange: `#FF272F`,
   gradientOrange: `#FF500D`,
   white: `#F8F8F8`,

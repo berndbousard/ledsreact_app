@@ -14,6 +14,7 @@ export default {
     navCopy: 12,
     title: 20,
     subtitle: 18,
+    mainTitle: 25,
     button: 16,
 
     directionTitle: 18,

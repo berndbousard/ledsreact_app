@@ -101,7 +101,6 @@ const MyDirectionsStyle = StyleSheet.create({
 
   recentWrapper: {
     flexDirection: `row`,
-    justifyContent: `flex-start`,
     alignItems: `center`,
     justifyContent: `space-between`
   },
