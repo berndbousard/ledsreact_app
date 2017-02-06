@@ -6,6 +6,8 @@ import Colors from './Colors';
 import Fonts from './Fonts';
 import Dimensions from './Dimensions';
 import TextStyles from './TextStyles';
+import MyDirectionsStyle from './MyDirectionsStyle';
+import ButtonStyles from './ButtonStyles';
 
 exports.GeneralStyle = GeneralStyle;
 exports.ComponentStyle = ComponentStyle;
@@ -15,3 +17,5 @@ exports.Colors = Colors;
 exports.Fonts = Fonts;
 exports.Dimensions = Dimensions;
 exports.TextStyles = TextStyles;
+exports.MyDirectionsStyle = MyDirectionsStyle;
+exports.ButtonStyles = ButtonStyles;

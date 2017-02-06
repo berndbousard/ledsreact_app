@@ -139,7 +139,8 @@ const ComponentStyle = StyleSheet.create({
     width: Dimensions.width,
     height: Dimensions.height,
     opacity: 0.04,
-    zIndex: 0
+    zIndex: 0,
+    backgroundColor: Colors.white
   },
 
   fieldsDrawer: {

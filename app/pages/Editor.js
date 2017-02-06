@@ -611,7 +611,7 @@ class Editor extends Component {
         <View style={{position: `absolute`}} ref='artboard'>
 
           <Svg style={[{zIndex: 1}]} {...this.drawHandler.panHandlers} width={Dimensions.width} height={Dimensions.height} ref='svg'>
-            <Rect x='0' y='0' width='100%' height='100%' fill={Colors.white} />
+            <Rect x='0' y='0' width='100%' height='100%' fill='transparent' />
             {this.generateUserDrawingFeedback()}
             {this.generateSvgElements()}
           </Svg>

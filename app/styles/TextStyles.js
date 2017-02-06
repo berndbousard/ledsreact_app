@@ -8,7 +8,8 @@ const TextStyles = StyleSheet.create({
     fontFamily: Fonts.tradeGothic.bold,
     color: Colors.orange,
     textAlign: `center`,
-    fontSize: Fonts.size.title
+    fontSize: Fonts.size.title,
+    letterSpacing: - .5
   },
 
   subTitle: {
@@ -17,6 +18,39 @@ const TextStyles = StyleSheet.create({
     textAlign: `center`,
     fontSize: Fonts.size.subtitle
   },
+
+  copy: {
+    fontFamily: Fonts.circular.book,
+    color: Colors.black,
+    textAlign: `left`,
+    fontSize: Fonts.size.copy
+  },
+
+  primaryButton: {
+    fontFamily: Fonts.tradeGothic.bold,
+    color: Colors.white,
+    textAlign: `center`,
+    fontSize: Fonts.size.button,
+    letterSpacing: - .5,
+    backgroundColor: `transparent`
+  },
+
+  secundairyButton: {
+    fontFamily: Fonts.tradeGothic.bold,
+    color: Colors.orange,
+    textAlign: `center`,
+    fontSize: Fonts.size.button,
+    letterSpacing: - .5,
+    backgroundColor: `transparent`
+  },
+
+  batteryPercentage: {
+    fontFamily: Fonts.circular.bold,
+    color: Colors.black,
+    textAlign: `center`,
+    fontSize: Fonts.size.directionBatteryLevel
+  },
+
 
   directionTitle: {
     fontFamily: Fonts.tradeGothic.bold,

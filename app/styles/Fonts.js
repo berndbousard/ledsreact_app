@@ -10,12 +10,15 @@ export default {
   },
 
   size: {
-    copy: 10,
+    copy: 14,
     navCopy: 12,
-    title: 25,
-    subtitle: 20,
+    title: 20,
+    subtitle: 18,
+    button: 16,
+
     directionTitle: 18,
     directionFuncTitle: 16,
-    directionFuncSubTitle: 14
+    directionFuncSubTitle: 14,
+    directionBatteryLevel: 16
   }
 };

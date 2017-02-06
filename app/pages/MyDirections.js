@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {View, Button, Text, TouchableOpacity, Dimensions} from 'react-native';
+import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {Actions} from 'react-native-router-flux';
+import LinearGradient from 'react-native-linear-gradient';
 
-import {isEmpty} from 'lodash';
-import {GeneralStyle, ComponentStyle} from '../styles';
+import {isEmpty, range} from 'lodash';
+import {GeneralStyle, TextStyles, MyDirectionsStyle, ButtonStyles, Colors} from '../styles';
 import {Navigation} from '../components';
 import {DatabaseUrl, ASyncStorage} from '../globals';
 
@@ -24,17 +25,6 @@ class MyDirections extends Component {
     this.props.socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
 
     this.props.socket.emit(`checkDirections`);
-
-    this.login();
-
-    if (true) {
-      return;
-    }
-
-    const {contentContainer} = this.refs;
-    const {height} = Dimensions.get(`window`);
-
-    contentContainer.transition({transform: [{translateY: height}], opacity: 0}, {transform: [{translateY: 0}], opacity: 1}, 300, `ease-out-quad`);
   }
 
   componentWillUnmount() {
@@ -42,11 +32,6 @@ class MyDirections extends Component {
     this.props.socket.off(`updateDirections`);
     this.props.socket.off(`directionJoined`);
     this.props.socket.off(`checkDirections`);
-
-    const {contentContainer} = this.refs;
-    const {height} = Dimensions.get(`window`);
-
-    contentContainer.transition({transform: [{translateY: 0}], opacity: 0}, {transform: [{translateY: - height}], opacity: 0}, 300, `ease-out-quad`);
   }
 
   login() {
@@ -108,9 +93,8 @@ class MyDirections extends Component {
     this.setState({connectedDirections});
   }
 
-  detectDirection(direction) {
-    const {socketId} = direction;
-    this.props.socket.emit(`lightUpDirection`, {socketId});
+  detectDirection(socketId) {
+    this.props.socket.emit(`lightUpDirection`, socketId);
   }
 
   generateConnectedDirections() {
@@ -123,8 +107,10 @@ class MyDirections extends Component {
 
     return (
       connectedDirections.map((d, index) => {
+
+
         return (
-          <TouchableOpacity style={ComponentStyle.button} onPress={() => {this.detectDirection(d);}} key={index}>
+          <TouchableOpacity style={ButtonStyles.button} key={index}>
             <Animatable.View animation='bounceIn' easing='ease-out' ref='direction'>
               <Text>{d.socketId}</Text>
               <Text>{`${d.batteryLevel} %`}</Text>
@@ -133,6 +119,41 @@ class MyDirections extends Component {
         );
       })
     );
+  }
+
+  generateDirections() {
+    const {connectedDirections} = this.state;
+
+    return (
+      connectedDirections.map((c, index) => {
+
+        let url = require(`../assets/png/batteryIconFull.png`);
+        if (c.batteryLevel < 20) {
+          url = require(`../assets/png/batteryIconEmpty.png`);
+        }
+
+        console.log(c.socketId);
+
+        return (
+          <Animatable.View animation='fadeInUp' duration={600} delay={8 * index} style={[MyDirectionsStyle.directionListItemWrapper]} key={index}>
+
+            <TouchableOpacity onPress={() => this.detectDirection(c.socketId)}>
+              <Image style={[MyDirectionsStyle.directionListItemImage]} source={require(`../assets/png/direction.png`)}/>
+            </TouchableOpacity>
+
+            <View style={[MyDirectionsStyle.directionListItemInfo]}>
+              <View style={[MyDirectionsStyle.directionListItemBatteryWrapper]}>
+                <Text style={[TextStyles.batteryPercentage]}>{`${c.batteryLevel}%`}</Text>
+                <Image style={[MyDirectionsStyle.directionListItemBattery]} source={url} />
+              </View>
+              <Image style={[MyDirectionsStyle.directionListItemPower]} source={require(`../assets/png/onOffIconBlack.png`)} />
+            </View>
+
+          </Animatable.View>
+        );
+      })
+    );
+
   }
 
   render() {
@@ -144,13 +165,40 @@ class MyDirections extends Component {
 
         <Navigation currentPage={this.props.sceneKey} />
 
-        <Animatable.View style={[GeneralStyle.center, GeneralStyle.contentContainer]} useNativeDriver={true} ref='contentContainer'>
-          <Button title='oefening maken' onPress={() => Actions.editor({connectedDirections})} />
-          <View style={{flexDirection: `column`, alignItems: `center`}}>
-            <Text>Verbonden Directions</Text>
-            <View style={{flexDirection: `row`, alignItems: `center`, justifyContent: `center`}}>
-              {this.generateConnectedDirections()}
+        <Animatable.View style={[GeneralStyle.contentContainer]} ref='contentContainer'>
+          <View>
+            <View style={[MyDirectionsStyle.directionsHeaderWrapper]}>
+              <View>
+                <Text style={[TextStyles.title, MyDirectionsStyle.directionsHeaderTitle]}>{`verbonden directions: ${connectedDirections.length}`.toUpperCase()}</Text>
+                <Text style={[TextStyles.copy, MyDirectionsStyle.directionsHeaderCopy]}>Druk op een Direction om deze te doen oplichten</Text>
+              </View>
+
+              <View style={[MyDirectionsStyle.directionsHeaderButtonWrapper]}>
+                <TouchableOpacity style={[MyDirectionsStyle.directionsHeaderSecundairyButtonWrapper]}>
+                  <View style={[ButtonStyles.secundairyButton]}>
+                    <Image style={[MyDirectionsStyle.buttonIcon]} source={require(`../assets/png/onOffIconOrange.png`)} />
+                    <Text style={[TextStyles.secundairyButton]}>{`directions uitzetten`.toUpperCase()}</Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPressOut={() => Actions.editor()}>
+                  <LinearGradient style={[ButtonStyles.primaryButton]} colors={[Colors.orange, Colors.gradientOrange]}>
+                    <Image style={[MyDirectionsStyle.buttonIcon]} source={require(`../assets/png/plusIconButtonWhite.png`)} />
+                    <Text style={[TextStyles.primaryButton]}>{`nieuwe oefening`.toUpperCase()}</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
             </View>
+
+            <ScrollView horizontal={true}>
+              <View style={[MyDirectionsStyle.directionsListWrapper]}>
+                {this.generateDirections()}
+              </View>
+            </ScrollView>
+          </View>
+
+          <View>
+
           </View>
         </Animatable.View>
 
