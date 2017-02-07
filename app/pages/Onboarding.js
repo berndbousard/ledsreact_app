@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, TouchableOpacity, Image, Text} from 'react-native';
-import {Actions} from 'react-native-router-flux';
+import {Actions, ActionConst} from 'react-native-router-flux';
 import Swiper from 'react-native-swiper';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -46,7 +46,7 @@ class Onboarding extends Component {
         </Swiper>
 
         <View style={OnboardingStyle.buttonWrapper}>
-          <TouchableOpacity style={[ButtonStyles.secundairyButton, OnboardingStyle.secundairyButton]} onPressOut={() => Actions.login()}>
+          <TouchableOpacity onPressOut={() => Actions.myDirections({type: ActionConst.PUSH})} style={[ButtonStyles.secundairyButton, OnboardingStyle.secundairyButton]}>
             <Image style={[OnboardingStyle.secundairyButtonImage]} source={require(`../assets/png/loginIconWhite.png`)} />
             <Text style={[TextStyles.secundairyButton, OnboardingStyle.secundairyButtonText]}>{`inloggen`.toUpperCase()}</Text>
           </TouchableOpacity>
