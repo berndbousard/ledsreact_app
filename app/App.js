@@ -22,8 +22,8 @@ class Main extends PureComponent {
         {/* <Scene key='onboarding' component={Onboarding} title='Onboarding' />
         <Scene key='login' component={Login} title='Login' backTitle='onboarding' /> */}
 
-        <Scene key='myDirections'>
-            <Scene key='directionOverview' component={MyDirections} title='overview' socket={this.socket} hideNavBar />
+        <Scene key='myDirections' initial>
+            <Scene key='directionOverview' component={MyDirections} title='overview' socket={this.socket} hideNavBar initial />
             <Scene key='editor' component={Editor} title='editor' hideNavBar direction='vertical' panHandlers={null}  />
         </Scene>
 
@@ -31,7 +31,7 @@ class Main extends PureComponent {
 
         <Scene key='exercises' initial>
           <Scene key='myExercises' component={MyExercises} title='myExercises' socket={this.socket} hideNavBar />
-          <Scene key='exerciseDetail' component={ExerciseDetail} title='ExerciseDetail' socket={this.socket} hideNavBar initial />
+          <Scene key='exerciseDetail' component={ExerciseDetail} title='ExerciseDetail' socket={this.socket} hideNavBar />
         </Scene>
 
         <Scene key='myTrainings' component={MyTrainings} title='myTrainings' socket={this.socket} hideNavBar />

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, View, TouchableOpacity, Image} from 'react-native';
 import {Actions, ActionConst} from 'react-native-router-flux';
+import * as Animatable from 'react-native-animatable';
 
 import {NavigationStyle} from '../styles';
 
@@ -9,7 +10,7 @@ const Navigation = ({currentPage}) => {
   console.log(currentPage);
 
   return (
-    <View style={NavigationStyle.navigationWrapper}>
+    <Animatable.View animation='fadeIn' duration={300} easing={`ease-out-quad`} style={NavigationStyle.navigationWrapper}>
       <View style={NavigationStyle.navigation}>
         <View style={NavigationStyle.mainNav}>
           <TouchableOpacity style={NavigationStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`myDirections`)} >
@@ -67,7 +68,7 @@ const Navigation = ({currentPage}) => {
         </View>
       </View>
       <Image style={NavigationStyle.navigationSkew} source={require(`../assets/png/navigationSkew.png`)} />
-    </View>
+    </Animatable.View>
   );
 };
 

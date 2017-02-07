@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-
 import {View, Image, Text, TouchableOpacity, ScrollView, TextInput} from 'react-native';
+import {Actions} from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {GeneralStyle, ExerciseDetailStyle, Colors, TextStyles, ButtonStyles} from '../styles';
@@ -10,10 +10,10 @@ class ExerciseDetail extends Component {
   renderHeader() {
     return (
       <View style={ExerciseDetailStyle.headerWrapper}>
-        <View style={ExerciseDetailStyle.backButtonWrapper}>
+        <TouchableOpacity style={ExerciseDetailStyle.backButtonWrapper} onPress={() => Actions.pop()} >
           <Image style={ExerciseDetailStyle.backButtonIcon} source={require(`../assets/png/backArrowOrange.png`)} />
           <Text style={[TextStyles.title, ExerciseDetailStyle.backButtonText]} >{`terug naar overzicht`.toUpperCase()}</Text>
-        </View>
+        </TouchableOpacity>
 
         <View style={ExerciseDetailStyle.headerButtonsWrapper}>
 

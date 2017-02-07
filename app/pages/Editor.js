@@ -40,16 +40,16 @@ class Editor extends Component {
   componentDidMount() {
     console.log(this.refs);
 
-    const {brushIcon, currentColor, deleteIcon, eraserIcon, fieldIcon, redoIcon, saveIcon, undoIcon} = this.refs;
-
-    brushIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    currentColor.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    deleteIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    eraserIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    fieldIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    redoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    saveIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    undoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // const {brushIcon, currentColor, deleteIcon, eraserIcon, fieldIcon, redoIcon, saveIcon, undoIcon} = this.refs;
+    //
+    // brushIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // currentColor.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // deleteIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // eraserIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // fieldIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // redoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // saveIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    // undoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
 
     fetch(`${DatabaseUrl}/api/directionFunctions`)
       .then(r => {
@@ -526,8 +526,6 @@ class Editor extends Component {
         </View>
       );
     }
-
-    return;
   }
 
   renderRightControls() {
@@ -620,17 +618,15 @@ class Editor extends Component {
 
         </View>
         {this.renderLeftControls()}
+
+
         {this.renderRightControls()}
 
         {this.renderAddObjectsButton()}
 
-        {
-          this.renderObjectsDrawer()
-        }
+        {this.renderObjectsDrawer()}
 
-        {
-          this.renderFieldsDrawer()
-        }
+        {this.renderFieldsDrawer()}
       </View>
     );
   }
