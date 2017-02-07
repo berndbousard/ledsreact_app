@@ -1,19 +1,17 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
 
-import {GeneralStyle} from '../styles';
+import {GeneralStyle, Colors, OnboardingStyle} from '../styles';
 import {Navigation} from '../components';
 
-class MyTrainings extends Component {
+class Onboarding extends Component {
 
   render() {
 
     return (
       <View style={GeneralStyle.pageContainer}>
 
-        <Navigation currentPage={this.props.name} />
-
-        <View style={[GeneralStyle.center, {backgroundColor: `green`}, GeneralStyle.contentContainer]}>
+        <View style={[OnboardingStyle.pageContainer]}>
           {/* CONTENT */}
         </View>
 
@@ -22,9 +20,9 @@ class MyTrainings extends Component {
   }
 }
 
-MyTrainings.propTypes = {
+Onboarding.propTypes = {
   socket: React.PropTypes.object,
   name: React.PropTypes.string
 };
 
-export default MyTrainings;
+export default Onboarding;
