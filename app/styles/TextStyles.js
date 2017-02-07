@@ -28,8 +28,25 @@ const TextStyles = StyleSheet.create({
     letterSpacing: - .3
   },
 
+  secondNav: {
+    fontFamily: Fonts.tradeGothic.oblique,
+    color: Colors.black,
+    opacity: .4,
+    textAlign: `left`,
+    fontSize: Fonts.size.secondNav,
+    letterSpacing: - .3,
+    backgroundColor: `transparent`
+  },
+
   copy: {
     fontFamily: Fonts.circular.book,
+    color: Colors.black,
+    textAlign: `left`,
+    fontSize: Fonts.size.copy
+  },
+
+  copyBolder: {
+    fontFamily: Fonts.circular.bold,
     color: Colors.black,
     textAlign: `left`,
     fontSize: Fonts.size.copy

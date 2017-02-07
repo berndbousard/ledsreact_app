@@ -5,6 +5,7 @@ import Path from './svg/Path';
 import Image from './svg/Image';
 import Navigation from './Navigation';
 import PrimaryButton from './PrimaryButton';
+import Exercise from './Exercise';
 
 exports.TabbarIcon = TabbarIcon;
 exports.Direction = Direction;
@@ -13,3 +14,4 @@ exports.Path = Path;
 exports.Image = Image;
 exports.Navigation = Navigation;
 exports.PrimaryButton = PrimaryButton;
+exports.Exercise = Exercise;

@@ -249,7 +249,7 @@ class ExerciseDetail extends Component {
                 <TouchableOpacity style={[ExerciseDetailStyle.analyseButtonWrapper, ExerciseDetailStyle.analyseButtonWrapperEnd]} onPressOut={() => console.log(`analyse`)}>
                   <LinearGradient style={[ButtonStyles.primaryButton]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
                     <Image style={[ExerciseDetailStyle.primaryButtonImage3]} source={require(`../assets/png/noteIconWhite.png`)} />
-                    <Text style={[TextStyles.primaryButton]}>{`mijn teamanalyse`.toUpperCase()}</Text>
+                    <Text style={[TextStyles.primaryButton]}>{`notitie plaatsen`.toUpperCase()}</Text>
                   </LinearGradient>
                 </TouchableOpacity>
 

@@ -113,7 +113,8 @@ const MyDirectionsStyle = StyleSheet.create({
 
   ExerciseCard: {
     padding: 10,
-    marginTop: 20
+    marginTop: 20,
+    height: 320
   },
 
   ExerciseCardHeader: {

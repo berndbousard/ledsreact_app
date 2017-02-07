@@ -9,6 +9,7 @@ import TextStyles from './TextStyles';
 import MyDirectionsStyle from './MyDirectionsStyle';
 import ButtonStyles from './ButtonStyles';
 import ExerciseDetailStyle from './ExerciseDetailStyle';
+import MyExercisesStyle from './MyExercisesStyle';
 
 exports.GeneralStyle = GeneralStyle;
 exports.ComponentStyle = ComponentStyle;
@@ -21,3 +22,4 @@ exports.TextStyles = TextStyles;
 exports.MyDirectionsStyle = MyDirectionsStyle;
 exports.ButtonStyles = ButtonStyles;
 exports.ExerciseDetailStyle = ExerciseDetailStyle;
+exports.MyExercisesStyle = MyExercisesStyle;

@@ -7,8 +7,6 @@ import {NavigationStyle} from '../styles';
 
 const Navigation = ({currentPage}) => {
 
-  console.log(currentPage);
-
   return (
     <Animatable.View animation='fadeIn' duration={300} easing={`ease-out-quad`} style={NavigationStyle.navigationWrapper}>
       <View style={NavigationStyle.navigation}>

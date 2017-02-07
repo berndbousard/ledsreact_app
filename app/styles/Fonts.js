@@ -18,6 +18,7 @@ export default {
     button: 16,
     commentAuthor: 18,
     commentDate: 14,
+    secondNav: 20,
 
     directionTitle: 18,
     directionFuncTitle: 16,

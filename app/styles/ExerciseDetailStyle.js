@@ -428,7 +428,8 @@ const ExerciseDetailStyle = StyleSheet.create({
   analyseButtonWrapperEnd: {
     marginTop: - 10,
     marginLeft: 670,
-    marginBottom: 50
+    marginBottom: 50,
+    width: 190
   }
 });
 
