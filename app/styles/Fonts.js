@@ -11,6 +11,7 @@ export default {
 
   size: {
     copy: 14,
+    bam: 75,
     navCopy: 12,
     title: 20,
     subtitle: 18,

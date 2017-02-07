@@ -19,7 +19,7 @@ class Main extends PureComponent {
   render() {
     return (
       <Router>
-        <Scene key='onboarding' component={Onboarding} title='Onboarding' socket={this.socket} hideNavBar initial />
+        <Scene key='onboarding' component={Onboarding} title='Onboarding' hideNavBar initial />
         {/* <Scene key='login' component={Login} title='Login' backTitle='onboarding' /> */}
 
         <Scene key='myDirections'>

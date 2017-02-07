@@ -4,6 +4,14 @@ import Colors from './Colors';
 import Fonts from './Fonts';
 
 const TextStyles = StyleSheet.create({
+  bam: {
+    fontFamily: Fonts.tradeGothic.bold,
+    color: Colors.white,
+    textAlign: `center`,
+    fontSize: Fonts.size.bam,
+    letterSpacing: - 2
+  },
+
   title: {
     fontFamily: Fonts.tradeGothic.bold,
     color: Colors.orange,

@@ -14,6 +14,7 @@
     "react-native-linear-gradient": "^2.0.0",
     "react-native-router-flux": "^3.37.0",
     "react-native-svg": "^5.1.4",
+    "react-native-swiper": "^1.5.4",
     "react-native-view-shot": "^1.6.0",
     "socket.io": "^1.7.2"
   },
