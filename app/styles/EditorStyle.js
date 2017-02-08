@@ -209,7 +209,6 @@ const ComponentStyle = StyleSheet.create({
     marginTop: 40
   },
 
-
   //-------------------------------{ Direction }---------------------------------
 
   directionDrawerImage: {
@@ -224,61 +223,17 @@ const ComponentStyle = StyleSheet.create({
     position: `absolute`,
     left: (Dimensions.width / 2) - (100 / 2),
     top: (Dimensions.height / 2) - (107 / 2),
-    width: 100
+    borderRadius: 100,
+    width: 120, height: 120
   },
+
+  // directionLink: {
+  //   padding: 5
+  // },
 
   directionImage: {
     width: 100,
-    height: 107
-  },
-
-  //-------------------------------{Direction Popup}---------------------------------
-
-  directionPopup: {
-    flexDirection: `column`,
-    alignItems: `center`,
-    width: 200, //Hier kan je popup mee vergroten
-    backgroundColor: Colors.pureWhite,
-    borderRadius: 4,
-    paddingBottom: 10
-  },
-
-  directionPopupHeaderWrapper: {
-    flexDirection: `row`,
-    justifyContent: `center`,
-    alignItems: `center`,
-    padding: 10,
-    flex: 1
-  },
-
-  directionPopupHeaderLink: {
-    flex: 1
-  },
-
-  directionPopupPageIndicatorWrapper: {
-    flexDirection: `row`,
-    justifyContent: `center`,
-    marginTop: 7
-  },
-
-  directionPopupPageIndicator: {
-    width: 6, height: 6,
-    backgroundColor: Colors.white,
-    borderRadius: 6,
-    marginLeft: 3, marginRight: 3,
-  },
-
-  directionPopupHeaderTitle: {
-    flex: 1
-  },
-
-  directionPopupFuncWrapper: {
-    flexDirection: `column`,
-    alignItems: `center`
-  },
-
-  directionPopupFuncTitle: {
-    marginTop: 10
+    height: 107,
   },
 
   //-------------------------------{Direction Params}---------------------------------
@@ -333,6 +288,152 @@ const ComponentStyle = StyleSheet.create({
     width: 30, height: 30,
     borderRadius: 20,
     margin: 5
+  },
+
+  optionsMenu: {
+    position: `absolute`,
+    right: 0,
+    top: 0,
+    width: 275,
+    height: Dimensions.height,
+    backgroundColor: Colors.pureWhite,
+    shadowColor: Colors.black,
+    shadowOffset: {width: - 10, height: 0},
+    shadowOpacity: .05,
+    shadowRadius: 20,
+    zIndex: 3,
+    flexDirection: `column`,
+    alignItems: `center`
+  },
+
+  optionsMenuTitle: {
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.black,
+    marginTop: 25
+  },
+
+  optionsMenusubTitle: {
+    textAlign: `center`,
+    marginTop: 20
+  },
+
+  directionArrowsWrapper: {
+    marginTop: 10,
+    width: 200,
+    justifyContent: `center`,
+    alignItems: `center`,
+  },
+
+  directionArrow: {
+    justifyContent: `center`,
+    alignItems: `center`,
+    width: 44, height: 44,
+    borderRadius: 100
+  },
+
+  directionArrowIcon: {
+    width: 15, height: 10
+  },
+
+  directionArrowIconUp: {
+    marginBottom: 3,
+    transform: [{rotate: `180deg`}]
+  },
+
+  directionArrowIconDown: {
+    marginTop: 3,
+  },
+
+  directionArrowIconLeft: {
+    marginRight: 3,
+    transform: [{rotate: `90deg`}]
+  },
+
+  directionArrowIconRight: {
+    marginLeft: 2,
+    transform: [{rotate: `-90deg`}]
+  },
+
+  directionArrowMiddle: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `space-between`,
+    width: 150,
+    marginTop: 10, marginBottom: 10
+  },
+
+  optionsMenuRichting: {
+    paddingBottom: 25,
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.white,
+    alignItems: `center`
+  },
+
+  optionsMenuDirectionUpper: {
+
+  },
+
+  optionsMenuDirectionLower: {
+    backgroundColor: Colors.white,
+    width: 275,
+    flex: 1
+  },
+
+  directionColorsWrapper: {
+    flexDirection: `row`,
+    justifyContent: `space-between`,
+    alignItems: `center`,
+    marginTop: 15
+  },
+
+  directionColor: {
+    width: 44, height: 44,
+    borderRadius: 100,
+    marginLeft: 5, marginRight: 5
+  },
+
+  delayButtons: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    marginTop: 15
+    // justifyContent: `space-between`
+  },
+
+  delayButton: {
+    borderWidth: 2,
+    borderColor: Colors.black,
+    width: 44, height: 44,
+    justifyContent: `center`,
+    alignItems: `center`,
+    borderRadius: 100
+  },
+
+  delayMinusIcon: {
+    width: 15, height: 3
+  },
+
+  delayPlusIcon: {
+    width: 15, height: 15
+  },
+
+  delayCopy: {
+    marginRight: 10, marginLeft: 10,
+    textAlign: `center`,
+    width: 50
+  },
+
+  oplichtenWrapper: {
+    flexDirection: `row`,
+    justifyContent: `space-between`,
+    alignItems: `center`
+  },
+
+  oplichtenButton: {
+    padding: 15,
+    borderColor: Colors.black,
+    borderWidth: 2,
+    borderRadius: 2,
+    margin: 10
   }
 });
 

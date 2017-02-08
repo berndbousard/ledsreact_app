@@ -1,5 +1,6 @@
 export default {
   black: `#1E1E1E`,
+  opacityBlack: `rgba(31, 31, 31, 0.15)`,
   lightBlack: `#232323`,
   orange: `#FF272F`,
   gradientOrange: `#FF500D`,

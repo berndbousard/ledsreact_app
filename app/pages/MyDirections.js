@@ -4,7 +4,7 @@ import * as Animatable from 'react-native-animatable';
 import {Actions} from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 
-import {isEmpty, range} from 'lodash';
+import {isEmpty} from 'lodash';
 import {GeneralStyle, TextStyles, MyDirectionsStyle, ButtonStyles, Colors} from '../styles';
 import {Navigation} from '../components';
 import {DatabaseUrl, ASyncStorage} from '../globals';
@@ -188,7 +188,7 @@ class MyDirections extends Component {
   }
 
   generateRecentContent() {
-    const {currentRecentTab, myTrainings, myExercises, connectedDirections} = this.state;
+    const {currentRecentTab, myTrainings, myExercises} = this.state;
 
     if (currentRecentTab === 0) {
       // Oefeningen
@@ -292,8 +292,6 @@ class MyDirections extends Component {
             </View>
 
             <View style={[MyDirectionsStyle.recentWrapper]}>
-              {this.generateRecentContent()}
-              {this.generateRecentContent()}
               {this.generateRecentContent()}
             </View>
           </View>
