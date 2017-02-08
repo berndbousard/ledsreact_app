@@ -112,7 +112,13 @@ class MyDirections extends Component {
   }
 
   detectDirection(socketId) {
-    this.props.socket.emit(`lightUpDirection`, socketId);
+
+    const directionLightTrigger = {
+      directionSocketId: socketId,
+      time: true
+    };
+
+    this.props.socket.emit(`lightUpDirection`, directionLightTrigger);
   }
 
   generateConnectedDirections() {
