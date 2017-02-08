@@ -369,10 +369,6 @@ const ComponentStyle = StyleSheet.create({
     alignItems: `center`
   },
 
-  optionsMenuDirectionUpper: {
-
-  },
-
   optionsMenuDirectionLower: {
     backgroundColor: Colors.white,
     width: 275,
@@ -434,6 +430,192 @@ const ComponentStyle = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 2,
     margin: 10
+  },
+
+  form: {
+    position: `relative`,
+    flexDirection: `column`,
+    justifyContent: `flex-start`,
+    alignItems: `center`,
+    width: Dimensions.width,
+    height: Dimensions.height
+  },
+
+  formHeader: {
+    flexDirection: `column`,
+    alignItems: `center`,
+    width: Dimensions.width,
+    marginTop: 20
+  },
+
+  formBackWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    backgroundColor: `transparent`,
+    position: `absolute`,
+    top: 45,
+    left: 30
+  },
+
+  formBackIcon: {
+    width: 16, height: 13,
+    marginRight: 10
+  },
+
+  formBackText: {
+    color: Colors.orange
+  },
+
+  formHeaderImage: {
+    position: `absolute`,
+    top: 0,
+    left: 0,
+    width: Dimensions.width, height: 224,
+    zIndex: - 1
+  },
+
+  formTitle: {
+    backgroundColor: `transparent`
+  },
+
+  formTitleCopy: {
+    backgroundColor: `transparent`,
+    color: Colors.white,
+    textAlign: `center`,
+    width: 300,
+    lineHeight: 20,
+    marginTop: 5
+  },
+
+  formCloseIconWrapper: {
+    borderWidth: 2,
+    borderColor: Colors.white,
+    width: 44, height: 44,
+    borderRadius: 3,
+    justifyContent: `center`,
+    alignItems: `center`,
+    position: `absolute`,
+    right: 30,
+    top: 30
+  },
+
+  formCloseIcon: {
+    width: 16, height: 16
+  },
+
+  pageIndicatorWrapper: {
+    marginTop: 50,
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `space-between`,
+    width: 40
+  },
+
+  pageIndicator: {
+    width: 7, height: 7,
+    backgroundColor: Colors.white,
+    borderRadius: 10
+  },
+
+  formPageOneContent: {
+    marginTop: 110,
+    width: Dimensions.width
+  },
+
+  naamInputIcon: {
+    width: 28, height: 16,
+    marginRight: 10
+  },
+
+  naamLabelWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`
+  },
+
+  naamWrapper: {
+    flexDirection: `column`,
+    alignItems: `center`
+  },
+
+  naamInputWrapper: {
+    marginTop: 15,
+    borderWidth: 2,
+    borderColor: Colors.black,
+    borderRadius: 50,
+    paddingLeft: 15, paddingRight: 15
+  },
+
+  naamInput: {
+    width: 350, height: 50
+  },
+
+  descWrapper: {
+    marginTop: 50
+  },
+
+  descInputIcon: {
+    width: 20, height: 19,
+    marginRight: 10
+  },
+
+  descInput: {
+    minHeight: 150, width: 350
+  },
+
+  descInputWrapper: {
+    borderRadius: 10,
+    padding: 10
+  },
+
+  primaryButtonFormImage: {
+    width: 16, height: 13,
+    marginLeft: 10
+  },
+
+  barBottomWrapper: {
+    position: `absolute`,
+    padding: 25,
+    bottom: 0,
+    backgroundColor: Colors.lightGrey,
+    width: Dimensions.width,
+    flexDirection: `column`,
+    alignItems: `center`
+  },
+
+  buttonsWrapper: {
+    position: `relative`,
+    flexDirection: `row`,
+    justifyContent: `center`,
+    alignItems: `center`,
+    marginBottom: 50,
+    width: 180
+  },
+
+  secundairyButtonInForm: {
+    width: 16, height: 13,
+    marginRight: 10
+  },
+
+  formButtonPrimaryWrapper: {
+    justifyContent: `center`
+  },
+
+  primaryButtonInForm: {
+    position: `absolute`,
+    top: 0,
+    right: 0,
+    zIndex: 5
+  },
+
+  secundairyButtonInFormWrapper: {
+    position: `absolute`,
+    top: 0,
+    left: 0,
+    opacity: 0
+  },
+
+  formContentWrapper: {
+    flexDirection: `row`,
   }
 });
 

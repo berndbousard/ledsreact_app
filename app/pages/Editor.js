@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
-import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView, TouchableOpacity} from 'react-native';
+import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView, TouchableOpacity, TextInput} from 'react-native';
 import {indexOf, isEmpty, findIndex, remove} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
 import {Actions} from "react-native-router-flux";
 import * as Animatable from 'react-native-animatable';
 import Svg, {Rect} from 'react-native-svg';
+import RNFetchBlob from 'react-native-fetch-blob';
+import LinearGradient from 'react-native-linear-gradient';
 
 import {Circle, Path, Direction} from '../components';
-import {EditorStyle, Colors, Dimensions, TextStyles} from '../styles';
+import {EditorStyle, Colors, Dimensions, TextStyles, ButtonStyles} from '../styles';
 import {DatabaseUrl} from '../globals';
 import {Map} from '../utils';
 
@@ -42,7 +44,9 @@ class Editor extends Component {
     },
     currentEditorDirectionIndex: 0,
     colors: [`green`, `blue`, `yellow`, `red`],
-    currentRichting: undefined
+    currentRichting: undefined,
+    currentPage: 0,
+    currentFormTab: 0
   };
 
   componentDidMount() {
@@ -103,6 +107,30 @@ class Editor extends Component {
       quality: 1,
       result: `file`,
     })
+    .then(r => {
+      console.log(r);
+      this.uploadToServer(r);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  }
+
+  uploadToServer(path) {
+    RNFetchBlob.fetch(`POST`, `${DatabaseUrl}/api/exercises`, {
+      'Content-Type': `multipart/form-data`,
+    },
+      [
+        {name: `name`, data: `React Native Oefening`},
+        {name: `desc`, data: `Dit is de beschrijving van de oefening`},
+        {name: `creator`, data: `5890c647f3ddf323f3bf176e`},
+        {name: `targetAge`, data: 15},
+        {name: `intensity`, data: 3},
+        {name: `groupSize`, data: 3},
+        {name: `focus`, data: `uithouding`},
+        {name: `sport`, data: `58907393ce5bba05c7058bca`},
+        {name: `image`, filename: `field.png`, type: `image/png`, data: RNFetchBlob.wrap(path)}
+      ])
     .then(r => {
       console.log(r);
     })
@@ -420,13 +448,20 @@ class Editor extends Component {
     return;
   }
 
+  changePage(page) {
+    const {currentPage} = this.state;
+    const {editorContainer} = this.refs;
+
+    editorContainer.transitionTo({transform: [{translateX: (page * Dimensions.width) * - 1}]}, 500, `ease-out-circ`);
+  }
+
   renderLeftControls() {
 
     const {brush, field} = this.state;
 
     if (!field.drawer.isActive) {
       return (
-        <View style={[EditorStyle.leftControls]}>
+        <Animatable.View style={[EditorStyle.leftControls]}>
           <View style={[EditorStyle.leftUpperControls]}>
             <TouchableWithoutFeedback onPressOut={() => this.changeColorHandler()} onPressIn={() => this.pressInColorHandler()}>
               <Animatable.View ref='currentColor' style={[EditorStyle.colorIcon, EditorStyle.icon, {backgroundColor: brush.colors[brush.index]}]}>
@@ -459,7 +494,7 @@ class Editor extends Component {
               </Animatable.View>
             </TouchableWithoutFeedback>
 
-            <TouchableWithoutFeedback onPress={() => this.screenshotHandler()} onPressOut={() => this.refs.saveIcon.bounceIn(800)} onPressIn={() => this.refs.saveIcon.pulse(600)}>
+            <TouchableWithoutFeedback onPress={() => this.changePage(1)} onPressOut={() => this.refs.saveIcon.bounceIn(800)} onPressIn={() => this.refs.saveIcon.pulse(600)}>
               <Animatable.View ref='saveIcon'>
                 <Image style={[EditorStyle.saveIcon, EditorStyle.icon]} source={{uri: `saveIcon`}} />
               </Animatable.View>
@@ -471,7 +506,7 @@ class Editor extends Component {
               </Animatable.View>
             </TouchableWithoutFeedback>
           </View>
-        </View>
+        </Animatable.View>
       );
     }
   }
@@ -750,11 +785,11 @@ class Editor extends Component {
                 <Text style={[TextStyles.subTitle, EditorStyle.optionsMenusubTitle]}>{`oplichten`.toUpperCase()}</Text>
                 <View style={[EditorStyle.oplichtenWrapper]}>
                   <TouchableOpacity onPress={() => this.toggleCombinationSetting(false)} style={[EditorStyle.oplichtenButton, {backgroundColor: !globalEditorSettings.combination ? `transparent` : Colors.orange, borderColor: !globalEditorSettings.combination ? Colors.black : Colors.orange}]}>
-                    <Text style={[TextStyles.copy, {color: !globalEditorSettings.combination ? Colors.black : Colors.pureWhite}]}>apart</Text>
+                    <Text style={[TextStyles.copy, {color: !globalEditorSettings.combination ? Colors.black : Colors.pureWhite}]}>willekeurig</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity onPress={() => this.toggleCombinationSetting(true)} style={[EditorStyle.oplichtenButton, {backgroundColor: globalEditorSettings.combination ? `transparent` : Colors.orange, borderColor: globalEditorSettings.combination ? Colors.black : Colors.orange}]}>
-                    <Text style={[TextStyles.copy, {color: globalEditorSettings.combination ? Colors.black : Colors.pureWhite}]}>gecombineerd</Text>
+                    <Text style={[TextStyles.copy, {color: globalEditorSettings.combination ? Colors.black : Colors.pureWhite}]}>samen</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -766,34 +801,178 @@ class Editor extends Component {
     }
   }
 
+  initialAnimation() {
+    const {buttonWrapper, secundairyButton} = this.refs;
+
+    buttonWrapper.transitionTo({width: 400}, 500, `ease-in-out-circ`);
+    secundairyButton.transitionTo({opacity: 1}, 500, `ease-in-out-circ`);
+  }
+
+  backToInitial() {
+    if (this.state.currentFormTab === 1) {
+
+      const {buttonWrapper, secundairyButton} = this.refs;
+
+      buttonWrapper.transitionTo({width: 180}, 500, `ease-in-out-circ`);
+      secundairyButton.transitionTo({opacity: 0}, 500, `ease-in-out-circ`);
+    }
+  }
+
+  toTab(tab) {
+    console.log(tab);
+    let {currentFormTab} = this.state;
+    const {formContent} = this.refs;
+
+    currentFormTab += tab;
+
+    const translateBaby = currentFormTab * Dimensions.width;
+
+    formContent.transitionTo({transform: [{translateX: - translateBaby}]}, 500, `ease-in-out-circ`);
+
+    setTimeout(() => {
+      this.setState({currentFormTab});
+    }, 500);
+
+  }
+
+  toPage(page) {
+    const {currentPage} = this.state;
+
+    console.log(currentPage);
+  }
+
   render() {
-    console.log(this.state.currentRichting);
+    const {currentPage} = this.state;
+
     return (
-      <View style={[EditorStyle.editorContainer]}>
-        <View style={{position: `absolute`}} ref='artboard'>
+      <Animatable.View ref='editorContainer' style={{transform: [{translateX: currentPage * Dimensions.width}], flexDirection: `row`}}>
+        <View style={[EditorStyle.editorContainer]}>
+          <View style={{position: `absolute`}} ref='artboard'>
 
-          <Svg style={[{zIndex: 1}]} {...this.drawHandler.panHandlers} width={Dimensions.width} height={Dimensions.height} ref='svg'>
-            <Rect x='0' y='0' width='100%' height='100%' fill='transparent' />
-            {this.generateUserDrawingFeedback()}
-            {this.generateSvgElements()}
-          </Svg>
-          {this.generateField()}
-          {this.renderEditorDirections()}
+            <Svg style={[{zIndex: 1}]} {...this.drawHandler.panHandlers} width={Dimensions.width} height={Dimensions.height} ref='svg'>
+              <Rect x='0' y='0' width='100%' height='100%' fill='transparent' />
+              {this.generateUserDrawingFeedback()}
+              {this.generateSvgElements()}
+            </Svg>
+            {this.generateField()}
+            {this.renderEditorDirections()}
 
+          </View>
+          {this.renderLeftControls()}
+
+
+          {this.renderRightControls()}
+
+          {this.renderAddObjectsButton()}
+
+          {this.renderObjectsDrawer()}
+
+          {this.renderFieldsDrawer()}
+
+          {this.renderOptionsMenu()}
         </View>
-        {this.renderLeftControls()}
+
+        <View style={EditorStyle.form}>
+
+          <View style={EditorStyle.formHeader}>
+            <View style={EditorStyle.formTitleWrapper}>
+              <Text style={[TextStyles.mainTitle, EditorStyle.formTitle]}>{`Schema Bewaren`.toUpperCase()}</Text>
+              <Text style={[TextStyles.copy, EditorStyle.formTitleCopy]}>Geef je oefening een naam zodat je deze later makkelijk kan terugvinden</Text>
+            </View>
+            <View style={EditorStyle.pageIndicatorWrapper}>
+              <View style={EditorStyle.pageIndicator}></View>
+              <View style={EditorStyle.pageIndicator}></View>
+              <View style={EditorStyle.pageIndicator}></View>
+            </View>
+          </View>
+
+          <TouchableOpacity style={EditorStyle.formCloseIconWrapper}>
+            <Image style={EditorStyle.formCloseIcon} source={require(`../assets/png/closeIconSmallWhite.png`)} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={EditorStyle.formBackWrapper} onPress={() => this.changePage(0)}>
+            <Image style={EditorStyle.formBackIcon} source={require(`../assets/png/backArrowOrange.png`)} />
+            <Text style={[TextStyles.subTitle, EditorStyle.formBackText]}>{`Terug naar editor`.toUpperCase()}</Text>
+          </TouchableOpacity>
+
+          <Animatable.View ref='formContent' style={[EditorStyle.formContentWrapper]}>
+
+            <View style={EditorStyle.formPageOneContent}>
+              <View style={EditorStyle.naamWrapper}>
+                <View style={EditorStyle.naamLabelWrapper}>
+                  <Image style={EditorStyle.naamInputIcon} source={require(`../assets/png/exerciseIconBlack.png`)} />
+                  <Text style={[TextStyles.subTitle]}>{`Naam van je oefening`.toUpperCase()}</Text>
+                </View>
+                <View style={[EditorStyle.naamInputWrapper]}>
+                  <TextInput style={[TextStyles.copy, EditorStyle.naamInput]} placeholder='Tiki Taka Tikspel' />
+                </View>
+              </View>
+
+              <View style={[EditorStyle.naamWrapper, EditorStyle.descWrapper]}>
+                <View style={EditorStyle.naamLabelWrapper}>
+                  <Image style={EditorStyle.descInputIcon} source={require(`../assets/png/brushIcon.png`)} />
+                  <Text style={[TextStyles.subTitle]}>{`Beschrijf je oefening`.toUpperCase()}</Text>
+                </View>
+                <View style={[EditorStyle.naamInputWrapper, EditorStyle.descInputWrapper]}>
+                  <TextInput multiline={true} style={[TextStyles.copy, EditorStyle.descInput]} placeholder='Deze oefening probeert de reactiesnelheid van de spelers te verbeteren' />
+                </View>
+              </View>
+            </View>
+
+            <View style={EditorStyle.formPageOneContent}>
+              <View style={EditorStyle.naamWrapper}>
+                <View style={EditorStyle.naamLabelWrapper}>
+                  <Image style={EditorStyle.naamInputIcon} source={require(`../assets/png/exerciseIconBlack.png`)} />
+                  <Text style={[TextStyles.subTitle]}>{`Naam van je oefening 2`.toUpperCase()}</Text>
+                </View>
+                <View style={[EditorStyle.naamInputWrapper]}>
+                  <TextInput style={[TextStyles.copy, EditorStyle.naamInput]} placeholder='Tiki Taka Tikspel' />
+                </View>
+              </View>
+
+              <View style={[EditorStyle.naamWrapper, EditorStyle.descWrapper]}>
+                <View style={EditorStyle.naamLabelWrapper}>
+                  <Image style={EditorStyle.descInputIcon} source={require(`../assets/png/brushIcon.png`)} />
+                  <Text style={[TextStyles.subTitle]}>{`Beschrijf je oefening 2`.toUpperCase()}</Text>
+                </View>
+                <View style={[EditorStyle.naamInputWrapper, EditorStyle.descInputWrapper]}>
+                  <TextInput multiline={true} style={[TextStyles.copy, EditorStyle.descInput]} placeholder='Deze oefening probeert de reactiesnelheid van de spelers te verbeteren' />
+                </View>
+              </View>
+            </View>
+
+          </Animatable.View>
 
 
-        {this.renderRightControls()}
+          <View style={[EditorStyle.barBottomWrapper]}>
+            <Animatable.View ref='buttonWrapper' style={EditorStyle.buttonsWrapper}>
 
-        {this.renderAddObjectsButton()}
+              <Animatable.View ref='secundairyButton' style={EditorStyle.secundairyButtonInFormWrapper}>
+                <TouchableOpacity onPress={() => this.backToInitial()} onPressOut={() => this.toTab(- 1)}>
+                  <View style={[ButtonStyles.secundairyButton, EditorStyle.formSecundButton]}>
+                    <Image style={[EditorStyle.secundairyButtonInForm]} source={require(`../assets/png/backArrowOrange.png`)} />
+                    <Text style={[TextStyles.secundairyButton, EditorStyle.formSecundButtonText]}>{`algemene informatie`.toUpperCase()}</Text>
+                  </View>
+                </TouchableOpacity>
+              </Animatable.View>
 
-        {this.renderObjectsDrawer()}
 
-        {this.renderFieldsDrawer()}
+              <Animatable.View style={EditorStyle.primaryButtonInForm}>
+                <TouchableOpacity onPress={() => this.initialAnimation()} onPressOut={() => this.toTab(1)}>
+                  <LinearGradient style={[ButtonStyles.primaryButton, EditorStyle.formButtonPrimaryWrapper]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
+                    <Text style={[TextStyles.primaryButton, EditorStyle.primaryFormButton]}>{`tags toevoegen`.toUpperCase()}</Text>
+                    <Image style={[EditorStyle.primaryButtonFormImage]} source={require(`../assets/png/arrowButtonWhite.png`)} />
+                  </LinearGradient>
+                </TouchableOpacity>
+              </Animatable.View>
 
-        {this.renderOptionsMenu()}
-      </View>
+            </Animatable.View>
+
+          </View>
+
+          <Image style={EditorStyle.formHeaderImage} source={require(`../assets/png/editorHeaderBlack.png`)} />
+        </View>
+      </Animatable.View>
     );
   }
 }
