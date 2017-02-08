@@ -3,7 +3,7 @@ import {View, Button, TouchableOpacity, Text, Image, TextInput, ScrollView} from
 import {Actions} from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 
-import {GeneralStyle, MyExercisesStyle, Colors, TextStyles, ButtonStyles} from '../styles';
+import {GeneralStyle, MyExercisesStyle, MyDirectionsStyle, Colors, TextStyles, ButtonStyles} from '../styles';
 import {Navigation, Exercise} from '../components';
 import {range} from 'lodash';
 
@@ -73,8 +73,12 @@ class MyExercises extends Component {
       <ScrollView>
         <View style={MyExercisesStyle.exercisesContainer}>
           {
-            range(8).map((r, index) => {
-              return <Exercise key={index} index={index} />;
+            range(4).map((r, index) => {
+              return (
+                <TouchableOpacity onPress={() => Actions.exerciseDetail()} style={MyDirectionsStyle.ExerciseCard} key={index}>
+                  <Exercise index={index} />
+                </TouchableOpacity>
+              );
             })
           }
         </View>

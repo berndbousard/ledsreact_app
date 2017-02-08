@@ -33,7 +33,7 @@ class ExerciseDetail extends Component {
             <Image style={ExerciseDetailStyle.headerAddIcon} source={require(`../assets/png/addIconWhite.png`)} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={ExerciseDetailStyle.primaryButtonWrapper} onPressOut={() => console.log(`uitproberen`)}>
+          <TouchableOpacity style={ExerciseDetailStyle.primaryButtonWrapper} onPress={() => Actions.deployment({exerciseId: `5894a0971c150020710b8b5d`})}>
             <LinearGradient style={[ButtonStyles.primaryButton, ExerciseDetailStyle.buttonWrapper]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
               <Image style={[ExerciseDetailStyle.primaryButtonImage]} source={require(`../assets/png/playIconWhite.png`)} />
               <Text style={[TextStyles.primaryButton, ExerciseDetailStyle.primaryButtonText]}>{`uitproberen`.toUpperCase()}</Text>

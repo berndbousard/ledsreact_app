@@ -7,6 +7,7 @@ import Discover from './Discover';
 import MyExercises from './MyExercises';
 import MyTrainings from './MyTrainings';
 import Analytics from './Analytics';
+import Deployment from './Deployment';
 
 exports.Onboarding = Onboarding;
 exports.Login = Login;
@@ -17,3 +18,4 @@ exports.Discover = Discover;
 exports.MyExercises = MyExercises;
 exports.MyTrainings = MyTrainings;
 exports.Analytics = Analytics;
+exports.Deployment = Deployment;

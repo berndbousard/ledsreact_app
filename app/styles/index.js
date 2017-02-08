@@ -11,6 +11,7 @@ import ButtonStyles from './ButtonStyles';
 import ExerciseDetailStyle from './ExerciseDetailStyle';
 import MyExercisesStyle from './MyExercisesStyle';
 import OnboardingStyle from './OnboardingStyle';
+import DeploymentStyle from './DeploymentStyle';
 
 exports.GeneralStyle = GeneralStyle;
 exports.ComponentStyle = ComponentStyle;
@@ -25,3 +26,4 @@ exports.ButtonStyles = ButtonStyles;
 exports.ExerciseDetailStyle = ExerciseDetailStyle;
 exports.MyExercisesStyle = MyExercisesStyle;
 exports.OnboardingStyle = OnboardingStyle;
+exports.DeploymentStyle = DeploymentStyle;

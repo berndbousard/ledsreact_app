@@ -67,7 +67,7 @@ class MyTrainings extends Component {
 
         <View style={[GeneralStyle.center, {backgroundColor: `green`}, GeneralStyle.contentContainer]}>
           <Button title='keer keer weer' onPress={() => Actions.pop()} />
-          <Button title='uitproberen' onPress={() => Actions.tryExercise()} disabled={directionsNeeded.length > connectedDirections.length ? false : true} />
+          <Button title='uitproberen' onPress={() => Actions.deployment()} disabled={directionsNeeded.length > connectedDirections.length ? false : true} />
           {
             this.generateDirectionsForExercise()
           }

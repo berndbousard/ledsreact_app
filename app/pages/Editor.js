@@ -292,7 +292,7 @@ class Editor extends Component {
     return (
       <Animatable.View ref='drawerRef' duration={200} animation='pulse' easing='ease-out' style={[EditorStyle.drawer]}>
         <TouchableWithoutFeedback onPress={() => this.directionDrawerImagePressHandler()}>
-          <Image style={[EditorStyle.directionDrawerImage]} source={require(`../assets/png/direction.png`)} />
+          <Image style={[EditorStyle.directionDrawerImage]} source={{uri: `direction`}} />
         </TouchableWithoutFeedback>
       </Animatable.View>
     );
@@ -324,23 +324,23 @@ class Editor extends Component {
     let url = field.images[field.currentIndex];
 
     if (url === `soccer`) {
-      url = require(`../assets/png/soccerBackground.png`);
+      url = {uri: `soccerBackground`};
     }
 
     if (url === `basket`) {
-      url = require(`../assets/png/basketBackground.png`);
+      url = {uri: `basketBackground`};
     }
 
     if (url === `tennis`) {
-      url = require(`../assets/png/tennisBackground.png`);
+      url = {uri: `tennisBackground`};
     }
 
     if (url === `rugby`) {
-      url = require(`../assets/png/rugbyBackground.png`);
+      url = {uri: `rugbyBackground`};
     }
 
     if (url === `volleyball`) {
-      url = require(`../assets/png/volleyballBackground.png`);
+      url = {uri: `volleyballBackground`};
     }
 
     if (url === `blanco`) {
@@ -371,78 +371,78 @@ class Editor extends Component {
               <View style={[EditorStyle.fieldsDrawerScrollviewContent]}>
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={require(`../assets/png/blancoIcon.png`)} />
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `blancoIcon`}} />
                     <Text style={[TextStyles.subTitle]}>{`blanco`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`blanco`)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 0 ? Colors.orange : `transparent`}]}>
-                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={require(`../assets/png/blancoFieldThumbnail.png`)} />
+                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `blancoFieldThumbnail`}} />
                     </View>
                   </TouchableWithoutFeedback>
                 </View>
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={require(`../assets/png/soccerIcon.png`)} />
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `soccerIcon`}} />
                     <Text style={[TextStyles.subTitle]}>{`voetbal`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`soccer`)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 1 ? Colors.orange : `transparent`}]}>
-                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={require(`../assets/png/soccerFieldThumbnail.png`)} />
+                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `soccerFieldThumbnail`}} />
                     </View>
                   </TouchableWithoutFeedback>
                 </View>
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={require(`../assets/png/basketballIcon.png`)} />
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `basketballIcon`}} />
                     <Text style={[TextStyles.subTitle]}>{`basket`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`basket`)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 2 ? Colors.orange : `transparent`}]}>
-                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={require(`../assets/png/basketFieldThumbnail.png`)} />
+                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `basketFieldThumbnail`}} />
                     </View>
                   </TouchableWithoutFeedback>
                 </View>
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={require(`../assets/png/tennisIcon.png`)} />
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `tennisIcon`}} />
                     <Text style={[TextStyles.subTitle]}>{`tennis`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`tennis`)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 3 ? Colors.orange : `transparent`}]}>
-                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={require(`../assets/png/tennisFieldThumbnail.png`)} />
+                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `tennisFieldThumbnail`}} />
                     </View>
                   </TouchableWithoutFeedback>
                 </View>
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={require(`../assets/png/rugbyIcon.png`)} />
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `rugbyIcon`}} />
                     <Text style={[TextStyles.subTitle]}>{`rugby`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`rugby`)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 4 ? Colors.orange : `transparent`}]}>
-                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={require(`../assets/png/rugbyFieldThumbnail.png`)} />
+                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `rugbyFieldThumbnail`}} />
                     </View>
                   </TouchableWithoutFeedback>
                 </View>
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={require(`../assets/png/volleyBallIcon.png`)} />
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `volleyBallIcon`}} />
                     <Text style={[TextStyles.subTitle]}>{`volleybal`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`volleyball`)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 5 ? Colors.orange : `transparent`}]}>
-                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={require(`../assets/png/volleyballFieldThumbnail.png`)} />
+                      <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `volleyballFieldThumbnail`}} />
                     </View>
                   </TouchableWithoutFeedback>
                 </View>
@@ -487,13 +487,13 @@ class Editor extends Component {
 
             <TouchableWithoutFeedback onPressOut={() => this.refs.brushIcon.bounceIn(800)} onPressIn={() => this.refs.brushIcon.pulse(600)}>
               <Animatable.View ref='brushIcon'>
-                <Image style={[EditorStyle.brushIcon, EditorStyle.icon]} source={require(`../assets/png/brushIcon.png`)}/>
+                <Image style={[EditorStyle.brushIcon, EditorStyle.icon]} source={{uri: `brushIcon`}} />
               </Animatable.View>
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback onPressOut={() => this.refs.eraserIcon.bounceIn(800)} onPressIn={() => this.refs.eraserIcon.pulse(600)}>
               <Animatable.View ref='eraserIcon'>
-                <Image style={[EditorStyle.eraserIcon, EditorStyle.icon]} source={require(`../assets/png/eraserIcon.png`)}/>
+                <Image style={[EditorStyle.eraserIcon, EditorStyle.icon]} source={{uri: `eraserIcon`}} />
               </Animatable.View>
             </TouchableWithoutFeedback>
           </View>
@@ -501,25 +501,25 @@ class Editor extends Component {
           <View style={[EditorStyle.leftLowerControls]}>
             <TouchableWithoutFeedback onPress={() => this.deleteLastActionHandler()} onPressOut={() => this.refs.undoIcon.bounceIn(800)} onPressIn={() => this.refs.undoIcon.pulse(600)}>
               <Animatable.View ref='undoIcon'>
-                <Image style={[EditorStyle.undoIcon, EditorStyle.icon]} source={require(`../assets/png/undoIcon.png`)}/>
+                <Image style={[EditorStyle.undoIcon, EditorStyle.icon]} source={{uri: `undoIcon`}} />
               </Animatable.View>
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback onPressOut={() => this.refs.redoIcon.bounceIn(800)} onPressIn={() => this.refs.redoIcon.pulse(600)}>
               <Animatable.View ref='redoIcon'>
-                <Image style={[EditorStyle.redoIcon, EditorStyle.icon]} source={require(`../assets/png/redoIcon.png`)}/>
+                <Image style={[EditorStyle.redoIcon, EditorStyle.icon]} source={{uri: `redoIcon`}} />
               </Animatable.View>
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback onPress={() => this.screenshotHandler()} onPressOut={() => this.refs.saveIcon.bounceIn(800)} onPressIn={() => this.refs.saveIcon.pulse(600)}>
               <Animatable.View ref='saveIcon'>
-                <Image style={[EditorStyle.saveIcon, EditorStyle.icon]} source={require(`../assets/png/saveIcon.png`)}/>
+                <Image style={[EditorStyle.saveIcon, EditorStyle.icon]} source={{uri: `saveIcon`}} />
               </Animatable.View>
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback onPress={() => this.deleteAllActionsHandler()} onPressOut={() => this.refs.deleteIcon.bounceIn(800)} onPressIn={() => this.refs.deleteIcon.pulse(600)}>
               <Animatable.View ref='deleteIcon'>
-                <Image style={[EditorStyle.deleteIcon, EditorStyle.icon]} source={require(`../assets/png/deleteIcon.png`)}/>
+                <Image style={[EditorStyle.deleteIcon, EditorStyle.icon]} source={{uri: `deleteIcon`}} />
               </Animatable.View>
             </TouchableWithoutFeedback>
           </View>
@@ -533,16 +533,16 @@ class Editor extends Component {
 
     let url = ``;
     if (field.drawer.isActive) {
-      url = require(`../assets/png/closeIcon.png`);
+      url = {uri: `closeIcon`};
     } else {
-      url = require(`../assets/png/fieldIcon.png`);
+      url = {uri: `fieldIcon`};
     }
 
     return (
       <View style={[EditorStyle.rightControls]}>
         <TouchableWithoutFeedback onPressOut={() => Actions.pop()} onPressIn={() => this.refs.closeIcon.pulse(600)}>
           <Animatable.View style={[{opacity: field.drawer.isActive ? 0 : 1}]} ref='closeIcon'>
-            <Image style={[EditorStyle.closeIcon, EditorStyle.icon]} source={require(`../assets/png/closeIcon.png`)}/>
+            <Image style={[EditorStyle.closeIcon, EditorStyle.icon]} source={{uri: `closeIcon`}} />
           </Animatable.View>
         </TouchableWithoutFeedback>
 
@@ -564,7 +564,7 @@ class Editor extends Component {
     if (!field.drawer.isActive) {
       return (
         <TouchableWithoutFeedback onPress={() => this.addObjectsButtonPressHandler()}>
-          <Animatable.Image ref='addEditorIcon' style={EditorStyle.addEditorIcon} source={require(`../assets/png/addEditorIcon.png`)} />
+          <Animatable.Image ref='addEditorIcon' style={EditorStyle.addEditorIcon} source={{uri: `addEditorIcon`}} />
         </TouchableWithoutFeedback>
       );
     }

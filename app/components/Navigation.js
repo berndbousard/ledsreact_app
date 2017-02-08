@@ -11,9 +11,9 @@ const Navigation = ({currentPage}) => {
     <Animatable.View animation='fadeIn' duration={300} easing={`ease-out-quad`} style={NavigationStyle.navigationWrapper}>
       <View style={NavigationStyle.navigation}>
         <View style={NavigationStyle.mainNav}>
-          <TouchableOpacity style={NavigationStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`myDirections`)} >
+          <TouchableOpacity style={NavigationStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`directionOverview`)} >
             <Image style={NavigationStyle.navigationMyDirectionsIcon} source={require(`../assets/png/myDirectionsIcon.png`)}/>
-            <Text style={[NavigationStyle.navigationText, currentPage === `myDirections` || currentPage === `directionOverview` ? NavigationStyle.activeNavigationLink : ``]}>Mijn Directions</Text>
+            <Text style={[NavigationStyle.navigationText, currentPage === `directionOverview` ? NavigationStyle.activeNavigationLink : ``]}>Mijn Directions</Text>
           </TouchableOpacity>
 
           <Image style={NavigationStyle.divider} source={require(`../assets/png/divider.png`)} />

@@ -4,7 +4,7 @@ import {Router, Scene} from 'react-native-router-flux';
 import './globals/UserAgent'; //Moet enkel pre 1.5.1
 import io from 'socket.io-client';
 
-import {Onboarding, Login, MyDirections, Discover, MyExercises, MyTrainings, Analytics, Editor, ExerciseDetail} from './pages';
+import {Onboarding, MyDirections, Discover, MyExercises, MyTrainings, Analytics, Editor, ExerciseDetail, Deployment} from './pages';
 
 class Main extends PureComponent {
 
@@ -23,9 +23,11 @@ class Main extends PureComponent {
         {/* <Scene key='login' component={Login} title='Login' backTitle='onboarding' /> */}
 
         {/* <Scene key='myDirections'> */}
-          <Scene key='directionOverview' component={MyDirections} title='overview' socket={this.socket} hideNavBar />
-          <Scene key='editor' component={Editor} title='editor' hideNavBar direction='vertical' panHandlers={null}  />
         {/* </Scene> */}
+        <Scene key='directionOverview' component={MyDirections} title='overview' socket={this.socket} hideNavBar />
+        <Scene key='editor' component={Editor} title='editor' hideNavBar direction='vertical' panHandlers={null}  />
+
+        <Scene key='deployment' component={Deployment} socket={this.socket} title='deployment' hideNavBar direction='vertical' panHandlers={null}  />
 
         <Scene key='discover' component={Discover} title='discover' socket={this.socket} hideNavBar />
 

@@ -8,7 +8,7 @@ import {Colors, TextStyles, ButtonStyles, MyDirectionsStyle} from '../styles';
 const Exercise = ({title, index}) => {
 
   return (
-    <Animatable.View animation='fadeInUp' duration={600} delay={8 * index} style={MyDirectionsStyle.ExerciseCard}>
+    <Animatable.View animation='fadeInUp' duration={600} delay={8 * index}>
       <View style={MyDirectionsStyle.ExerciseCardHeader}>
         <Image style={MyDirectionsStyle.ExerciseCardSportIcon} source={require(`../assets/png/soccerIcon.png`)} />
         <Text style={[TextStyles.subTitle, MyDirectionsStyle.ExerciseCardTitle]}>{`Aanvallen op de flank`.toUpperCase()}</Text>
