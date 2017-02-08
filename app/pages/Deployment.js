@@ -22,10 +22,17 @@ class Deployment extends Component {
       })
       .then(({directions}) => {
         this.setState({directions});
+        this.props.socket.emit(`setDirectionSettings`, directions);
       })
       .catch(e => {
         console.log(e);
       });
+  }
+
+  nextStepHandler() {
+    console.log(this.props);
+
+    this.props.socket.emit(`nextStep`);
   }
 
   render() {
@@ -35,6 +42,7 @@ class Deployment extends Component {
 
         <View style={[DeploymentStyle.pageContainer]}>
           {/* CONTENT */}
+          <Button title='next step' onPress={() => this.nextStepHandler()} />
           <Button title='abort mission' onPress={() => Actions.pop()} />
         </View>
 
