@@ -51,15 +51,17 @@ class Editor extends Component {
     sports: [],
     currentSelectedSport: 0,
 
-    ageCats: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, `18 - 25`, `25 - 40`, `40 - 60`, `60+`],
-    ageCatsIndex: 5,
+    ages: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, `18 - 25`, `25 - 40`, `40 - 60`, `60+`],
+    ageIndex: 5,
 
-    ageplayerAmounts: [`1`, `2 - 5`, `5 - 10`, `onbeperkt`],
-    ageplayerIndex: 0,
+    playerGroups: [`1`, `2 - 5`, `5 - 10`, `onbeperkt`],
+    playerGroupIndex: 0,
 
     focusInputValue: ``,
     nameInputValue: ``,
-    descInputValue: ``
+    descInputValue: ``,
+
+    fieldImageUrls: ``
   };
 
   componentDidMount() {
@@ -117,23 +119,6 @@ class Editor extends Component {
         this.setState({svgElements});
         this.setState({userDrawingFeedback: []});
       }
-    });
-  }
-
-  screenshotHandler() {
-
-    const artboard = this.refs[`artboard`];
-
-    takeSnapshot(artboard, {
-      format: `png`,
-      quality: 1,
-      result: `file`,
-    })
-    .then(r => {
-      this.uploadToServer(r);
-    })
-    .catch(e => {
-      console.log(e);
     });
   }
 
@@ -867,26 +852,46 @@ class Editor extends Component {
     }
   }
 
-  saveExercise() {
+  async saveExercise() {
     // TODO: Bla
     const {
       focusInputValue, descInputValue, nameInputValue,
-      currentSelectedSport, ageCats, ageplayerAmounts, ageplayerIndex, sports
+      currentSelectedSport, ages, ageIndex, playerGroups, playerGroupIndex, sports
     } = this.state;
 
     const data = {
       name: nameInputValue,
       desc: descInputValue,
       creator: `5890c647f3ddf323f3bf176e`,
-      targetAge: ageCats[ageplayerIndex],
-      sport: sports[currentSelectedSport]
+      targetAge: ages[ageIndex],
+      intensity: 0,
+      sport: sports[currentSelectedSport]._id,
+      focus: focusInputValue,
+      groupSize: playerGroups[playerGroupIndex]
     };
 
-    console.log(data);
+    const fieldUrl = await this.screenshotHandler(`field`);
+    const fieldWithDirectionUrl = await this.screenshotHandler(`fieldAndDirections`);
   }
 
-  toPage(page) {
-    const {currentPage} = this.state;
+  screenshotHandler(element) {
+
+    return new Promise(resolve => {
+
+      const target = this.refs[`${element}`];
+
+      takeSnapshot(target, {
+        format: `png`,
+        quality: 1,
+        result: `file`,
+      })
+      .then(r => {
+        resolve(r);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    });
   }
 
   renderSports() {
@@ -907,29 +912,29 @@ class Editor extends Component {
   }
 
   changeAge(index) {
-    let {ageCatsIndex} = this.state;
-    const {ageCats} = this.state;
+    let {ageIndex} = this.state;
+    const {ages} = this.state;
 
-    if (ageCatsIndex + index < 0 || ageCatsIndex + index > (ageCats.length - 1)) {
+    if (ageIndex + index < 0 || ageIndex + index > (ages.length - 1)) {
       return;
     }
 
-    ageCatsIndex += index;
+    ageIndex += index;
 
-    this.setState({ageCatsIndex});
+    this.setState({ageIndex});
   }
 
   changeAmount(index) {
-    let {ageplayerIndex} = this.state;
-    const {ageplayerAmounts} = this.state;
+    let {playerGroupIndex} = this.state;
+    const {playerGroups} = this.state;
 
-    if (ageplayerIndex + index < 0 || ageplayerIndex + index > (ageplayerAmounts.length - 1)) {
+    if (playerGroupIndex + index < 0 || playerGroupIndex + index > (playerGroups.length - 1)) {
       return;
     }
 
-    ageplayerIndex += index;
+    playerGroupIndex += index;
 
-    this.setState({ageplayerIndex});
+    this.setState({playerGroupIndex});
   }
 
   renderPrimaryButtonText() {
@@ -1033,16 +1038,16 @@ class Editor extends Component {
 
   render() {
     const {
-      currentPage, ageCats, ageCatsIndex, ageplayerAmounts, ageplayerIndex,
+      currentPage, ages, ageIndex, playerGroups, playerGroupIndex,
       focusInputValue, nameInputValue, descInputValue
     } = this.state;
 
     return (
       <Animatable.View ref='editorContainer' style={{transform: [{translateX: currentPage * Dimensions.width}], flexDirection: `row`}}>
         <View style={[EditorStyle.editorContainer]}>
-          <View style={{position: `absolute`}} ref='artboard'>
+          <View style={{position: `absolute`}} ref='fieldAndDirections'>
 
-            <Svg style={[{zIndex: 1}]} {...this.drawHandler.panHandlers} width={Dimensions.width} height={Dimensions.height} ref='svg'>
+            <Svg style={[{zIndex: 1}]} {...this.drawHandler.panHandlers} width={Dimensions.width} height={Dimensions.height} ref='field'>
               <Rect x='0' y='0' width='100%' height='100%' fill='transparent' />
               {this.generateUserDrawingFeedback()}
               {this.generateSvgElements()}
@@ -1163,7 +1168,7 @@ class Editor extends Component {
                     <Image style={EditorStyle.minusIconForm} source={require(`../assets/png/minusIconBlack.png`)} />
                   </TouchableOpacity>
 
-                  <Text style={[TextStyles.copy, EditorStyle.playerFormAmountText]}>{`${ageplayerAmounts[ageplayerIndex]}`}</Text>
+                  <Text style={[TextStyles.copy, EditorStyle.playerFormAmountText]}>{`${playerGroups[playerGroupIndex]}`}</Text>
 
                   <TouchableOpacity style={EditorStyle.iconFormIconsAmount} onPress={() => this.changeAmount(1)}>
                     <Image style={EditorStyle.plusIconForm} source={require(`../assets/png/plusIconBlack.png`)} />
@@ -1182,7 +1187,7 @@ class Editor extends Component {
                     <Image style={EditorStyle.minusIconForm} source={require(`../assets/png/minusIconBlack.png`)} />
                   </TouchableOpacity>
 
-                  <Text style={[TextStyles.copy, EditorStyle.playerFormAmountText]}>{`${ageCats[ageCatsIndex]}j`}</Text>
+                  <Text style={[TextStyles.copy, EditorStyle.playerFormAmountText]}>{`${ages[ageIndex]}j`}</Text>
 
                   <TouchableOpacity style={EditorStyle.iconFormIconsAmount} onPress={() => this.changeAge(1)}>
                     <Image style={EditorStyle.plusIconForm} source={require(`../assets/png/plusIconBlack.png`)} />
