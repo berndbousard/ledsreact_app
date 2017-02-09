@@ -438,7 +438,8 @@ const ComponentStyle = StyleSheet.create({
     justifyContent: `flex-start`,
     alignItems: `center`,
     width: Dimensions.width,
-    height: Dimensions.height
+    height: Dimensions.height,
+    backgroundColor: Colors.white
   },
 
   formHeader: {
@@ -597,7 +598,8 @@ const ComponentStyle = StyleSheet.create({
   },
 
   formButtonPrimaryWrapper: {
-    justifyContent: `center`
+    justifyContent: `center`,
+    overflow: `hidden`
   },
 
   primaryButtonInForm: {
@@ -616,6 +618,149 @@ const ComponentStyle = StyleSheet.create({
 
   formContentWrapper: {
     flexDirection: `row`,
+  },
+
+  sportsScroller: {
+    width: Dimensions.width - 145
+  },
+
+  sportsInputWrapper: {
+    marginTop: 25,
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `center`,
+    marginLeft: 20,
+    paddingBottom: 20
+  },
+
+  sportFormItem: {
+    marginRight: 25,
+    backgroundColor: Colors.pureWhite,
+    flexDirection: `column`,
+    alignItems: `center`,
+    paddingTop: 15, paddingBottom: 10,
+    paddingLeft: 20, paddingRight: 20,
+    borderWidth: 3,
+    borderRadius: 5,
+    shadowColor: Colors.black,
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: .05,
+    shadowRadius: 5,
+  },
+
+  sportFormItemImage: {
+    width: 90,
+    height: 90,
+    marginBottom: 15
+  },
+
+  sportsIconWrapper: {
+    width: 32, height: 15,
+    marginRight: 10
+  },
+
+  focusFormIcon: {
+    width: 35, height: 26,
+    marginRight: 10
+  },
+
+  formPageTwoInputs: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `space-around`
+  },
+
+  intensivityCopy: {
+    padding: 18,
+    backgroundColor: `transparent`
+  },
+
+  fakeSelect: {
+    flexDirection: `row`,
+    justifyContent: `space-between`,
+    alignItems: `center`,
+
+  },
+
+  fakeSelectIcon: {
+    width: 11, height: 7
+  },
+
+  formIntensivityIcon: {
+    width: 30, height: 30,
+    marginRight: 10
+  },
+
+  birthdayIcon: {
+    width: 32, height: 25,
+    marginRight: 10
+  },
+
+  sideFormWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `space-between`
+
+  },
+
+  groupSizeIconForm: {
+    width: 30, height: 30,
+    marginRight: 10
+  },
+
+  formPageThreeContent: {
+    marginTop: 175,
+    width: 425,
+    justifyContent: `center`,
+    marginLeft: 275
+  },
+
+  pageThreeInputs: {
+    marginLeft: 50
+  },
+
+  pageThreeInputsUp: {
+    marginLeft: 70
+  },
+
+  playerAmountWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`
+  },
+
+  plusIconForm: {
+    width: 13, height: 13
+  },
+
+  minusIconForm: {
+    width: 13, height: 2
+  },
+
+  iconFormIconsAmount: {
+    width: 44, height: 44,
+    borderWidth: 2,
+    borderColor: Colors.black,
+    justifyContent: `center`,
+    alignItems: `center`,
+    borderRadius: 2
+  },
+
+  playerFormAmountText: {
+    marginLeft: 25, marginRight: 25,
+    width: 70,
+    textAlign: `center`
+  },
+
+  sportsWrapper: {
+    alignItems: `flex-start`,
+    justifyContent: `center`,
+    marginLeft: 50,
+    marginTop: - 10,
+    marginBottom: 50
+  },
+
+  sportsTitleWrapper: {
+    marginLeft: 30
   }
 });
 
