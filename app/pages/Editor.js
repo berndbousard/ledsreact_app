@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView, TouchableOpacity, TextInput, ActivityIndicator} from 'react-native';
+import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, LayoutAnimation} from 'react-native';
 import {indexOf, isEmpty, findIndex, remove} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
 import {Actions, ActionConst} from "react-native-router-flux";
@@ -37,13 +37,15 @@ class Editor extends Component {
         isActive: false
       }
     },
+
     editorDirections: [],
     globalEditorSettings: {
       delay: 0,
-      combination: false
+      combineLights: false
     },
+
     currentEditorDirectionIndex: 0,
-    colors: [`green`, `blue`, `yellow`, `red`],
+    colors: [`#FF0F00`, `#1E6DFF`, `#50E610`, `#FFD100`],
     currentRichting: undefined,
     currentPage: 0,
     currentFormTab: 0,
@@ -63,6 +65,10 @@ class Editor extends Component {
 
     loader: false
   };
+
+  componentWillMount() {
+    LayoutAnimation.spring();
+  }
 
   componentDidMount() {
 
@@ -242,7 +248,7 @@ class Editor extends Component {
       x: Map(Dimensions.width / 2 - (100 / 2), 0, Dimensions.width, 0, 1),
       y: Map(Dimensions.height / 2 - (107 / 2), 0, Dimensions.width, 0, 1),
       top: {
-        colors: [`blue`, `green`]
+        colors: []
       },
       bottom: {
         colors: []
@@ -702,11 +708,11 @@ class Editor extends Component {
     );
   }
 
-  toggleCombinationSetting(combination) {
+  toggleCombinationSetting(combineLights) {
     const {globalEditorSettings} = this.state;
 
-    if (combination !== globalEditorSettings.combination) return;
-    globalEditorSettings.combination = !globalEditorSettings.combination;
+    if (globalEditorSettings.combineLights === combineLights) return;
+    globalEditorSettings.combineLights = !globalEditorSettings.combineLights;
 
     this.setState({globalEditorSettings});
   }
@@ -767,12 +773,12 @@ class Editor extends Component {
               <View style={[EditorStyle.optionsMenuRichting]}>
                 <Text style={[TextStyles.subTitle, EditorStyle.optionsMenusubTitle]}>{`oplichten`.toUpperCase()}</Text>
                 <View style={[EditorStyle.oplichtenWrapper]}>
-                  <TouchableOpacity onPress={() => this.toggleCombinationSetting(false)} style={[EditorStyle.oplichtenButton, {backgroundColor: !globalEditorSettings.combination ? `transparent` : Colors.orange, borderColor: !globalEditorSettings.combination ? Colors.black : Colors.orange}]}>
-                    <Text style={[TextStyles.copy, {color: !globalEditorSettings.combination ? Colors.black : Colors.pureWhite}]}>willekeurig</Text>
+                  <TouchableOpacity onPress={() => this.toggleCombinationSetting(false)} style={[EditorStyle.oplichtenButton, {backgroundColor: !globalEditorSettings.combineLights ? Colors.orange : `transparent`, borderColor: !globalEditorSettings.combineLights ? Colors.orange : Colors.black}]}>
+                    <Text style={[TextStyles.copy, {color: !globalEditorSettings.combineLights ? Colors.pureWhite : Colors.black}]}>willekeurig</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => this.toggleCombinationSetting(true)} style={[EditorStyle.oplichtenButton, {backgroundColor: globalEditorSettings.combination ? `transparent` : Colors.orange, borderColor: globalEditorSettings.combination ? Colors.black : Colors.orange}]}>
-                    <Text style={[TextStyles.copy, {color: globalEditorSettings.combination ? Colors.black : Colors.pureWhite}]}>samen</Text>
+                  <TouchableOpacity onPress={() => this.toggleCombinationSetting(true)} style={[EditorStyle.oplichtenButton, {backgroundColor: globalEditorSettings.combineLights ? Colors.orange : `transparent`, borderColor: globalEditorSettings.combineLights ? Colors.orange : Colors.black}]}>
+                    <Text style={[TextStyles.copy, {color: globalEditorSettings.combineLights ? Colors.pureWhite : Colors.black}]}>samen</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -868,8 +874,11 @@ class Editor extends Component {
         {name: `image`, filename: `${Math.random().toString(36).substr(2, 12)}.png`, type: `image/png`, data: RNFetchBlob.wrap(image)},
         {name: `imageWithDirections`, filename: `${Math.random().toString(36).substr(4, 14)}.png`, type: `image/png`, data: RNFetchBlob.wrap(imageWithDirections)}
       ])
-        .then(r => {
-          console.log(r);
+        .then(({data}) => {
+          return JSON.parse(data);
+        })
+        .then(({exercise}) => {
+          console.log(exercise);
         })
         .catch(e => {
           console.log(e);
@@ -1052,6 +1061,8 @@ class Editor extends Component {
       currentPage, ages, ageIndex, playerGroups, playerGroupIndex,
       focusInputValue, nameInputValue, descInputValue
     } = this.state;
+
+    console.log(this.state.editorDirections);
 
     return (
       <Animatable.View ref='editorContainer' style={{transform: [{translateX: currentPage * Dimensions.width}], flexDirection: `row`}}>
