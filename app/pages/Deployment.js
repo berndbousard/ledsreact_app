@@ -30,9 +30,12 @@ class Deployment extends Component {
   }
 
   nextStepHandler() {
-    console.log(this.props);
-
     this.props.socket.emit(`nextStep`);
+  }
+
+  stopExcersizeHandler() {
+    this.props.socket.emit(`stopExcersize`);
+    Actions.pop();
   }
 
   render() {
@@ -43,7 +46,7 @@ class Deployment extends Component {
         <View style={[DeploymentStyle.pageContainer]}>
           {/* CONTENT */}
           <Button title='next step' onPress={() => this.nextStepHandler()} />
-          <Button title='abort mission' onPress={() => Actions.pop()} />
+          <Button title='abort mission' onPress={() => this.stopExcersizeHandler()} />
         </View>
 
       </View>
