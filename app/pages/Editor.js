@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView, TouchableOpacity, TextInput, ActivityIndicator} from 'react-native';
 import {indexOf, isEmpty, findIndex, remove} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
 import {Actions, ActionConst} from "react-native-router-flux";
@@ -9,7 +9,7 @@ import RNFetchBlob from 'react-native-fetch-blob';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {Circle, Path, Direction} from '../components';
-import {EditorStyle, Colors, Dimensions, TextStyles, ButtonStyles} from '../styles';
+import {EditorStyle, Colors, Dimensions, TextStyles, ButtonStyles, GeneralStyle} from '../styles';
 import {DatabaseUrl} from '../globals';
 import {Map} from '../utils';
 
@@ -61,7 +61,7 @@ class Editor extends Component {
     nameInputValue: ``,
     descInputValue: ``,
 
-    fieldImageUrls: ``
+    loader: false
   };
 
   componentDidMount() {
@@ -119,29 +119,6 @@ class Editor extends Component {
         this.setState({svgElements});
         this.setState({userDrawingFeedback: []});
       }
-    });
-  }
-
-  uploadToServer(path) {
-    RNFetchBlob.fetch(`POST`, `${DatabaseUrl}/api/exercises`, {
-      'Content-Type': `multipart/form-data`,
-    },
-      [
-        {name: `name`, data: `React Native Oefening`},
-        {name: `desc`, data: `Dit is de beschrijving van de oefening`},
-        {name: `creator`, data: `5890c647f3ddf323f3bf176e`},
-        {name: `targetAge`, data: 15},
-        {name: `intensity`, data: 3},
-        {name: `groupSize`, data: 3},
-        {name: `focus`, data: `uithouding`},
-        {name: `sport`, data: `58907393ce5bba05c7058bca`},
-        {name: `image`, filename: `field.png`, type: `image/png`, data: RNFetchBlob.wrap(path)}
-      ])
-    .then(r => {
-      console.log(r);
-    })
-    .catch(e => {
-      console.log(e);
     });
   }
 
@@ -853,7 +830,10 @@ class Editor extends Component {
   }
 
   async saveExercise() {
-    // TODO: Bla
+
+
+    this.setState({loader: true});
+
     const {
       focusInputValue, descInputValue, nameInputValue,
       currentSelectedSport, ages, ageIndex, playerGroups, playerGroupIndex, sports
@@ -870,8 +850,30 @@ class Editor extends Component {
       groupSize: playerGroups[playerGroupIndex]
     };
 
-    const fieldUrl = await this.screenshotHandler(`field`);
-    const fieldWithDirectionUrl = await this.screenshotHandler(`fieldAndDirections`);
+    const image = await this.screenshotHandler(`field`);
+    const imageWithDirections = await this.screenshotHandler(`fieldAndDirections`);
+
+    RNFetchBlob.fetch(`POST`, `${DatabaseUrl}/api/exercises`, {
+      'Content-Type': `multipart/form-data`,
+    },
+      [
+        {name: `name`, data: data.name},
+        {name: `desc`, data: data.desc},
+        {name: `creator`, data: data.creator},
+        {name: `targetAge`, data: data.targetAge},
+        {name: `intensity`, data: data.intensity},
+        {name: `sport`, data: data.sport},
+        {name: `groupSize`, data: data.groupSize},
+        {name: `focus`, data: data.focus},
+        {name: `image`, filename: `${Math.random().toString(36).substr(2, 12)}.png`, type: `image/png`, data: RNFetchBlob.wrap(image)},
+        {name: `imageWithDirections`, filename: `${Math.random().toString(36).substr(4, 14)}.png`, type: `image/png`, data: RNFetchBlob.wrap(imageWithDirections)}
+      ])
+        .then(r => {
+          console.log(r);
+        })
+        .catch(e => {
+          console.log(e);
+        });
   }
 
   screenshotHandler(element) {
@@ -948,11 +950,11 @@ class Editor extends Component {
     }
 
     if (currentFormTab === 1) {
-      copy = `volgende stap`;
+      copy = `volgende jonas`;
     }
 
     if (currentFormTab === 2) {
-      copy = `oefening bewaren`;
+      copy = `volgende bernd`;
 
       setTimeout(() => {
         if (!isEmpty(primaryButton)) {
@@ -977,15 +979,15 @@ class Editor extends Component {
     }
 
     if (currentFormTab === 1) {
-      copy = `vorige stap`;
+      copy = `jonas`;
     }
 
     if (currentFormTab === 2) {
-      copy = `vorige stap`;
+      copy = `bernd`;
     }
 
     if (currentFormTab === 3) {
-      copy = `vorige stap`;
+      copy = `kut wouter`;
     }
 
     return (
@@ -1036,6 +1038,15 @@ class Editor extends Component {
     Actions.exerciseDetail({type: ActionConst.REPLACE});
   }
 
+  loader() {
+
+    const {loader} = this.state;
+
+    return (
+      <ActivityIndicator style={[GeneralStyle.loader]} animating={loader} color={Colors.black}  />
+    );
+  }
+
   render() {
     const {
       currentPage, ages, ageIndex, playerGroups, playerGroupIndex,
@@ -1044,6 +1055,7 @@ class Editor extends Component {
 
     return (
       <Animatable.View ref='editorContainer' style={{transform: [{translateX: currentPage * Dimensions.width}], flexDirection: `row`}}>
+
         <View style={[EditorStyle.editorContainer]}>
           <View style={{position: `absolute`}} ref='fieldAndDirections'>
 
@@ -1072,6 +1084,8 @@ class Editor extends Component {
 
         <View style={EditorStyle.form}>
 
+          {this.loader()}
+
           <Animatable.View ref='formHeader' style={EditorStyle.formHeader}>
             <View style={EditorStyle.formTitleWrapper}>
               <Text style={[TextStyles.mainTitle, EditorStyle.formTitle]}>{`Schema Bewaren`.toUpperCase()}</Text>
@@ -1093,111 +1107,114 @@ class Editor extends Component {
             </TouchableOpacity>
           </Animatable.View>
 
-          <Animatable.View ref='formContent' style={[EditorStyle.formContentWrapper]}>
+          <View style={{overflow: `hidden`}}>
+            <Animatable.View ref='formContent' style={[EditorStyle.formContentWrapper]}>
 
-            <View style={EditorStyle.formPageOneContent}>
-              <View style={EditorStyle.naamWrapper}>
-                <View style={EditorStyle.naamLabelWrapper}>
-                  <Image style={EditorStyle.naamInputIcon} source={require(`../assets/png/exerciseIconBlack.png`)} />
-                  <Text style={[TextStyles.subTitle]}>{`Naam van je oefening`.toUpperCase()}</Text>
-                </View>
-                <View style={[EditorStyle.naamInputWrapper]}>
-                  <TextInput onChangeText={text => this.setState({nameInputValue: text})} value={nameInputValue} style={[TextStyles.copy, EditorStyle.naamInput]} placeholder='Tiki Taka Tikspel' />
-                </View>
-              </View>
-
-              <View style={[EditorStyle.naamWrapper, EditorStyle.descWrapper]}>
-                <View style={EditorStyle.naamLabelWrapper}>
-                  <Image style={EditorStyle.descInputIcon} source={require(`../assets/png/brushIcon.png`)} />
-                  <Text style={[TextStyles.subTitle]}>{`Beschrijf je oefening`.toUpperCase()}</Text>
-                </View>
-                <View style={[EditorStyle.naamInputWrapper, EditorStyle.descInputWrapper]}>
-                  <TextInput onChangeText={text => this.setState({descInputValue: text})} value={descInputValue} multiline={true} style={[TextStyles.copy, EditorStyle.descInput]} placeholder='Deze oefening probeert de reactiesnelheid van de spelers te verbeteren' />
-                </View>
-              </View>
-            </View>
-
-            <View style={EditorStyle.formPageOneContent}>
-
-              <View style={[EditorStyle.naamWrapper, EditorStyle.sportsWrapper]}>
-                <View style={[EditorStyle.naamLabelWrapper, EditorStyle.sportsTitleWrapper]}>
-                  <Image style={EditorStyle.sportsIconWrapper} source={require(`../assets/png/shoeIconBlack.png`)} />
-                  <Text style={[TextStyles.subTitle]}>{`Voor welke sport is je oefening geschikt?`.toUpperCase()}</Text>
-                </View>
-                <ScrollView style={[EditorStyle.sportsScroller]} horizontal={true} showsHorizontalScrollIndicator={false}>
-                  <View style={[EditorStyle.sportsInputWrapper]}>
-                    {this.renderSports()}
-                  </View>
-                </ScrollView>
-
-              </View>
-
-              <View style={EditorStyle.formPageTwoInputs}>
-                <View>
+              <View style={EditorStyle.formPageOneContent}>
+                <View style={EditorStyle.naamWrapper}>
                   <View style={EditorStyle.naamLabelWrapper}>
-                    <Image style={EditorStyle.focusFormIcon} source={require(`../assets/png/focusIconBlack.png`)} />
-                    <Text style={[TextStyles.subTitle]}>{`Wat is de focus van de oefening?`.toUpperCase()}</Text>
+                    <Image style={EditorStyle.naamInputIcon} source={require(`../assets/png/exerciseIconBlack.png`)} />
+                    <Text style={[TextStyles.subTitle]}>{`Naam van je oefening`.toUpperCase()}</Text>
                   </View>
                   <View style={[EditorStyle.naamInputWrapper]}>
-                    <TextInput onChangeText={text => this.setState({focusInputValue: text})} value={focusInputValue} ref='focusInput' style={[TextStyles.copy, EditorStyle.naamInput]} placeholder='Reactiesnelheid' />
+                    <TextInput onChangeText={text => this.setState({nameInputValue: text})} value={nameInputValue} style={[TextStyles.copy, EditorStyle.naamInput]} placeholder='Tiki Taka Tikspel' />
                   </View>
                 </View>
 
-                <View>
+                <View style={[EditorStyle.naamWrapper, EditorStyle.descWrapper]}>
                   <View style={EditorStyle.naamLabelWrapper}>
-                    <Image style={EditorStyle.formIntensivityIcon} source={require(`../assets/png/intensivityIcon.png`)} />
-                    <Text style={[TextStyles.subTitle]}>{`hoe moeilijk schat je de oefening?`.toUpperCase()}</Text>
+                    <Image style={EditorStyle.descInputIcon} source={require(`../assets/png/brushIcon.png`)} />
+                    <Text style={[TextStyles.subTitle]}>{`Beschrijf je oefening`.toUpperCase()}</Text>
                   </View>
-                  <View style={[EditorStyle.naamInputWrapper, EditorStyle.fakeSelect]}>
-                    <Text style={[TextStyles.copy, EditorStyle.intensivityCopy]}>Makkelijk</Text>
-                    <Image style={[EditorStyle.fakeSelectIcon]} source={require(`../assets/png/dropDownArrow.png`)} />
+                  <View style={[EditorStyle.naamInputWrapper, EditorStyle.descInputWrapper]}>
+                    <TextInput onChangeText={text => this.setState({descInputValue: text})} value={descInputValue} multiline={true} style={[TextStyles.copy, EditorStyle.descInput]} placeholder='Deze oefening probeert de reactiesnelheid van de spelers te verbeteren' />
                   </View>
                 </View>
               </View>
-            </View>
 
-            <View style={[EditorStyle.formPageOneContent, EditorStyle.formPageThreeContent]}>
-              <View style={EditorStyle.sideFormWrapper}>
-                <View style={EditorStyle.naamLabelWrapper}>
-                  <Image style={EditorStyle.groupSizeIconForm} source={require(`../assets/png/groupSizeIcon.png`)} />
-                  <Text style={[TextStyles.subTitle]}>{`Aantal spelers`.toUpperCase()}</Text>
+              <View style={EditorStyle.formPageOneContent}>
+
+                <View style={[EditorStyle.naamWrapper, EditorStyle.sportsWrapper]}>
+                  <View style={[EditorStyle.naamLabelWrapper, EditorStyle.sportsTitleWrapper]}>
+                    <Image style={EditorStyle.sportsIconWrapper} source={require(`../assets/png/shoeIconBlack.png`)} />
+                    <Text style={[TextStyles.subTitle]}>{`Voor welke sport is je oefening geschikt?`.toUpperCase()}</Text>
+                  </View>
+                  <ScrollView style={[EditorStyle.sportsScroller]} horizontal={true} showsHorizontalScrollIndicator={false}>
+                    <View style={[EditorStyle.sportsInputWrapper]}>
+                      {this.renderSports()}
+                    </View>
+                  </ScrollView>
+
                 </View>
-                <View style={[EditorStyle.playerAmountWrapper]}>
 
-                  <TouchableOpacity style={EditorStyle.iconFormIconsAmount} onPress={() => this.changeAmount(- 1)}>
-                    <Image style={EditorStyle.minusIconForm} source={require(`../assets/png/minusIconBlack.png`)} />
-                  </TouchableOpacity>
+                <View style={EditorStyle.formPageTwoInputs}>
+                  <View>
+                    <View style={EditorStyle.naamLabelWrapper}>
+                      <Image style={EditorStyle.focusFormIcon} source={require(`../assets/png/focusIconBlack.png`)} />
+                      <Text style={[TextStyles.subTitle]}>{`Wat is de focus van de oefening?`.toUpperCase()}</Text>
+                    </View>
+                    <View style={[EditorStyle.naamInputWrapper]}>
+                      <TextInput onChangeText={text => this.setState({focusInputValue: text})} value={focusInputValue} ref='focusInput' style={[TextStyles.copy, EditorStyle.naamInput]} placeholder='Reactiesnelheid' />
+                    </View>
+                  </View>
 
-                  <Text style={[TextStyles.copy, EditorStyle.playerFormAmountText]}>{`${playerGroups[playerGroupIndex]}`}</Text>
-
-                  <TouchableOpacity style={EditorStyle.iconFormIconsAmount} onPress={() => this.changeAmount(1)}>
-                    <Image style={EditorStyle.plusIconForm} source={require(`../assets/png/plusIconBlack.png`)} />
-                  </TouchableOpacity>
+                  <View>
+                    <View style={EditorStyle.naamLabelWrapper}>
+                      <Image style={EditorStyle.formIntensivityIcon} source={require(`../assets/png/intensivityIcon.png`)} />
+                      <Text style={[TextStyles.subTitle]}>{`hoe moeilijk schat je de oefening?`.toUpperCase()}</Text>
+                    </View>
+                    <View style={[EditorStyle.naamInputWrapper, EditorStyle.fakeSelect]}>
+                      <Text style={[TextStyles.copy, EditorStyle.intensivityCopy]}>Makkelijk</Text>
+                      <Image style={[EditorStyle.fakeSelectIcon]} source={require(`../assets/png/dropDownArrow.png`)} />
+                    </View>
+                  </View>
                 </View>
               </View>
 
-              <View style={[EditorStyle.sideFormWrapper, EditorStyle.descWrapper]}>
-                <View style={EditorStyle.naamLabelWrapper}>
-                  <Image style={EditorStyle.birthdayIcon} source={require(`../assets/png/birthdayIconBlack.png`)} />
-                  <Text style={[TextStyles.subTitle]}>{`Leeftijdscategorie`.toUpperCase()}</Text>
+              <View style={[EditorStyle.formPageOneContent, EditorStyle.formPageThreeContent]}>
+                <View style={EditorStyle.sideFormWrapper}>
+                  <View style={EditorStyle.naamLabelWrapper}>
+                    <Image style={EditorStyle.groupSizeIconForm} source={require(`../assets/png/groupSizeIcon.png`)} />
+                    <Text style={[TextStyles.subTitle]}>{`Aantal spelers`.toUpperCase()}</Text>
+                  </View>
+                  <View style={[EditorStyle.playerAmountWrapper]}>
+
+                    <TouchableOpacity style={EditorStyle.iconFormIconsAmount} onPress={() => this.changeAmount(- 1)}>
+                      <Image style={EditorStyle.minusIconForm} source={require(`../assets/png/minusIconBlack.png`)} />
+                    </TouchableOpacity>
+
+                    <Text style={[TextStyles.copy, EditorStyle.playerFormAmountText]}>{`${playerGroups[playerGroupIndex]}`}</Text>
+
+                    <TouchableOpacity style={EditorStyle.iconFormIconsAmount} onPress={() => this.changeAmount(1)}>
+                      <Image style={EditorStyle.plusIconForm} source={require(`../assets/png/plusIconBlack.png`)} />
+                    </TouchableOpacity>
+                  </View>
                 </View>
 
-                <View style={[EditorStyle.playerAmountWrapper]}>
-                  <TouchableOpacity style={EditorStyle.iconFormIconsAmount} onPress={() => this.changeAge(- 1)}>
-                    <Image style={EditorStyle.minusIconForm} source={require(`../assets/png/minusIconBlack.png`)} />
-                  </TouchableOpacity>
+                <View style={[EditorStyle.sideFormWrapper, EditorStyle.descWrapper]}>
+                  <View style={EditorStyle.naamLabelWrapper}>
+                    <Image style={EditorStyle.birthdayIcon} source={require(`../assets/png/birthdayIconBlack.png`)} />
+                    <Text style={[TextStyles.subTitle]}>{`Leeftijdscategorie`.toUpperCase()}</Text>
+                  </View>
 
-                  <Text style={[TextStyles.copy, EditorStyle.playerFormAmountText]}>{`${ages[ageIndex]}j`}</Text>
+                  <View style={[EditorStyle.playerAmountWrapper]}>
+                    <TouchableOpacity style={EditorStyle.iconFormIconsAmount} onPress={() => this.changeAge(- 1)}>
+                      <Image style={EditorStyle.minusIconForm} source={require(`../assets/png/minusIconBlack.png`)} />
+                    </TouchableOpacity>
 
-                  <TouchableOpacity style={EditorStyle.iconFormIconsAmount} onPress={() => this.changeAge(1)}>
-                    <Image style={EditorStyle.plusIconForm} source={require(`../assets/png/plusIconBlack.png`)} />
-                  </TouchableOpacity>
+                    <Text style={[TextStyles.copy, EditorStyle.playerFormAmountText]}>{`${ages[ageIndex]}j`}</Text>
+
+                    <TouchableOpacity style={EditorStyle.iconFormIconsAmount} onPress={() => this.changeAge(1)}>
+                      <Image style={EditorStyle.plusIconForm} source={require(`../assets/png/plusIconBlack.png`)} />
+                    </TouchableOpacity>
+                  </View>
+
                 </View>
-
               </View>
-            </View>
 
-          </Animatable.View>
+            </Animatable.View>
+          </View>
+
 
 
           <View style={[EditorStyle.barBottomWrapper]}>

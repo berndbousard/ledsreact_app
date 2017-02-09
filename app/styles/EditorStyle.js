@@ -617,7 +617,7 @@ const ComponentStyle = StyleSheet.create({
   },
 
   formContentWrapper: {
-    flexDirection: `row`,
+    flexDirection: `row`
   },
 
   sportsScroller: {
