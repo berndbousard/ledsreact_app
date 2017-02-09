@@ -877,9 +877,13 @@ class Editor extends Component {
         .then(({data}) => {
           return JSON.parse(data);
         })
-        .then(({exercise}) => {
-          console.log(exercise);
-          this.saveDirections(exercise);
+        .then(async({exercise}) => {
+
+          console.log(`nog niet klaar`);
+
+          await this.saveDirections(exercise);
+
+          this.setState({loader: false});
         })
         .catch(e => {
           console.log(e);
@@ -892,37 +896,37 @@ class Editor extends Component {
 
     console.log(editorDirections);
 
-    fetch(`${DatabaseUrl}/api/directions`, {
-      method: `POST`,
-      headers: {
-        Accept: `application/json`,
-        'Content-Type': `application/json`
-      },
-      body: JSON.stringify({
-        x: editorDirections[0].x,
-        y: editorDirections[0].y,
-        exercise: exercise._id,
-        delay: globalEditorSettings.delay,
-        combineLights: globalEditorSettings.combineLights,
-        directions: {
-          top: editorDirections[0].top,
-          bottom: editorDirections[0].bottom,
-          left: editorDirections[0].left,
-          right: editorDirections[0].right
-        }
-      })
-    })
-      .then(d => {
-        return d.json();
-      })
-      .then(r => {
-        console.log(r);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-
-    return;
+    // fetch(`${DatabaseUrl}/api/directions`, {
+    //   method: `POST`,
+    //   headers: {
+    //     Accept: `application/json`,
+    //     'Content-Type': `application/json`
+    //   },
+    //   body: JSON.stringify({
+    //     x: editorDirections[0].x,
+    //     y: editorDirections[0].y,
+    //     exercise: exercise._id,
+    //     delay: globalEditorSettings.delay,
+    //     combineLights: globalEditorSettings.combineLights,
+    //     directions: {
+    //       top: editorDirections[0].top,
+    //       bottom: editorDirections[0].bottom,
+    //       left: editorDirections[0].left,
+    //       right: editorDirections[0].right
+    //     }
+    //   })
+    // })
+    //   .then(d => {
+    //     return d.json();
+    //   })
+    //   .then(r => {
+    //     console.log(r);
+    //   })
+    //   .catch(e => {
+    //     console.log(e);
+    //   });
+    //
+    // return;
 
     const promises = editorDirections.map(e => {
       return fetch(`${DatabaseUrl}/api/directions`, {
@@ -931,7 +935,7 @@ class Editor extends Component {
         body: JSON.stringify({
           x: e.x,
           y: e.y,
-          exercise: exercise,
+          exercise: exercise._id,
           delay: globalEditorSettings.delay,
           combineLights: globalEditorSettings.combineLights,
           directions: {
@@ -944,12 +948,14 @@ class Editor extends Component {
       });
     });
 
-    console.log(`hier`);
+    console.log(promises);
 
     Promise.all(promises)
-      .then(r => {
-        console.log(`antword`);
-        console.log(r);
+      .then(d => {
+        return d[0].json();
+      })
+      .then(d => {
+        console.log(d);
       })
       .catch(e => {
         console.log(`error`);
