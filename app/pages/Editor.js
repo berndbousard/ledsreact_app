@@ -877,13 +877,11 @@ class Editor extends Component {
         .then(({data}) => {
           return JSON.parse(data);
         })
-        .then(async({exercise}) => {
+        .then(({exercise}) => {
 
           console.log(`nog niet klaar`);
 
-          await this.saveDirections(exercise);
-
-          this.setState({loader: false});
+          this.saveDirections(exercise);
         })
         .catch(e => {
           console.log(e);
@@ -955,6 +953,7 @@ class Editor extends Component {
         return d[0].json();
       })
       .then(d => {
+        this.setState({loader: false});
         console.log(d);
       })
       .catch(e => {
