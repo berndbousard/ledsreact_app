@@ -369,10 +369,6 @@ const ComponentStyle = StyleSheet.create({
     alignItems: `center`
   },
 
-  optionsMenuDirectionUpper: {
-
-  },
-
   optionsMenuDirectionLower: {
     backgroundColor: Colors.white,
     width: 275,
@@ -434,6 +430,337 @@ const ComponentStyle = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 2,
     margin: 10
+  },
+
+  form: {
+    position: `relative`,
+    flexDirection: `column`,
+    justifyContent: `flex-start`,
+    alignItems: `center`,
+    width: Dimensions.width,
+    height: Dimensions.height,
+    backgroundColor: Colors.white
+  },
+
+  formHeader: {
+    flexDirection: `column`,
+    alignItems: `center`,
+    width: Dimensions.width,
+    marginTop: 20
+  },
+
+  formBackWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    backgroundColor: `transparent`,
+    position: `absolute`,
+    top: 45,
+    left: 30
+  },
+
+  formBackIcon: {
+    width: 16, height: 13,
+    marginRight: 10
+  },
+
+  formBackText: {
+    color: Colors.orange
+  },
+
+  formHeaderImage: {
+    position: `absolute`,
+    top: 0,
+    left: 0,
+    width: Dimensions.width, height: 224,
+    zIndex: - 1
+  },
+
+  formTitle: {
+    backgroundColor: `transparent`
+  },
+
+  formTitleCopy: {
+    backgroundColor: `transparent`,
+    color: Colors.white,
+    textAlign: `center`,
+    width: 300,
+    lineHeight: 20,
+    marginTop: 5
+  },
+
+  formCloseIconWrapper: {
+    borderWidth: 2,
+    borderColor: Colors.white,
+    width: 44, height: 44,
+    borderRadius: 3,
+    justifyContent: `center`,
+    alignItems: `center`,
+    position: `absolute`,
+    right: 30,
+    top: 30
+  },
+
+  formCloseIcon: {
+    width: 16, height: 16
+  },
+
+  pageIndicatorWrapper: {
+    marginTop: 50,
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `space-between`,
+    width: 40
+  },
+
+  pageIndicator: {
+    width: 7, height: 7,
+    backgroundColor: Colors.white,
+    borderRadius: 10
+  },
+
+  formPageOneContent: {
+    marginTop: 110,
+    width: Dimensions.width
+  },
+
+  naamInputIcon: {
+    width: 28, height: 16,
+    marginRight: 10
+  },
+
+  naamLabelWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`
+  },
+
+  naamWrapper: {
+    flexDirection: `column`,
+    alignItems: `center`
+  },
+
+  naamInputWrapper: {
+    marginTop: 15,
+    borderWidth: 2,
+    borderColor: Colors.black,
+    borderRadius: 50,
+    paddingLeft: 15, paddingRight: 15
+  },
+
+  naamInput: {
+    width: 350, height: 50
+  },
+
+  descWrapper: {
+    marginTop: 50
+  },
+
+  descInputIcon: {
+    width: 20, height: 19,
+    marginRight: 10
+  },
+
+  descInput: {
+    minHeight: 150, width: 350
+  },
+
+  descInputWrapper: {
+    borderRadius: 10,
+    padding: 10
+  },
+
+  primaryButtonFormImage: {
+    width: 16, height: 13,
+    marginLeft: 10
+  },
+
+  barBottomWrapper: {
+    position: `absolute`,
+    padding: 25,
+    bottom: 0,
+    backgroundColor: Colors.lightGrey,
+    width: Dimensions.width,
+    flexDirection: `column`,
+    alignItems: `center`
+  },
+
+  buttonsWrapper: {
+    position: `relative`,
+    flexDirection: `row`,
+    justifyContent: `center`,
+    alignItems: `center`,
+    marginBottom: 50,
+    width: 180
+  },
+
+  secundairyButtonInForm: {
+    width: 16, height: 13,
+    marginRight: 10
+  },
+
+  formButtonPrimaryWrapper: {
+    justifyContent: `center`,
+    overflow: `hidden`
+  },
+
+  primaryButtonInForm: {
+    position: `absolute`,
+    top: 0,
+    right: 0,
+    zIndex: 5
+  },
+
+  secundairyButtonInFormWrapper: {
+    position: `absolute`,
+    top: 0,
+    left: 0,
+    opacity: 0
+  },
+
+  formContentWrapper: {
+    flexDirection: `row`,
+  },
+
+  sportsScroller: {
+    width: Dimensions.width - 145
+  },
+
+  sportsInputWrapper: {
+    marginTop: 25,
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `center`,
+    marginLeft: 20,
+    paddingBottom: 20
+  },
+
+  sportFormItem: {
+    marginRight: 25,
+    backgroundColor: Colors.pureWhite,
+    flexDirection: `column`,
+    alignItems: `center`,
+    paddingTop: 15, paddingBottom: 10,
+    paddingLeft: 20, paddingRight: 20,
+    borderWidth: 3,
+    borderRadius: 5,
+    shadowColor: Colors.black,
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: .05,
+    shadowRadius: 5,
+  },
+
+  sportFormItemImage: {
+    width: 90,
+    height: 90,
+    marginBottom: 15
+  },
+
+  sportsIconWrapper: {
+    width: 32, height: 15,
+    marginRight: 10
+  },
+
+  focusFormIcon: {
+    width: 35, height: 26,
+    marginRight: 10
+  },
+
+  formPageTwoInputs: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `space-around`
+  },
+
+  intensivityCopy: {
+    padding: 18,
+    backgroundColor: `transparent`
+  },
+
+  fakeSelect: {
+    flexDirection: `row`,
+    justifyContent: `space-between`,
+    alignItems: `center`,
+
+  },
+
+  fakeSelectIcon: {
+    width: 11, height: 7
+  },
+
+  formIntensivityIcon: {
+    width: 30, height: 30,
+    marginRight: 10
+  },
+
+  birthdayIcon: {
+    width: 32, height: 25,
+    marginRight: 10
+  },
+
+  sideFormWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `space-between`
+
+  },
+
+  groupSizeIconForm: {
+    width: 30, height: 30,
+    marginRight: 10
+  },
+
+  formPageThreeContent: {
+    marginTop: 175,
+    width: 425,
+    justifyContent: `center`,
+    marginLeft: 275
+  },
+
+  pageThreeInputs: {
+    marginLeft: 50
+  },
+
+  pageThreeInputsUp: {
+    marginLeft: 70
+  },
+
+  playerAmountWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`
+  },
+
+  plusIconForm: {
+    width: 13, height: 13
+  },
+
+  minusIconForm: {
+    width: 13, height: 2
+  },
+
+  iconFormIconsAmount: {
+    width: 44, height: 44,
+    borderWidth: 2,
+    borderColor: Colors.black,
+    justifyContent: `center`,
+    alignItems: `center`,
+    borderRadius: 2
+  },
+
+  playerFormAmountText: {
+    marginLeft: 25, marginRight: 25,
+    width: 70,
+    textAlign: `center`
+  },
+
+  sportsWrapper: {
+    alignItems: `flex-start`,
+    justifyContent: `center`,
+    marginLeft: 50,
+    marginTop: - 10,
+    marginBottom: 50
+  },
+
+  sportsTitleWrapper: {
+    marginLeft: 30
   }
 });
 
