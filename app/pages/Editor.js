@@ -917,23 +917,56 @@ class Editor extends Component {
     let copy = undefined;
 
     if (currentFormTab === 0) {
-      copy = `tags toevoegen`;
+      copy = `details toevoegen`;
     }
 
     if (currentFormTab === 1) {
-      copy = `spelerinfo`;
+      copy = `spelerinfo toevoegen`;
     }
 
     if (currentFormTab === 2) {
-      copy = `oefening`;
+      copy = `preview bekijken`;
+    }
+
+    if (currentFormTab === 3) {
+      copy = `bewaren`;
     }
 
     setTimeout(() => {
-      primaryButton.transition({opacity: 0}, {opacity: 1}, 300, `ease-in-out`);
+      if (!isEmpty(primaryButton)) {
+        primaryButton.transition({opacity: 0}, {opacity: 1}, 300, `ease-in-out`);
+      }
     }, 0);
 
     return (
       <Animatable.Text ref='primaryButton' style={[TextStyles.primaryButton, EditorStyle.primaryFormButton]}>{`${copy}`.toUpperCase()}</Animatable.Text>
+    );
+  }
+
+  renderSecundairyButtonText() {
+    const {currentFormTab} = this.state;
+    const {secundairyButton} = this.refs;
+
+    let copy = undefined;
+
+    if (currentFormTab === 0) {
+      copy = `algemene info`;
+    }
+
+    if (currentFormTab === 1) {
+      copy = `algemene info`;
+    }
+
+    if (currentFormTab === 2) {
+      copy = `details toevoegen`;
+    }
+
+    if (currentFormTab === 3) {
+      copy = `spelerinfo toevoegen`;
+    }
+
+    return (
+      <Animatable.Text ref='secundairyButton' style={[TextStyles.secundairyButton, EditorStyle.formSecundButtonText]}>{`${copy}`.toUpperCase()}</Animatable.Text>
     );
   }
 
@@ -1105,7 +1138,7 @@ class Editor extends Component {
                 <TouchableOpacity onPress={() => this.backToInitial()} onPressOut={() => this.toTab(- 1)}>
                   <View style={[ButtonStyles.secundairyButton, EditorStyle.formSecundButton]}>
                     <Image style={[EditorStyle.secundairyButtonInForm]} source={require(`../assets/png/backArrowOrange.png`)} />
-                    <Text style={[TextStyles.secundairyButton, EditorStyle.formSecundButtonText]}>{`algemene informatie`.toUpperCase()}</Text>
+                    {this.renderSecundairyButtonText()}
                   </View>
                 </TouchableOpacity>
               </Animatable.View>
