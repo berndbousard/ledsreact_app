@@ -25,8 +25,8 @@ const GeneralStyle = StyleSheet.create({
 
   loader: {
     position: `absolute`,
-    left: Dimensions.width / 2,
-    top: Dimensions.height / 2,
+    left: Dimensions.width / 2 - 25,
+    top: Dimensions.height / 2 - 25,
     zIndex: 1000,
     width: 50, height: 50
   }

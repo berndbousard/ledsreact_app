@@ -3,13 +3,38 @@ import {View, Image, Text, TouchableOpacity, ScrollView, TextInput} from 'react-
 import {Actions} from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
+import {isEmpty} from 'lodash';
+import {DatabaseUrl} from '../globals';
 
 import {GeneralStyle, ExerciseDetailStyle, Colors, TextStyles, ButtonStyles} from '../styles';
 
 class ExerciseDetail extends Component {
 
+  state = {
+    exercise: {}
+  }
+
   goBack() {
     Actions.pop();
+  }
+
+  componentDidMount() {
+    const {exerciseId} = this.props;
+
+    if (!isEmpty(exerciseId)) {
+      fetch(`${DatabaseUrl}/api/exercises/${exerciseId}`)
+        .then(r => {
+          return r.json();
+        })
+        .then(({exercise}) => {
+          this.setState({exercise});
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    } else {
+      console.log(`nothing`);
+    }
   }
 
   renderHeader() {
@@ -81,6 +106,14 @@ class ExerciseDetail extends Component {
   }
 
   renderCardContent() {
+
+    const {exercise} = this.state;
+    let url = require(`../assets/png/dummySchema.png`);
+
+    if (!isEmpty(exercise)) {
+      url = require(`${DatabaseUrl}/server/uploads/${exercise.imageWithDirections}.png`);
+    }
+
     return (
       <View style={ExerciseDetailStyle.cardContent}>
 
@@ -225,8 +258,10 @@ class ExerciseDetail extends Component {
 
   render() {
 
+    const {origin} = this.props;
+
     return (
-      <Animatable.View animation='fadeIn' duration={300} style={[GeneralStyle.pageContainer, ExerciseDetailStyle.pageContainer]}>
+      <Animatable.View animation={isEmpty(origin) ? `fadeIn` : `bounceInUp`} duration={isEmpty(origin) ? 300 : 500} style={[GeneralStyle.pageContainer, ExerciseDetailStyle.pageContainer]}>
         <View>
           {this.renderHeader()}
 
@@ -272,7 +307,8 @@ class ExerciseDetail extends Component {
 
 ExerciseDetail.propTypes = {
   socket: React.PropTypes.object,
-  name: React.PropTypes.string
+  name: React.PropTypes.string,
+  exerciseId: React.PropTypes.string
 };
 
 export default ExerciseDetail;

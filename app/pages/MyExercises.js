@@ -15,9 +15,7 @@ class MyExercises extends Component {
   }
 
   componentDidMount() {
-    if (!isEmpty(this.props.editorDone)) {
-      Actions.exerciseDetail();
-    }
+
   }
 
   renderSecondNav() {
@@ -82,7 +80,7 @@ class MyExercises extends Component {
           {
             range(4).map((r, index) => {
               return (
-                <TouchableOpacity onPress={() => Actions.exerciseDetail()} style={MyDirectionsStyle.ExerciseCard} key={index}>
+                <TouchableOpacity onPress={() => Actions.exerciseDetail({exerciseId: `589cf0cd201c404d55a21cda`})} style={MyDirectionsStyle.ExerciseCard} key={index}>
                   <Exercise index={index} />
                 </TouchableOpacity>
               );

@@ -766,6 +766,30 @@ const ComponentStyle = StyleSheet.create({
   celebrationButtonWrapper: {
     right: Dimensions.width / 2 - 100,
     top: 100
+  },
+
+  celebrationImage: {
+    width: 687, height: 470
+  },
+
+  celebrationImageWrapper: {
+    position: `absolute`,
+    top: Dimensions.height / 2 - (470 / 2) - 60, left: Dimensions.width / 2 - (687 / 2) + 10,
+    width: Dimensions.width,
+    flexDirection: `column`,
+    justifyContent: `center`
+  },
+
+  celebrationText: {
+    textAlign: `center`,
+    marginTop: 30,
+    marginRight: 350
+  },
+
+  celebrationTitle: {
+    color: Colors.orange,
+    marginRight: 350,
+    marginBottom: - 90
   }
 });
 

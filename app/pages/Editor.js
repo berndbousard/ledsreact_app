@@ -63,12 +63,10 @@ class Editor extends Component {
     nameInputValue: ``,
     descInputValue: ``,
 
-    loader: false
+    loader: false,
+    completed: false,
+    savedExercise: undefined
   };
-
-  componentWillMount() {
-    LayoutAnimation.spring();
-  }
 
   componentDidMount() {
 
@@ -96,6 +94,9 @@ class Editor extends Component {
   }
 
   componentWillMount() {
+
+    LayoutAnimation.spring(); //Testje
+
     this.drawHandler = PanResponder.create({
       onMoveShouldSetResponderCapture: () => true, //Allow movement to the view we'll attach this panresponder to
       onMoveShouldSetPanResponderCapture: () => true, //Same as above but for dragging
@@ -879,6 +880,7 @@ class Editor extends Component {
         })
         .then(({exercise}) => {
 
+          this.setState({savedExercise: exercise._id});
           console.log(`nog niet klaar`);
 
           this.saveDirections(exercise);
@@ -954,6 +956,7 @@ class Editor extends Component {
       })
       .then(d => {
         this.setState({loader: false});
+        this.setState({completed: true});
         console.log(d);
       })
       .catch(e => {
@@ -1121,7 +1124,7 @@ class Editor extends Component {
   }
 
   goToDetail() {
-    Actions.exerciseDetail({type: ActionConst.REPLACE});
+    Actions.exerciseDetail({type: ActionConst.REPLACE, exerciseId: this.state.savedExercise, origin: `editor`});
   }
 
   loader() {
@@ -1131,6 +1134,21 @@ class Editor extends Component {
     return (
       <ActivityIndicator style={[GeneralStyle.loader]} animating={loader} color={Colors.black}  />
     );
+  }
+
+  renderCelebration() {
+
+    const {completed} = this.state;
+
+    if (completed) {
+      return (
+        <Animatable.View style={EditorStyle.celebrationImageWrapper} animation='bounceInUp'>
+          <Text style={[TextStyles.bam, EditorStyle.celebrationTitle]}>{`Succes`.toUpperCase()}</Text>
+          <Image style={EditorStyle.celebrationImage} source={require(`../assets/png/beker.png`)}  />
+          <Text style={[TextStyles.subTitle, EditorStyle.celebrationText]}>{`Jouw oefening is succesvol bewaard.`.toUpperCase()}</Text>
+        </Animatable.View>
+      );
+    }
   }
 
   render() {
@@ -1173,6 +1191,8 @@ class Editor extends Component {
         <View style={EditorStyle.form}>
 
           {this.loader()}
+
+          {this.renderCelebration()}
 
           <Animatable.View ref='formHeader' style={EditorStyle.formHeader}>
             <View style={EditorStyle.formTitleWrapper}>
