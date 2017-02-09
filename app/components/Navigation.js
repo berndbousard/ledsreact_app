@@ -25,7 +25,7 @@ const Navigation = ({currentPage}) => {
 
           <Image style={NavigationStyle.divider} source={require(`../assets/png/divider.png`)} />
 
-          <TouchableOpacity style={NavigationStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`exercises`)}>
+          <TouchableOpacity style={NavigationStyle.navigationLink} activeOpacity={.75} onPress={() => goToPage(`myExercises`)}>
             <Image style={NavigationStyle.navigationMyExercisesIcon} source={require(`../assets/png/myExercisesIcon.png`)}/>
             <Text style={[NavigationStyle.navigationText, currentPage === `myExercises` ? NavigationStyle.activeNavigationLink : ``]}>Mijn Oefeningen</Text>
           </TouchableOpacity>

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, Button, TouchableOpacity, Text, Image, TextInput, ScrollView} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
+import {isEmpty} from 'lodash';
 
 import {GeneralStyle, MyExercisesStyle, MyDirectionsStyle, Colors, TextStyles, ButtonStyles} from '../styles';
 import {Navigation, Exercise} from '../components';
@@ -11,6 +12,12 @@ class MyExercises extends Component {
 
   state = {
     currentTab: 0
+  }
+
+  componentDidMount() {
+    if (!isEmpty(this.props.editorDone)) {
+      Actions.exerciseDetail();
+    }
   }
 
   renderSecondNav() {

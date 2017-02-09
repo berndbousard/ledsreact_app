@@ -761,6 +761,11 @@ const ComponentStyle = StyleSheet.create({
 
   sportsTitleWrapper: {
     marginLeft: 30
+  },
+
+  celebrationButtonWrapper: {
+    right: Dimensions.width / 2 - 100,
+    top: 100
   }
 });
 

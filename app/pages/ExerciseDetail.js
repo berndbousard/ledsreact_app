@@ -2,15 +2,20 @@ import React, {Component} from 'react';
 import {View, Image, Text, TouchableOpacity, ScrollView, TextInput} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
+import * as Animatable from 'react-native-animatable';
 
 import {GeneralStyle, ExerciseDetailStyle, Colors, TextStyles, ButtonStyles} from '../styles';
 
 class ExerciseDetail extends Component {
 
+  goBack() {
+    Actions.pop();
+  }
+
   renderHeader() {
     return (
       <View style={ExerciseDetailStyle.headerWrapper}>
-        <TouchableOpacity style={ExerciseDetailStyle.backButtonWrapper} onPress={() => Actions.pop()} >
+        <TouchableOpacity style={ExerciseDetailStyle.backButtonWrapper} onPress={() => this.goBack()} >
           <Image style={ExerciseDetailStyle.backButtonIcon} source={require(`../assets/png/backArrowOrange.png`)} />
           <Text style={[TextStyles.title, ExerciseDetailStyle.backButtonText]} >{`terug naar overzicht`.toUpperCase()}</Text>
         </TouchableOpacity>
@@ -221,7 +226,7 @@ class ExerciseDetail extends Component {
   render() {
 
     return (
-      <View style={[GeneralStyle.pageContainer, ExerciseDetailStyle.pageContainer]}>
+      <Animatable.View animation='fadeIn' duration={300} style={[GeneralStyle.pageContainer, ExerciseDetailStyle.pageContainer]}>
         <View>
           {this.renderHeader()}
 
@@ -260,7 +265,7 @@ class ExerciseDetail extends Component {
             </View>
           </ScrollView>
         </View>
-      </View>
+      </Animatable.View>
     );
   }
 }

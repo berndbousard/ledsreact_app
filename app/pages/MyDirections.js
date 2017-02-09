@@ -30,6 +30,29 @@ class MyDirections extends Component {
     this.props.socket.emit(`checkDirections`);
 
     this.fetchExercises();
+
+    console.log(`mounted`);
+  }
+
+  componentWillUpdate() {
+    console.log(`will update`);
+    // if (!isEmpty(this.props.editorDone)) {
+    //   console.log(`oefening done`);
+    //   Actions.myExercises({editorDone: true});
+    // }
+  }
+
+  componentWillReceiveProps() {
+    console.log(`recueve props`);
+  }
+
+  shouldComponentUpdate() {
+    console.log(`shoud update`);
+    return true;
+  }
+
+  componentDidUpdate() {
+    console.log(`did update`);
   }
 
   fetchExercises() {
@@ -242,6 +265,7 @@ class MyDirections extends Component {
   render() {
 
     const {connectedDirections, currentRecentTab} = this.state;
+    console.log(`render`);
 
     return (
       <View style={GeneralStyle.pageContainer}>

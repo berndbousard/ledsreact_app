@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView, TouchableOpacity, TextInput} from 'react-native';
 import {indexOf, isEmpty, findIndex, remove} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
-import {Actions} from "react-native-router-flux";
+import {Actions, ActionConst} from "react-native-router-flux";
 import * as Animatable from 'react-native-animatable';
 import Svg, {Rect} from 'react-native-svg';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -55,22 +55,25 @@ class Editor extends Component {
     ageCatsIndex: 5,
 
     ageplayerAmounts: [`1`, `2 - 5`, `5 - 10`, `onbeperkt`],
-    ageplayerIndex: 0
+    ageplayerIndex: 0,
+
+    focusInputValue: ``,
+    nameInputValue: ``,
+    descInputValue: ``
   };
 
   componentDidMount() {
-    console.log(this.refs);
 
-    // const {brushIcon, currentColor, deleteIcon, eraserIcon, fieldIcon, redoIcon, saveIcon, undoIcon} = this.refs;
-    //
-    // brushIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // currentColor.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // deleteIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // eraserIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // fieldIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // redoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // saveIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    // undoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    const {brushIcon, currentColor, deleteIcon, eraserIcon, fieldIcon, redoIcon, saveIcon, undoIcon} = this.refs;
+
+    brushIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    currentColor.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    deleteIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    eraserIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    fieldIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    redoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    saveIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    undoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
 
     fetch(`${DatabaseUrl}/api/sports`)
       .then(r => {
@@ -102,7 +105,6 @@ class Editor extends Component {
       },
 
       onPanResponderRelease: () => { //Gets invoked when we release the view.
-        console.log(`stop met tekenen`);
 
         const d = this.generatePathFromObject(this.points);
 
@@ -111,7 +113,7 @@ class Editor extends Component {
           d: d,
           stroke: brush.colors[brush.index]
         });
-        console.log(svgElements);
+
         this.setState({svgElements});
         this.setState({userDrawingFeedback: []});
       }
@@ -128,7 +130,6 @@ class Editor extends Component {
       result: `file`,
     })
     .then(r => {
-      console.log(r);
       this.uploadToServer(r);
     })
     .catch(e => {
@@ -690,11 +691,11 @@ class Editor extends Component {
         return c === colors[colorIndex];
       });
       if (indexOfElement === - 1) { //Zoniet -> toevoegen
-        console.log(`kleur niet aanwezig`);
+        // console.log(`kleur niet aanwezig`);
         currentDirection[`${currentRichting}`].colors.push(colors[colorIndex]);
         this.setState({editorDirections});
       } else { //Zoniet -> verwijderen
-        console.log(`kleur aanwezig`);
+        // console.log(`kleur aanwezig`);
         currentDirection[`${currentRichting}`].colors = remove(currentDirection[`${currentRichting}`].colors, c => {
           return c !== colors[colorIndex];
         });
@@ -822,28 +823,26 @@ class Editor extends Component {
   }
 
   initialAnimation() {
-    const {buttonWrapper, secundairyButton, primaryButton} = this.refs;
+    const {buttonWrapper, secundairyButton} = this.refs;
 
     buttonWrapper.transitionTo({width: 400}, 500, `ease-out-circ`);
-    secundairyButton.transitionTo({opacity: 1}, 500, `ease-out-circ`);
-    primaryButton.transitionTo({opacity: 0}, 500, `ease-out-circ`);
+
+    secundairyButton.transition({opacity: 0}, {opacity: 1}, 500, `ease-out-circ`);
   }
 
   backToInitial() {
     if (this.state.currentFormTab === 1) {
 
-      const {buttonWrapper, secundairyButton, primaryButton} = this.refs;
+      const {buttonWrapper, secundairyButton} = this.refs;
 
       buttonWrapper.transitionTo({width: 180}, 500, `ease-out-circ`);
-      secundairyButton.transitionTo({opacity: 0}, 500, `ease-out-circ`);
-      primaryButton.transitionTo({opacity: 0}, 500, `ease-out-circ`);
+      secundairyButton.transition({opacity: 1}, {opacity: 0}, 500, `ease-out-circ`);
     }
   }
 
   toTab(tab) {
-    console.log(tab);
     let {currentFormTab} = this.state;
-    const {formContent} = this.refs;
+    const {formContent, buttonWrapper, formHeader, celebrationButtonWrapper, headerImage} = this.refs;
 
     currentFormTab += tab;
 
@@ -855,23 +854,46 @@ class Editor extends Component {
       this.setState({currentFormTab});
     }, 500);
 
+    if (currentFormTab === 3) {
+      setTimeout(() => {
+        celebrationButtonWrapper.transitionTo({top: 30}, 300, `ease-out-circ`);
+      }, 400);
+
+      buttonWrapper.transitionTo({transform: [{translateY: Dimensions.height}]}, 300, `ease-in-circ`);
+      formHeader.transitionTo({transform: [{translateY: - 160}]}, 300, `ease-in-circ`);
+      headerImage.transitionTo({transform: [{translateY: - 230}]}, 300, `ease-in-circ`);
+
+      this.saveExercise();
+    }
+  }
+
+  saveExercise() {
+    // TODO: Bla
+    const {
+      focusInputValue, descInputValue, nameInputValue,
+      currentSelectedSport, ageCats, ageplayerAmounts, ageplayerIndex, sports
+    } = this.state;
+
+    const data = {
+      name: nameInputValue,
+      desc: descInputValue,
+      creator: `5890c647f3ddf323f3bf176e`,
+      targetAge: ageCats[ageplayerIndex],
+      sport: sports[currentSelectedSport]
+    };
+
+    console.log(data);
   }
 
   toPage(page) {
     const {currentPage} = this.state;
-
-    console.log(currentPage);
   }
 
   renderSports() {
     const {sports, currentSelectedSport} = this.state;
 
-    console.log(currentSelectedSport);
-
     if (!isEmpty(sports)) {
       return sports.map((s, index) => {
-
-        console.log(s.imageName);
 
         return (
           <TouchableOpacity style={[EditorStyle.sportFormItem, {borderColor: currentSelectedSport === index ? Colors.orange : `transparent`}]} onPress={() => this.setState({currentSelectedSport: index})} key={index}>
@@ -917,26 +939,23 @@ class Editor extends Component {
     let copy = undefined;
 
     if (currentFormTab === 0) {
-      copy = `details toevoegen`;
+      copy = `volgende stap`;
     }
 
     if (currentFormTab === 1) {
-      copy = `spelerinfo toevoegen`;
+      copy = `volgende stap`;
     }
 
     if (currentFormTab === 2) {
-      copy = `preview bekijken`;
+      copy = `oefening bewaren`;
+
+      setTimeout(() => {
+        if (!isEmpty(primaryButton)) {
+          primaryButton.transition({opacity: 0}, {opacity: 1}, 300, `ease-in-out`);
+        }
+      }, 0);
     }
 
-    if (currentFormTab === 3) {
-      copy = `bewaren`;
-    }
-
-    setTimeout(() => {
-      if (!isEmpty(primaryButton)) {
-        primaryButton.transition({opacity: 0}, {opacity: 1}, 300, `ease-in-out`);
-      }
-    }, 0);
 
     return (
       <Animatable.Text ref='primaryButton' style={[TextStyles.primaryButton, EditorStyle.primaryFormButton]}>{`${copy}`.toUpperCase()}</Animatable.Text>
@@ -945,33 +964,78 @@ class Editor extends Component {
 
   renderSecundairyButtonText() {
     const {currentFormTab} = this.state;
-    const {secundairyButton} = this.refs;
 
     let copy = undefined;
 
     if (currentFormTab === 0) {
-      copy = `algemene info`;
+      copy = `vorige stap`;
     }
 
     if (currentFormTab === 1) {
-      copy = `algemene info`;
+      copy = `vorige stap`;
     }
 
     if (currentFormTab === 2) {
-      copy = `details toevoegen`;
+      copy = `vorige stap`;
     }
 
     if (currentFormTab === 3) {
-      copy = `spelerinfo toevoegen`;
+      copy = `vorige stap`;
     }
 
     return (
-      <Animatable.Text ref='secundairyButton' style={[TextStyles.secundairyButton, EditorStyle.formSecundButtonText]}>{`${copy}`.toUpperCase()}</Animatable.Text>
+      <Animatable.Text style={[TextStyles.secundairyButton, EditorStyle.formSecundButtonText]}>{`${copy}`.toUpperCase()}</Animatable.Text>
     );
   }
 
+  renderFormButtons() {
+    return (
+      <Animatable.View ref='buttonWrapper' style={EditorStyle.buttonsWrapper}>
+
+        <Animatable.View ref='secundairyButton' style={EditorStyle.secundairyButtonInFormWrapper}>
+          <TouchableOpacity onPress={() => this.backToInitial()} onPressOut={() => this.toTab(- 1)}>
+            <View style={[ButtonStyles.secundairyButton, EditorStyle.formSecundButton]}>
+              <Image style={[EditorStyle.secundairyButtonInForm]} source={require(`../assets/png/backArrowOrange.png`)} />
+              {this.renderSecundairyButtonText()}
+            </View>
+          </TouchableOpacity>
+        </Animatable.View>
+
+
+        <Animatable.View style={EditorStyle.primaryButtonInForm}>
+          <TouchableOpacity onPress={() => this.initialAnimation()} onPressOut={() => this.toTab(1)}>
+            <LinearGradient style={[ButtonStyles.primaryButton, EditorStyle.formButtonPrimaryWrapper]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
+              {this.renderPrimaryButtonText()}
+              <Image style={[EditorStyle.primaryButtonFormImage]} source={require(`../assets/png/arrowButtonWhite.png`)} />
+            </LinearGradient>
+          </TouchableOpacity>
+        </Animatable.View>
+      </Animatable.View>
+    );
+  }
+
+  renderCelebrationButton() {
+    return (
+      <Animatable.View ref='celebrationButtonWrapper' style={[EditorStyle.primaryButtonInForm, EditorStyle.celebrationButtonWrapper]}>
+        <TouchableOpacity onPress={() => this.goToDetail()}>
+          <LinearGradient style={[ButtonStyles.primaryButton, EditorStyle.formButtonPrimaryWrapper]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
+            <Animatable.Text style={[TextStyles.primaryButton]}>{`Oefening bekijken`.toUpperCase()}</Animatable.Text>
+            <Image style={[EditorStyle.primaryButtonFormImage]} source={require(`../assets/png/arrowButtonWhite.png`)} />
+          </LinearGradient>
+        </TouchableOpacity>
+      </Animatable.View>
+    );
+  }
+
+  goToDetail() {
+    Actions.exerciseDetail({type: ActionConst.REPLACE});
+  }
+
   render() {
-    const {currentPage, ageCats, ageCatsIndex, ageplayerAmounts, ageplayerIndex} = this.state;
+    const {
+      currentPage, ageCats, ageCatsIndex, ageplayerAmounts, ageplayerIndex,
+      focusInputValue, nameInputValue, descInputValue
+    } = this.state;
 
     return (
       <Animatable.View ref='editorContainer' style={{transform: [{translateX: currentPage * Dimensions.width}], flexDirection: `row`}}>
@@ -1003,7 +1067,7 @@ class Editor extends Component {
 
         <View style={EditorStyle.form}>
 
-          <View style={EditorStyle.formHeader}>
+          <Animatable.View ref='formHeader' style={EditorStyle.formHeader}>
             <View style={EditorStyle.formTitleWrapper}>
               <Text style={[TextStyles.mainTitle, EditorStyle.formTitle]}>{`Schema Bewaren`.toUpperCase()}</Text>
               <Text style={[TextStyles.copy, EditorStyle.formTitleCopy]}>Geef je oefening een naam zodat je deze later makkelijk kan terugvinden</Text>
@@ -1013,16 +1077,16 @@ class Editor extends Component {
               <View style={[EditorStyle.pageIndicator, {opacity: this.state.currentFormTab === 1 ? 1 : 0.2}]}></View>
               <View style={[EditorStyle.pageIndicator, {opacity: this.state.currentFormTab === 2 ? 1 : 0.2}]}></View>
             </View>
-          </View>
 
-          <TouchableOpacity style={EditorStyle.formCloseIconWrapper}>
-            <Image style={EditorStyle.formCloseIcon} source={require(`../assets/png/closeIconSmallWhite.png`)} />
-          </TouchableOpacity>
+            <TouchableOpacity style={EditorStyle.formCloseIconWrapper}>
+              <Image style={EditorStyle.formCloseIcon} source={require(`../assets/png/closeIconSmallWhite.png`)} />
+            </TouchableOpacity>
 
-          <TouchableOpacity style={EditorStyle.formBackWrapper} onPress={() => this.changePage(0)}>
-            <Image style={EditorStyle.formBackIcon} source={require(`../assets/png/backArrowOrange.png`)} />
-            <Text style={[TextStyles.subTitle, EditorStyle.formBackText]}>{`Terug naar editor`.toUpperCase()}</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={EditorStyle.formBackWrapper} onPress={() => this.changePage(0)}>
+              <Image style={EditorStyle.formBackIcon} source={require(`../assets/png/backArrowOrange.png`)} />
+              <Text style={[TextStyles.subTitle, EditorStyle.formBackText]}>{`Terug naar editor`.toUpperCase()}</Text>
+            </TouchableOpacity>
+          </Animatable.View>
 
           <Animatable.View ref='formContent' style={[EditorStyle.formContentWrapper]}>
 
@@ -1033,7 +1097,7 @@ class Editor extends Component {
                   <Text style={[TextStyles.subTitle]}>{`Naam van je oefening`.toUpperCase()}</Text>
                 </View>
                 <View style={[EditorStyle.naamInputWrapper]}>
-                  <TextInput style={[TextStyles.copy, EditorStyle.naamInput]} placeholder='Tiki Taka Tikspel' />
+                  <TextInput onChangeText={text => this.setState({nameInputValue: text})} value={nameInputValue} style={[TextStyles.copy, EditorStyle.naamInput]} placeholder='Tiki Taka Tikspel' />
                 </View>
               </View>
 
@@ -1043,7 +1107,7 @@ class Editor extends Component {
                   <Text style={[TextStyles.subTitle]}>{`Beschrijf je oefening`.toUpperCase()}</Text>
                 </View>
                 <View style={[EditorStyle.naamInputWrapper, EditorStyle.descInputWrapper]}>
-                  <TextInput multiline={true} style={[TextStyles.copy, EditorStyle.descInput]} placeholder='Deze oefening probeert de reactiesnelheid van de spelers te verbeteren' />
+                  <TextInput onChangeText={text => this.setState({descInputValue: text})} value={descInputValue} multiline={true} style={[TextStyles.copy, EditorStyle.descInput]} placeholder='Deze oefening probeert de reactiesnelheid van de spelers te verbeteren' />
                 </View>
               </View>
             </View>
@@ -1070,7 +1134,7 @@ class Editor extends Component {
                     <Text style={[TextStyles.subTitle]}>{`Wat is de focus van de oefening?`.toUpperCase()}</Text>
                   </View>
                   <View style={[EditorStyle.naamInputWrapper]}>
-                    <TextInput style={[TextStyles.copy, EditorStyle.naamInput]} placeholder='Reactiesnelheid' />
+                    <TextInput onChangeText={text => this.setState({focusInputValue: text})} value={focusInputValue} ref='focusInput' style={[TextStyles.copy, EditorStyle.naamInput]} placeholder='Reactiesnelheid' />
                   </View>
                 </View>
 
@@ -1132,32 +1196,14 @@ class Editor extends Component {
 
 
           <View style={[EditorStyle.barBottomWrapper]}>
-            <Animatable.View ref='buttonWrapper' style={EditorStyle.buttonsWrapper}>
 
-              <Animatable.View ref='secundairyButton' style={EditorStyle.secundairyButtonInFormWrapper}>
-                <TouchableOpacity onPress={() => this.backToInitial()} onPressOut={() => this.toTab(- 1)}>
-                  <View style={[ButtonStyles.secundairyButton, EditorStyle.formSecundButton]}>
-                    <Image style={[EditorStyle.secundairyButtonInForm]} source={require(`../assets/png/backArrowOrange.png`)} />
-                    {this.renderSecundairyButtonText()}
-                  </View>
-                </TouchableOpacity>
-              </Animatable.View>
+              {this.renderFormButtons()}
 
-
-              <Animatable.View style={EditorStyle.primaryButtonInForm}>
-                <TouchableOpacity onPress={() => this.initialAnimation()} onPressOut={() => this.toTab(1)}>
-                  <LinearGradient style={[ButtonStyles.primaryButton, EditorStyle.formButtonPrimaryWrapper]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
-                    {this.renderPrimaryButtonText()}
-                    <Image style={[EditorStyle.primaryButtonFormImage]} source={require(`../assets/png/arrowButtonWhite.png`)} />
-                  </LinearGradient>
-                </TouchableOpacity>
-              </Animatable.View>
-
-            </Animatable.View>
+              {this.renderCelebrationButton()}
 
           </View>
 
-          <Image style={EditorStyle.formHeaderImage} source={require(`../assets/png/editorHeaderBlack.png`)} />
+          <Animatable.Image ref='headerImage' style={EditorStyle.formHeaderImage} source={require(`../assets/png/editorHeaderBlack.png`)} />
         </View>
       </Animatable.View>
     );

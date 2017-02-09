@@ -31,10 +31,8 @@ class Main extends PureComponent {
 
         <Scene key='discover' component={Discover} title='discover' socket={this.socket} hideNavBar />
 
-        <Scene key='exercises'>
-          <Scene key='myExercises' component={MyExercises} title='myExercises' socket={this.socket} hideNavBar />
-          <Scene key='exerciseDetail' component={ExerciseDetail} title='ExerciseDetail' socket={this.socket} hideNavBar />
-        </Scene>
+        <Scene key='myExercises' component={MyExercises} title='myExercises' socket={this.socket} hideNavBar />
+        <Scene key='exerciseDetail' component={ExerciseDetail} title='ExerciseDetail' socket={this.socket} hideNavBar />
 
         <Scene key='myTrainings' component={MyTrainings} title='myTrainings' socket={this.socket} hideNavBar />
         <Scene key='analytics' component={Analytics} title='analytics' socket={this.socket} hideNavBar />

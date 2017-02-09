@@ -46,7 +46,7 @@ class Onboarding extends Component {
         </Swiper>
 
         <View style={OnboardingStyle.buttonWrapper}>
-          <TouchableOpacity onPressOut={() => Actions.directionOverview({type: ActionConst.PUSH})} style={[ButtonStyles.secundairyButton, OnboardingStyle.secundairyButton]}>
+          <TouchableOpacity onPressOut={() => Actions.directionOverview({type: ActionConst.RESET})} style={[ButtonStyles.secundairyButton, OnboardingStyle.secundairyButton]}>
             <Image style={[OnboardingStyle.secundairyButtonImage]} source={require(`../assets/png/loginIconWhite.png`)} />
             <Text style={[TextStyles.secundairyButton, OnboardingStyle.secundairyButtonText]}>{`inloggen`.toUpperCase()}</Text>
           </TouchableOpacity>
