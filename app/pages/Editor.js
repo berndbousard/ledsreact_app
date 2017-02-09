@@ -842,7 +842,7 @@ class Editor extends Component {
 
     const {
       focusInputValue, descInputValue, nameInputValue,
-      currentSelectedSport, ages, ageIndex, playerGroups, playerGroupIndex, sports
+      currentSelectedSport, ages, ageIndex, playerGroups, playerGroupIndex, sports, globalEditorSettings, editorDirections
     } = this.state;
 
     const data = {
@@ -879,10 +879,82 @@ class Editor extends Component {
         })
         .then(({exercise}) => {
           console.log(exercise);
+          this.saveDirections(exercise);
         })
         .catch(e => {
           console.log(e);
         });
+  }
+
+  saveDirections(exercise) {
+
+    const {editorDirections, globalEditorSettings} = this.state;
+
+    console.log(editorDirections);
+
+    fetch(`${DatabaseUrl}/api/directions`, {
+      method: `POST`,
+      headers: {
+        Accept: `application/json`,
+        'Content-Type': `application/json`
+      },
+      body: JSON.stringify({
+        x: editorDirections[0].x,
+        y: editorDirections[0].y,
+        exercise: exercise._id,
+        delay: globalEditorSettings.delay,
+        combineLights: globalEditorSettings.combineLights,
+        directions: {
+          top: editorDirections[0].top,
+          bottom: editorDirections[0].bottom,
+          left: editorDirections[0].left,
+          right: editorDirections[0].right
+        }
+      })
+    })
+      .then(d => {
+        return d.json();
+      })
+      .then(r => {
+        console.log(r);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+
+    return;
+
+    const promises = editorDirections.map(e => {
+      return fetch(`${DatabaseUrl}/api/directions`, {
+        method: `POST`,
+        headers: {Accept: `application/json`, 'Content-Type': `application/json`},
+        body: JSON.stringify({
+          x: e.x,
+          y: e.y,
+          exercise: exercise,
+          delay: globalEditorSettings.delay,
+          combineLights: globalEditorSettings.combineLights,
+          directions: {
+            top: e.top,
+            bottom: e.bottom,
+            left: e.left,
+            right: e.right
+          }
+        })
+      });
+    });
+
+    console.log(`hier`);
+
+    Promise.all(promises)
+      .then(r => {
+        console.log(`antword`);
+        console.log(r);
+      })
+      .catch(e => {
+        console.log(`error`);
+        console.log(e);
+      });
   }
 
   screenshotHandler(element) {
