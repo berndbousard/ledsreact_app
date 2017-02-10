@@ -35,7 +35,8 @@ const MyDirectionsStyle = StyleSheet.create({
   },
 
   directionsListScroller: {
-    overflow: `visible`
+    overflow: `visible`,
+    height: 270
   },
 
   directionsListWrapper: {
@@ -186,6 +187,11 @@ const MyDirectionsStyle = StyleSheet.create({
 
   ExerciseCardImageElement: {
     width: 236, height: 174
+  },
+
+  noConnectedContent: {
+    width: 792,
+    textAlign: `center`
   }
 });
 

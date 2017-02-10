@@ -117,33 +117,37 @@ class MyDirections extends Component {
   generateDirections() {
     const {connectedDirections} = this.state;
 
-    return (
-      connectedDirections.map((c, index) => {
+    if (!isEmpty(connectedDirections)) {
+      return (
+        connectedDirections.map((c, index) => {
 
-        let url = require(`../assets/png/batteryIconFull.png`);
-        if (c.batteryLevel < 20) {
-          url = require(`../assets/png/batteryIconEmpty.png`);
-        }
+          let url = require(`../assets/png/batteryIconFull.png`);
+          if (c.batteryLevel < 20) {
+            url = require(`../assets/png/batteryIconEmpty.png`);
+          }
 
-        return (
-          <Animatable.View animation='fadeInUp' duration={600} delay={8 * index} style={[MyDirectionsStyle.directionListItemWrapper]} key={index}>
+          return (
+            <Animatable.View animation='fadeInUp' duration={600} delay={8 * index} style={[MyDirectionsStyle.directionListItemWrapper]} key={index}>
 
-            <TouchableOpacity onPress={() => this.detectDirection(c.socketId)}>
-              <Image style={[MyDirectionsStyle.directionListItemImage]} source={require(`../assets/png/direction.png`)}/>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.detectDirection(c.socketId)}>
+                <Image style={[MyDirectionsStyle.directionListItemImage]} source={require(`../assets/png/direction.png`)}/>
+              </TouchableOpacity>
 
-            <View style={[MyDirectionsStyle.directionListItemInfo]}>
-              <View style={[MyDirectionsStyle.directionListItemBatteryWrapper]}>
-                <Text style={[TextStyles.batteryPercentage]}>{`${c.batteryLevel}%`}</Text>
-                <Image style={[MyDirectionsStyle.directionListItemBattery]} source={url} />
+              <View style={[MyDirectionsStyle.directionListItemInfo]}>
+                <View style={[MyDirectionsStyle.directionListItemBatteryWrapper]}>
+                  <Text style={[TextStyles.batteryPercentage]}>{`${c.batteryLevel}%`}</Text>
+                  <Image style={[MyDirectionsStyle.directionListItemBattery]} source={url} />
+                </View>
+                <Image style={[MyDirectionsStyle.directionListItemPower]} source={require(`../assets/png/onOffIconBlack.png`)} />
               </View>
-              <Image style={[MyDirectionsStyle.directionListItemPower]} source={require(`../assets/png/onOffIconBlack.png`)} />
-            </View>
 
-          </Animatable.View>
-        );
-      })
-    );
+            </Animatable.View>
+          );
+        })
+      );
+    } else {
+      return <Text style={[TextStyles.copy, MyDirectionsStyle.noConnectedContent]}>Er zijn geen Directions verbonden</Text>;
+    }
   }
 
   toggleRecentTab(index) {
