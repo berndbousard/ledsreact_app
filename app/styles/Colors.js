@@ -10,5 +10,8 @@ export default {
   grey: `#bbbbbb`,
   darkGrey: `#a6a6a6`,
   green: `#49E900`,
-  opacityWhite: `rgba(255, 255, 255, .1)`
+  opacityWhite: `rgba(255, 255, 255, .1)`,
+  navBorderWhite: `rgba(255, 255, 255, 0)`,
+  borderforGreyBackground: `#E9E9E9`
+
 };

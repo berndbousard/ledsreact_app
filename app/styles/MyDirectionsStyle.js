@@ -126,7 +126,9 @@ const MyDirectionsStyle = StyleSheet.create({
   ExerciseCardImage: {
     borderRadius: 3,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.lightGrey
+    borderBottomColor: Colors.lightGrey,
+    width: 236,
+    height: 174
   },
 
   ExerciseCardTitle: {

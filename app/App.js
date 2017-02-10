@@ -19,7 +19,7 @@ class Main extends PureComponent {
   render() {
     return (
       <Router>
-        <Scene key='onboarding' component={Onboarding} title='Onboarding' hideNavBar initial />
+        <Scene key='onboarding' component={Onboarding} title='Onboarding' hideNavBar  />
         {/* <Scene key='login' component={Login} title='Login' backTitle='onboarding' /> */}
 
         {/* <Scene key='myDirections'> */}
@@ -35,7 +35,7 @@ class Main extends PureComponent {
         <Scene key='exerciseDetail' component={ExerciseDetail} title='ExerciseDetail' socket={this.socket} hideNavBar />
 
         <Scene key='myTrainings' component={MyTrainings} title='myTrainings' socket={this.socket} hideNavBar />
-        <Scene key='analytics' component={Analytics} title='analytics' socket={this.socket} hideNavBar />
+        <Scene key='analytics' component={Analytics} initial title='analytics' socket={this.socket} hideNavBar />
       </Router>
     );
   }

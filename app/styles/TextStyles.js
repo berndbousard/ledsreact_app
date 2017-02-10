@@ -43,7 +43,7 @@ const TextStyles = StyleSheet.create({
     textAlign: `left`,
     fontSize: Fonts.size.secondNav,
     letterSpacing: - .3,
-    backgroundColor: `transparent`
+    backgroundColor: `transparent`,
   },
 
   copy: {
@@ -51,6 +51,20 @@ const TextStyles = StyleSheet.create({
     color: Colors.black,
     textAlign: `left`,
     fontSize: Fonts.size.copy
+  },
+
+  graph: {
+    fontFamily: Fonts.circular.book,
+    color: Colors.black,
+    textAlign: `left`,
+    fontSize: Fonts.size.graph
+  },
+
+  graphBold: {
+    fontFamily: Fonts.circular.bold,
+    color: Colors.orange,
+    textAlign: `left`,
+    fontSize: Fonts.size.graph
   },
 
   copyBolder: {
@@ -129,6 +143,12 @@ const TextStyles = StyleSheet.create({
 
   directionParamsText: {
     marginTop: 15
+  },
+
+  dropDownText: {
+    fontSize: Fonts.size.dropDownText,
+    fontFamily: Fonts.circular.book,
+
   }
 });
 
