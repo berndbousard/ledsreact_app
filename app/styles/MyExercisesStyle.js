@@ -85,7 +85,7 @@ const MyExercisesStyle = StyleSheet.create({
   exercisesContainer: {
     flexDirection: `row`,
     flexWrap: `wrap`,
-    justifyContent: `space-between`,
+    justifyContent: `flex-start`,
     width: Dimensions.width - 175,
     transform: [{translateX: - 10}],
     padding: 20

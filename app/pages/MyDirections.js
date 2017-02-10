@@ -77,16 +77,11 @@ class MyDirections extends Component {
     });
   }
 
-  changePageHandler(page) {
-    console.log(page);
-  }
-
   handleWSDirections(connectedDirections) {
     this.setState({connectedDirections});
   }
 
   handleWSupdateDirections(socketId) {
-    console.log(`update`);
     const {connectedDirections} = this.state;
 
     const newDirections = connectedDirections.filter(d => {
@@ -97,8 +92,6 @@ class MyDirections extends Component {
   }
 
   handleWSdirectionJoined(direction) {
-
-    console.log(direction);
 
     const {connectedDirections} = this.state;
 
@@ -131,8 +124,6 @@ class MyDirections extends Component {
         if (c.batteryLevel < 20) {
           url = require(`../assets/png/batteryIconEmpty.png`);
         }
-
-        console.log(c.socketId);
 
         return (
           <Animatable.View animation='fadeInUp' duration={600} delay={8 * index} style={[MyDirectionsStyle.directionListItemWrapper]} key={index}>
@@ -193,7 +184,6 @@ class MyDirections extends Component {
   render() {
 
     const {connectedDirections, currentRecentTab} = this.state;
-    console.log(`render`);
 
     return (
       <View style={GeneralStyle.pageContainer}>

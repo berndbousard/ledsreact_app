@@ -322,7 +322,7 @@ class ExerciseDetail extends Component {
           <Image style={ExerciseDetailStyle.commentImage} source={require(`../assets/png/dummyPerson2.png`)} />
           <View>
             <Text style={[TextStyles.commentAuthor]}>Bernd Bousard</Text>
-            <Text style={[TextStyles.commentDate]}>geregeerd op 18 jan 2017</Text>
+            <Text style={[TextStyles.commentDate]}>geregeerd op 17 jan 2017</Text>
             <Text style={[TextStyles.copy, ExerciseDetailStyle.commentText]}>Ik vind dit een enorm leuke oefening om te doen met mijn spelers. De resultaten die onze ploeg hiermee boeken zijn niet te geloven.</Text>
           </View>
         </View>
