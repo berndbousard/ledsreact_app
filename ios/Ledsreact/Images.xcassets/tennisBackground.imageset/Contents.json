@@ -7,11 +7,6 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "tennisBackground.png",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
       "filename" : "tennisBackground-1.png",
       "scale" : "2x"
     },

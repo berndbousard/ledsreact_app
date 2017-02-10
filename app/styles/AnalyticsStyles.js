@@ -15,10 +15,11 @@ const AnalyticsStyles = StyleSheet.create({
     flexDirection: `row`,
     justifyContent: `flex-start`,
     paddingTop: 30, paddingBottom: 30,
-    paddingLeft: 20, paddingRight: 20,
+    paddingLeft: 25, paddingRight: 25,
     marginRight: - 20,
     alignItems: `center`,
     width: Dimensions.width - 135,
+    height: 110
   },
 
   navItems: {
@@ -55,12 +56,21 @@ const AnalyticsStyles = StyleSheet.create({
     marginLeft: 30,
   },
 
+  buttonWrapper: {
+    justifyContent: `center`,
+    alignItems: `center`
+  },
+
   backButton: {
-    transform: [{rotate: `90deg`}, {scale: 0.4}, {translateX: - 3}],
+    width: 18, height: 11,
+    marginRight: 2,
+    transform: [{rotate: `90deg`}],
   },
 
   nextButton: {
-    transform: [{rotate: `-90deg`}, {scale: 0.4}, {translateX: + 3}],
+    width: 18, height: 11,
+    transform: [{rotate: `-90deg`}],
+    marginLeft: 2
   },
 
   dropDownBox: {
@@ -110,6 +120,12 @@ const AnalyticsStyles = StyleSheet.create({
     paddingBottom: 30
   },
 
+  items: {
+    flexDirection: `row`,
+    alignItems: `flex-start`,
+    marginTop: 25
+  },
+
   item: {
     flexDirection: `column`,
     justifyContent: `center`,
@@ -136,8 +152,7 @@ const AnalyticsStyles = StyleSheet.create({
     marginLeft: - 50,
     paddingTop: 30,
     paddingLeft: 45,
-    paddingBottom: 10,
-
+    paddingBottom: 10
   },
 
   analyseTitel: {
@@ -236,10 +251,9 @@ const AnalyticsStyles = StyleSheet.create({
   },
 
   greyBackground: {
-    marginTop: 50,
+    marginTop: 75,
     backgroundColor: Colors.lightGrey,
-    paddingBottom: 40,
-    marginBottom: 20
+    paddingBottom: 40
 
   },
 
@@ -283,8 +297,8 @@ const AnalyticsStyles = StyleSheet.create({
   },
 
   removeButton: {
-    width: 45,
-    height: 45,
+    width: 44,
+    height: 44,
   },
 
 
@@ -293,7 +307,7 @@ const AnalyticsStyles = StyleSheet.create({
   addGoals: {
     width: 180,
     marginLeft: 50,
-    marginTop: 30,
+    marginTop: 50,
     shadowColor: Colors.orange,
     shadowOpacity: 0.3,
     shadowOffset: {width: 0, height: 5},
@@ -302,8 +316,11 @@ const AnalyticsStyles = StyleSheet.create({
 
   exercisesContainer: {
     backgroundColor: `blue`
-  }
+  },
 
+  doeltref: {
+    marginTop: 40
+  }
 
 });
 

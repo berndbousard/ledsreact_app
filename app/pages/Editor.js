@@ -919,7 +919,6 @@ class Editor extends Component {
         this.setState({completed: true});
       })
       .catch(e => {
-        console.log(`error`);
         console.log(e);
       });
   }

@@ -72,12 +72,10 @@ class Deployment extends Component {
     const {directions} = this.props;
 
     if (currentSelectedDirectionIndex + index > directions.length - 1) {
-      console.log(`je zit aan het einde`);
       this.deploymentDone();
     }
 
     if (currentSelectedDirectionIndex + index < 0) {
-      console.log(`je zit aan het begin`);
       return;
     }
 
@@ -89,7 +87,6 @@ class Deployment extends Component {
   }
 
   stopExcersizeHandler() {
-    console.log(`stop`);
     this.props.socket.emit(`stopExcersize`);
     Actions.pop();
   }
@@ -157,7 +154,6 @@ class Deployment extends Component {
   render() {
 
     const {exercise, directions} = this.props;
-    // console.log(exercise.sport.imageName);
 
     return (
       <Animatable.View style={DeploymentStyle.container} ref='pageContainer'>

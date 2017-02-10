@@ -35,8 +35,6 @@ class ExerciseDetail extends Component {
         .catch(e => {
           console.log(e);
         });
-    } else {
-      console.log(`nothing`);
     }
 
     if (!isEmpty(exerciseId)) {
@@ -50,8 +48,6 @@ class ExerciseDetail extends Component {
         .catch(e => {
           console.log(e);
         });
-    } else {
-      console.log(`nothing`);
     }
 
 
@@ -201,8 +197,6 @@ class ExerciseDetail extends Component {
       fieldImageUrl = {uri: `${DatabaseUrl}/uploads/${exercise.imageWithDirections}.png`};
       proPicUrl = require(`../assets/png/propic.jpg`);
     }
-
-    console.log(exercise, directions);
 
     return (
       <View style={ExerciseDetailStyle.cardContent}>

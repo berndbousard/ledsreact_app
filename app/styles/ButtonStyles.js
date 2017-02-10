@@ -1,7 +1,6 @@
 import {StyleSheet} from 'react-native';
 
 import Colors from './Colors';
-import Fonts from './Fonts';
 
 const ButtonStyles = StyleSheet.create({
   primaryButton: {
@@ -36,8 +35,8 @@ const ButtonStyles = StyleSheet.create({
     flexDirection: `row`,
     justifyContent: `center`,
     alignItems: `center`,
-    width: 52,
-    height: 52,
+    width: 44,
+    height: 44,
     borderRadius: 2,
     shadowColor: Colors.orange,
     shadowOffset: {width: 0, height: 5},
