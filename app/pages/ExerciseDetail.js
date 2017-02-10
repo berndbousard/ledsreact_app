@@ -3,7 +3,7 @@ import {View, Image, Text, TouchableOpacity, ScrollView, TextInput} from 'react-
 import {Actions} from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
-import {isEmpty} from 'lodash';
+import {isEmpty, capitalize} from 'lodash';
 import {DatabaseUrl} from '../globals';
 
 import {GeneralStyle, ExerciseDetailStyle, Colors, TextStyles, ButtonStyles} from '../styles';
@@ -11,7 +11,9 @@ import {GeneralStyle, ExerciseDetailStyle, Colors, TextStyles, ButtonStyles} fro
 class ExerciseDetail extends Component {
 
   state = {
-    exercise: {}
+    exercise: {},
+    directions: [],
+    largerPic: false
   }
 
   goBack() {
@@ -35,6 +37,23 @@ class ExerciseDetail extends Component {
     } else {
       console.log(`nothing`);
     }
+
+    if (!isEmpty(exerciseId)) {
+      fetch(`${DatabaseUrl}/api/directions?exercise=${exerciseId}`)
+        .then(r => {
+          return r.json();
+        })
+        .then(({directions}) => {
+          this.setState({directions});
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    } else {
+      console.log(`nothing`);
+    }
+
+
   }
 
   renderHeader() {
@@ -63,8 +82,6 @@ class ExerciseDetail extends Component {
             <Image style={ExerciseDetailStyle.headerAddIcon} source={require(`../assets/png/addIconWhite.png`)} />
           </TouchableOpacity>
 
-          {//actions -> ander scherm launchen
-          }
           <TouchableOpacity style={ExerciseDetailStyle.primaryButtonWrapper} onPress={() => Actions.deployment({exerciseId: `589ae7834224340ecced6190`})}>
             <LinearGradient style={[ButtonStyles.primaryButton, ExerciseDetailStyle.buttonWrapper]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
               <Image style={[ExerciseDetailStyle.primaryButtonImage]} source={require(`../assets/png/playIconWhite.png`)} />
@@ -77,13 +94,16 @@ class ExerciseDetail extends Component {
   }
 
   renderCardHeader() {
+
+    const {exercise} = this.state;
+
     return (
       <View style={ExerciseDetailStyle.cardHeader}>
 
         <View style={ExerciseDetailStyle.cardTitle}>
           <Image style={ExerciseDetailStyle.cardTitleIcon} source={require(`../assets/png/soccerIconWhite.png`)} />
           <View>
-            <Text style={[TextStyles.mainTitle, ExerciseDetailStyle.titleText]}>{`aanvallen via midden`.toUpperCase()}</Text>
+            <Text style={[TextStyles.mainTitle, ExerciseDetailStyle.titleText]}>{!isEmpty(exercise) ? `${exercise.name}`.toUpperCase() : `aanvallen via midden`.toUpperCase()}</Text>
             <Text style={[TextStyles.copy, ExerciseDetailStyle.titleSubText]}>gedeeld met 1 persoon</Text>
           </View>
         </View>
@@ -105,14 +125,51 @@ class ExerciseDetail extends Component {
     );
   }
 
-  renderCardContent() {
+  enlargeMyPic() {
+    const {largerPic} = this.state;
+    const {pic} = this.refs;
+
+    // width: 510
+    // height: 372
+
+    if (largerPic) {
+      pic.transition({transform: [{translateX: 510 / 2}, {translateY: 372 / 2}, {scale: 2}]}, {transform: [{translateX: 0}, {translateY: 0}, {scale: 1}]}, 500, `ease-in-out`);
+    } else {
+      pic.transition({transform: [{translateX: 0}, {translateY: 0}, {scale: 1}]}, {transform: [{translateX: 510 / 2}, {translateY: 372 / 2}, {scale: 2}]}, 500, `ease-in-out`);
+    }
+
+    setTimeout(() => {
+      this.setState({largerPic: !largerPic});
+    }, 500);
+  }
+
+  renderSportIcon() {
 
     const {exercise} = this.state;
-    let url = require(`../assets/png/dummySchema.png`);
+
+    let url = require(`../assets/png/soccerIcon.png`);
 
     if (!isEmpty(exercise)) {
-      url = require(`${DatabaseUrl}/server/uploads/${exercise.imageWithDirections}.png`);
+      url = {uri: `${exercise.sport.imageName}`};
     }
+
+    return (
+      <Image style={ExerciseDetailStyle.sportIcon} source={url} />
+    );
+  }
+
+  renderCardContent() {
+
+    const {exercise, directions} = this.state;
+    let fieldImageUrl = require(`../assets/png/dummySchema.png`);
+    let proPicUrl = require(`../assets/png/dummyMan.png`);
+
+    if (!isEmpty(exercise)) {
+      fieldImageUrl = {uri: `${DatabaseUrl}/uploads/${exercise.imageWithDirections}.png`};
+      proPicUrl = require(`../assets/png/propic.jpg`);
+    }
+
+    console.log(exercise, directions);
 
     return (
       <View style={ExerciseDetailStyle.cardContent}>
@@ -120,8 +177,8 @@ class ExerciseDetail extends Component {
         <View style={ExerciseDetailStyle.cardContentUpper}>
 
           <View style={ExerciseDetailStyle.schemaWrapper}>
-            <Image style={ExerciseDetailStyle.schemaWrapperSchema} source={require(`../assets/png/dummySchema.png`)} />
-            <TouchableOpacity style={ExerciseDetailStyle.schemaIconWrapper}>
+            <Animatable.Image ref='pic' style={ExerciseDetailStyle.schemaWrapperSchema} source={fieldImageUrl} />
+            <TouchableOpacity style={ExerciseDetailStyle.schemaIconWrapper} onPress={() => this.enlargeMyPic()}>
               <Image style={ExerciseDetailStyle.schemaIcon} source={require(`../assets/png/fullScreenIconOrange.png`)} />
             </TouchableOpacity>
           </View>
@@ -129,9 +186,9 @@ class ExerciseDetail extends Component {
           <View style={ExerciseDetailStyle.cardMainSpecsWrapper}>
 
             <View style={ExerciseDetailStyle.authorWrapper}>
-              <Image style={ExerciseDetailStyle.authorImage} source={require(`../assets/png/dummyMan.png`)} />
+              <Image style={ExerciseDetailStyle.authorImage} source={proPicUrl} />
               <View>
-                <Text style={[TextStyles.author]}>Leonard Riley</Text>
+                <Text style={[TextStyles.author, ExerciseDetailStyle.authorText]}>{!isEmpty(exercise) ? capitalize(exercise.creator.name) : `Leonard Riley`}</Text>
                 <Text style={TextStyles.copy}>1620 volgens</Text>
               </View>
             </View>
@@ -139,8 +196,8 @@ class ExerciseDetail extends Component {
             <View style={ExerciseDetailStyle.miniSpecItem}>
               <Text style={[TextStyles.subTitle, ExerciseDetailStyle.miniSpecTitle]}>{`Sport`.toUpperCase()}</Text>
               <View style={ExerciseDetailStyle.miniSpecWrapper}>
-                <Image style={ExerciseDetailStyle.sportIcon} source={require(`../assets/png/soccerIcon.png`)} />
-                <Text style={TextStyles.copy}>Voetbal</Text>
+                {this.renderSportIcon()}
+                <Text style={TextStyles.copy}>{!isEmpty(exercise) ? capitalize(exercise.sport.name) : `Voetbal`}</Text>
               </View>
             </View>
 
@@ -148,15 +205,15 @@ class ExerciseDetail extends Component {
               <Text style={[TextStyles.subTitle, ExerciseDetailStyle.miniSpecTitle]}>{`Focus`.toUpperCase()}</Text>
               <View style={ExerciseDetailStyle.miniSpecWrapper}>
                 <Image style={ExerciseDetailStyle.reactionIcon} source={require(`../assets/png/reactionIconBlack.png`)} />
-                <Text style={TextStyles.copy}>Reactiesnelheid</Text>
+                <Text style={TextStyles.copy}>{!isEmpty(exercise) ? capitalize(exercise.focus) : `Reactiesnelheid`}</Text>
               </View>
             </View>
 
             <View style={ExerciseDetailStyle.miniSpecItem}>
-              <Text style={[TextStyles.subTitle, ExerciseDetailStyle.miniSpecTitle]}>{`Aantal Directions`.toUpperCase()}</Text>
+              <Text style={[TextStyles.subTitle, ExerciseDetailStyle.miniSpecTitle]}>{`Benodigde Directions`.toUpperCase()}</Text>
               <View style={ExerciseDetailStyle.miniSpecWrapper}>
                 <Image style={ExerciseDetailStyle.directionIcon} source={require(`../assets/png/directionIcon.png`)} />
-                <Text style={TextStyles.copy}>5 Directions</Text>
+                <Text style={TextStyles.copy}>{directions.length} Direction{directions.length > 1 ? `s` : ``}</Text>
               </View>
             </View>
 
@@ -191,7 +248,7 @@ class ExerciseDetail extends Component {
 
           <View style={ExerciseDetailStyle.descWrapper}>
             <Text style={TextStyles.subTitle}>{`beschrijving`.toUpperCase()}</Text>
-            <Text style={[TextStyles.copy, ExerciseDetailStyle.textCopy]}>In deze oefening wordt de reactiesnelheid van de speler op de proef gezet. Ik het de Directions zo ingesteld dat alle hoeken van het veld optimaal benut worden en het reactievermogen van de speler op de proef wordt gezet. Om de oefening compleet te maken heb ik er enkele extra's aan toegevoegd zodat er afwisseling mogelijk is.</Text>
+            <Text style={[TextStyles.copy, ExerciseDetailStyle.textCopy]}>{!isEmpty(exercise) ? exercise.desc : `In deze oefening wordt de reactiesnelheid van de speler op de proef gezet. Ik het de Directions zo ingesteld dat alle hoeken van het veld optimaal benut worden en het reactievermogen van de speler op de proef wordt gezet. Om de oefening compleet te maken heb ik er enkele extra's aan toegevoegd zodat er afwisseling mogelijk is.`}</Text>
           </View>
         </View>
       </View>
@@ -261,7 +318,7 @@ class ExerciseDetail extends Component {
     const {origin} = this.props;
 
     return (
-      <Animatable.View animation={isEmpty(origin) ? `fadeIn` : `bounceInUp`} duration={isEmpty(origin) ? 300 : 500} style={[GeneralStyle.pageContainer, ExerciseDetailStyle.pageContainer]}>
+      <Animatable.View animation={isEmpty(origin) ? `fadeIn` : `fadeInUpBig`} duration={isEmpty(origin) ? 300 : 500} style={[GeneralStyle.pageContainer, ExerciseDetailStyle.pageContainer]}>
         <View>
           {this.renderHeader()}
 

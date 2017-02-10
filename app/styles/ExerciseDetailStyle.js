@@ -141,7 +141,8 @@ const ExerciseDetailStyle = StyleSheet.create({
   },
 
   titleText: {
-    backgroundColor: `transparent`
+    backgroundColor: `transparent`,
+    textAlign: `left`
   },
 
   titleSubText: {
@@ -211,12 +212,13 @@ const ExerciseDetailStyle = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: Colors.lightGrey,
     paddingBottom: 20,
-    width: 300 //Moet weg
+    width: 300, //Moet weg,
   },
 
   authorText: {
     fontSize: 20,
-    color: Colors.orange
+    color: Colors.orange,
+    textAlign: `left`
   },
 
   cardContentUpper: {
@@ -227,7 +229,8 @@ const ExerciseDetailStyle = StyleSheet.create({
 
   authorImage: {
     width: 48, height: 48,
-    marginRight: 20
+    marginRight: 20,
+    borderRadius: 24
   },
 
   cardMainSpecsWrapper: {
