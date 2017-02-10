@@ -121,30 +121,6 @@ class MyDirections extends Component {
     this.props.socket.emit(`lightUpDirection`, directionLightTrigger);
   }
 
-  generateConnectedDirections() {
-
-    const {connectedDirections} = this.state;
-
-    if (isEmpty(connectedDirections)) {
-      return <Text>Er zijn geen Directions verbonden</Text>;
-    }
-
-    return (
-      connectedDirections.map((d, index) => {
-
-
-        return (
-          <TouchableOpacity style={ButtonStyles.button} key={index}>
-            <Animatable.View animation='bounceIn' easing='ease-out' ref='direction'>
-              <Text>{d.socketId}</Text>
-              <Text>{`${d.batteryLevel} %`}</Text>
-            </Animatable.View>
-          </TouchableOpacity>
-        );
-      })
-    );
-  }
-
   generateDirections() {
     const {connectedDirections} = this.state;
 

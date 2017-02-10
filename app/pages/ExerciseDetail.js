@@ -13,7 +13,8 @@ class ExerciseDetail extends Component {
   state = {
     exercise: {},
     directions: [],
-    largerPic: false
+    largerPic: false,
+    connectedDirections: []
   }
 
   goBack() {
@@ -54,11 +55,24 @@ class ExerciseDetail extends Component {
     }
 
 
+    this.props.socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
+
+    this.props.socket.emit(`checkDirections`);
+  }
+
+  componentWillUnmount() {
+    this.props.socket.off(`checkDirections`);
+  }
+
+  handleWScheckDirections(directions) {
+    this.setState({connectedDirections: directions});
   }
 
   renderHeader() {
 
-    const {exercise, directions} = this.state;
+    const {exercise, directions, connectedDirections} = this.state;
+
+    const canTry = connectedDirections.length >= directions.length;
 
     return (
       <View style={ExerciseDetailStyle.headerWrapper}>
@@ -85,7 +99,7 @@ class ExerciseDetail extends Component {
             <Image style={ExerciseDetailStyle.headerAddIcon} source={require(`../assets/png/addIconWhite.png`)} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={ExerciseDetailStyle.primaryButtonWrapper} onPress={() => Actions.deployment({exercise: exercise, directions: directions})}>
+          <TouchableOpacity disabled={canTry ? false : true} style={ExerciseDetailStyle.primaryButtonWrapper} onPress={() => Actions.deployment({exercise: exercise, directions: directions})}>
             <LinearGradient style={[ButtonStyles.primaryButton, ExerciseDetailStyle.buttonWrapper]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
               <Image style={[ExerciseDetailStyle.primaryButtonImage]} source={require(`../assets/png/playIconWhite.png`)} />
               <Text style={[TextStyles.primaryButton, ExerciseDetailStyle.primaryButtonText]}>{`uitproberen`.toUpperCase()}</Text>
