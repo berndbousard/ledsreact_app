@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import {View, Button, TouchableOpacity, Text, Image, TextInput, ScrollView} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
-import {isEmpty} from 'lodash';
+import {isEmpty, range} from 'lodash';
 
 import {GeneralStyle, MyExercisesStyle, MyDirectionsStyle, Colors, TextStyles, ButtonStyles} from '../styles';
 import {Navigation, Exercise} from '../components';
-import {range} from 'lodash';
+import {DatabaseUrl} from '../globals';
 
 class MyExercises extends Component {
 
@@ -16,6 +16,21 @@ class MyExercises extends Component {
 
   componentDidMount() {
 
+    this.fetchExercises();
+
+  }
+
+  fetchExercises() {
+    fetch(`${DatabaseUrl}/api/exercises`)
+      .then(r => {
+        return r.json();
+      })
+      .then(({exercises}) => {
+        this.setState({exercises});
+      })
+      .catch(e => {
+        console.log(e);
+      });
   }
 
   renderSecondNav() {
@@ -74,21 +89,27 @@ class MyExercises extends Component {
   }
 
   renderExercises() {
-    return (
-      <ScrollView>
-        <View style={MyExercisesStyle.exercisesContainer}>
-          {
-            range(4).map((r, index) => {
-              return (
-                <TouchableOpacity onPress={() => Actions.exerciseDetail({exerciseId: `589cf0cd201c404d55a21cda`})} style={MyDirectionsStyle.ExerciseCard} key={index}>
-                  <Exercise index={index} />
-                </TouchableOpacity>
-              );
-            })
-          }
-        </View>
-      </ScrollView>
-    );
+
+    const {exercises} = this.state;
+
+    if (!isEmpty(exercises)) {
+      return (
+        <ScrollView>
+          <View style={MyExercisesStyle.exercisesContainer}>
+            {
+              exercises.map((e, index) => {
+
+                return (
+                  <TouchableOpacity onPress={() => Actions.exerciseDetail({exerciseId: `${e._id}`})} style={MyDirectionsStyle.ExerciseCard} key={index}>
+                    <Exercise index={index} {...e} />
+                  </TouchableOpacity>
+                );
+              })
+            }
+          </View>
+        </ScrollView>
+      );
+    }
   }
 
   render() {
