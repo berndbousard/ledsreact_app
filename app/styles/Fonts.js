@@ -20,6 +20,8 @@ export default {
     commentAuthor: 18,
     commentDate: 14,
     secondNav: 20,
+    dropDownText: 16,
+    graph: 16,
 
     directionTitle: 18,
     directionFuncTitle: 16,

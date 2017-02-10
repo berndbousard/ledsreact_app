@@ -30,7 +30,21 @@ const ButtonStyles = StyleSheet.create({
     justifyContent: `space-between`,
     alignItems: `center`,
     borderRadius: 2
+  },
+
+  squareButton: {
+    flexDirection: `row`,
+    justifyContent: `center`,
+    alignItems: `center`,
+    width: 52,
+    height: 52,
+    borderRadius: 2,
+    shadowColor: Colors.orange,
+    shadowOffset: {width: 0, height: 5},
+    shadowOpacity: 0.2,
   }
+
+
 });
 
 export default ButtonStyles;

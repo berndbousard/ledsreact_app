@@ -21,6 +21,9 @@ class Deployment extends Component {
         return r.json();
       })
       .then(({directions}) => {
+
+        console.log(directions);
+
         this.setState({directions});
         this.props.socket.emit(`setDirectionSettings`, directions);
       })
