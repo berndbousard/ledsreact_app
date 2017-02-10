@@ -89,20 +89,20 @@ const MyDirectionsStyle = StyleSheet.create({
 
   recentTabbarTitle: {
     textAlign: `left`,
-    paddingBottom: 10
+    paddingBottom: 10,
+    marginTop: - 10
   },
 
   recentTabbarTitleWrapper: {
     borderBottomWidth: 2,
     marginRight: 40,
-    marginBottom: - 12
+    marginBottom: - 2
   },
 
   recentWrapper: {
     flexDirection: `row`,
     alignItems: `center`,
-    justifyContent: `space-between`,
-    marginTop: 35
+    justifyContent: `space-between`
   },
 
   recentEmptyText: {

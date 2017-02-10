@@ -17,6 +17,7 @@ class MyExercises extends Component {
   componentDidMount() {
 
     this.fetchExercises();
+    this.fetchDirections();
 
   }
 
@@ -31,6 +32,10 @@ class MyExercises extends Component {
       .catch(e => {
         console.log(e);
       });
+  }
+
+  fetchDirections() {
+
   }
 
   renderSecondNav() {
