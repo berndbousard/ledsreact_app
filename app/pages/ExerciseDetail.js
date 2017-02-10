@@ -144,15 +144,31 @@ class ExerciseDetail extends Component {
 
   enlargeMyPic() {
     const {largerPic} = this.state;
-    const {pic} = this.refs;
+    const {pic, mainSpecs} = this.refs;
 
     // width: 510
     // height: 372
 
+    // if (largerPic) {
+    //   pic.transition({transform: [{translateX: 510 / 2}, {translateY: 372 / 2}, {scale: 2}]}, {transform: [{translateX: 0}, {translateY: 0}, {scale: 1}]}, 500, `ease-in-out`);
+    // } else {
+    //   pic.transition({transform: [{translateX: 0}, {translateY: 0}, {scale: 1}]}, {transform: [{translateX: 510 / 2}, {translateY: 372 / 2}, {scale: 2}]}, 500, `ease-in-out`);
+    // }
+
     if (largerPic) {
-      pic.transition({transform: [{translateX: 510 / 2}, {translateY: 372 / 2}, {scale: 2}]}, {transform: [{translateX: 0}, {translateY: 0}, {scale: 1}]}, 500, `ease-in-out`);
+
+      mainSpecs.transitionTo({transform: [{translateY: 50}], opacity: 0}, 200, `ease-out`);
+      setTimeout(() => {
+        pic.transitionTo({width: 855, height: 624}, 300, `ease-out`);
+      }, 100);
+
     } else {
-      pic.transition({transform: [{translateX: 0}, {translateY: 0}, {scale: 1}]}, {transform: [{translateX: 510 / 2}, {translateY: 372 / 2}, {scale: 2}]}, 500, `ease-in-out`);
+
+      pic.transitionTo({width: 510, height: 372}, 500, 200, `ease-out`);
+      setTimeout(() => {
+        mainSpecs.transitionTo({transform: [{translateY: 0}], opacity: 1}, 300, `ease-out`);
+      }, 400);
+
     }
 
     setTimeout(() => {
@@ -200,13 +216,13 @@ class ExerciseDetail extends Component {
             </TouchableOpacity>
           </View>
 
-          <View style={ExerciseDetailStyle.cardMainSpecsWrapper}>
+          <Animatable.View ref='mainSpecs' style={ExerciseDetailStyle.cardMainSpecsWrapper}>
 
             <View style={ExerciseDetailStyle.authorWrapper}>
               <Image style={ExerciseDetailStyle.authorImage} source={proPicUrl} />
               <View>
                 <Text style={[TextStyles.author, ExerciseDetailStyle.authorText]}>{!isEmpty(exercise) ? capitalize(exercise.creator.name) : `Leonard Riley`}</Text>
-                <Text style={TextStyles.copy}>1620 volgens</Text>
+                <Text style={TextStyles.copy}>1620 volgers</Text>
               </View>
             </View>
 
@@ -234,7 +250,7 @@ class ExerciseDetail extends Component {
               </View>
             </View>
 
-          </View>
+          </Animatable.View>
 
         </View>
 
