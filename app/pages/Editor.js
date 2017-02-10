@@ -10,7 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import {Circle, Path, Direction} from '../components';
 import {EditorStyle, Colors, Dimensions, TextStyles, ButtonStyles, GeneralStyle} from '../styles';
-import {DatabaseUrl} from '../globals';
+import {DatabaseUrl, Creator} from '../globals';
 import {Map} from '../utils';
 
 class Editor extends Component {
@@ -846,7 +846,7 @@ class Editor extends Component {
     const data = {
       name: nameInputValue,
       desc: descInputValue,
-      creator: `5890c647f3ddf323f3bf176e`,
+      creator: Creator,
       targetAge: ages[ageIndex],
       intensity: 0,
       sport: sports[currentSelectedSport]._id,

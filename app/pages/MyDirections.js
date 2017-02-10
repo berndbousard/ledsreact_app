@@ -6,8 +6,8 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import {isEmpty} from 'lodash';
 import {GeneralStyle, TextStyles, MyDirectionsStyle, ButtonStyles, Colors} from '../styles';
-import {Navigation} from '../components';
-import {DatabaseUrl, ASyncStorage} from '../globals';
+import {Navigation, Exercise} from '../components';
+import {DatabaseUrl, ASyncStorage, Creator} from '../globals';
 
 class MyDirections extends Component {
 
@@ -16,7 +16,7 @@ class MyDirections extends Component {
     token: ``,
     tokenContent: ``,
     currentRecentTab: 0,
-    myExercises: [],
+    exercises: [],
     myTrainings: []
   };
 
@@ -30,38 +30,15 @@ class MyDirections extends Component {
     this.props.socket.emit(`checkDirections`);
 
     this.fetchExercises();
-
-    console.log(`mounted`);
-  }
-
-  componentWillUpdate() {
-    console.log(`will update`);
-    // if (!isEmpty(this.props.editorDone)) {
-    //   console.log(`oefening done`);
-    //   Actions.myExercises({editorDone: true});
-    // }
-  }
-
-  componentWillReceiveProps() {
-    console.log(`recueve props`);
-  }
-
-  shouldComponentUpdate() {
-    console.log(`shoud update`);
-    return true;
-  }
-
-  componentDidUpdate() {
-    console.log(`did update`);
   }
 
   fetchExercises() {
-    fetch(`${DatabaseUrl}/api/exercises`)
+    fetch(`${DatabaseUrl}/api/exercises?creator=${Creator}`)
       .then(r => {
         return r.json();
       })
       .then(({exercises}) => {
-        this.setState({myExercises: exercises});
+        this.setState({exercises});
       })
       .catch(e => {
         console.log(e);
@@ -211,45 +188,20 @@ class MyDirections extends Component {
   }
 
   generateRecentContent() {
-    const {currentRecentTab, myTrainings, myExercises} = this.state;
+    const {currentRecentTab, myTrainings, exercises} = this.state;
 
     if (currentRecentTab === 0) {
       // Oefeningen
-      if (isEmpty(myExercises)) {
+      if (isEmpty(exercises)) {
         return <Text style={[TextStyles.copy, MyDirectionsStyle.recentEmptyText]}>Je hebt nog geen oefeningen gemaakt.</Text>;
       }
 
-      return myExercises.map((e, index) => {
-        if (index > 2) return;
+      return exercises.map((e, index) => {
+        if (index > 2) return; //Op home max 3
         return (
-          <Animatable.View animation='fadeInUp' duration={600} delay={8 * index} key={index} style={MyDirectionsStyle.ExerciseCard}>
-            <View style={MyDirectionsStyle.ExerciseCardHeader}>
-              <Image style={MyDirectionsStyle.ExerciseCardSportIcon} source={require(`../assets/png/soccerIcon.png`)} />
-              <Text style={[TextStyles.subTitle, MyDirectionsStyle.ExerciseCardTitle]}>{`Aanvallen op de flank`.toUpperCase()}</Text>
-            </View>
-
-            <View style={MyDirectionsStyle.ExerciseCardImageWrapper}>
-              <View style={MyDirectionsStyle.ExerciseCardImage}></View>
-
-              <View style={MyDirectionsStyle.ExerciseCardSpecsWrapper}>
-                <View style={MyDirectionsStyle.ExerciseCardSpec}>
-                  <Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/directionIcon.png`)} />
-                  <Text style={TextStyles.copy}>5</Text>
-                </View>
-
-                <View style={[MyDirectionsStyle.ExerciseCardSpec, MyDirectionsStyle.ExerciseCardSpecIconMiddle]}>
-                  <Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/groupSizeIcon.png`)} />
-                  <Text style={TextStyles.copy}>5- 10</Text>
-                </View>
-
-                <View style={[MyDirectionsStyle.ExerciseCardSpec, MyDirectionsStyle.ExerciseCardSpecIconLast]}>
-                  <Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/intensivityIcon.png`)} />
-                  <Text style={TextStyles.copy}>Makkelijk</Text>
-                </View>
-              </View>
-            </View>
-
-          </Animatable.View>
+          <TouchableOpacity onPress={() => Actions.exerciseDetail({exerciseId: `${e._id}`})} style={MyDirectionsStyle.ExerciseCard} key={index}>
+            <Exercise index={index} {...e} />
+          </TouchableOpacity>
         );
       });
     }
