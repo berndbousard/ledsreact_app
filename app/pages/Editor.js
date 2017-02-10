@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, LayoutAnimation} from 'react-native';
+import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView, TouchableOpacity, TextInput, ActivityIndicator} from 'react-native';
 import {indexOf, isEmpty, findIndex, remove} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
 import {Actions, ActionConst} from "react-native-router-flux";
@@ -63,25 +63,23 @@ class Editor extends Component {
     nameInputValue: ``,
     descInputValue: ``,
 
-    loader: false
+    loader: false,
+    completed: false,
+    savedExercise: undefined
   };
-
-  componentWillMount() {
-    LayoutAnimation.spring();
-  }
 
   componentDidMount() {
 
     const {brushIcon, currentColor, deleteIcon, eraserIcon, fieldIcon, redoIcon, saveIcon, undoIcon} = this.refs;
 
-    brushIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    currentColor.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    deleteIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    eraserIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    fieldIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    redoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    saveIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
-    undoIcon.transition({opacity: 0}, {opacity: 1}, 450, 300, `ease-out-quad`);
+    brushIcon.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
+    currentColor.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
+    deleteIcon.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
+    eraserIcon.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
+    fieldIcon.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
+    redoIcon.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
+    saveIcon.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
+    undoIcon.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
 
     fetch(`${DatabaseUrl}/api/sports`)
       .then(r => {
@@ -96,6 +94,7 @@ class Editor extends Component {
   }
 
   componentWillMount() {
+
     this.drawHandler = PanResponder.create({
       onMoveShouldSetResponderCapture: () => true, //Allow movement to the view we'll attach this panresponder to
       onMoveShouldSetPanResponderCapture: () => true, //Same as above but for dragging
@@ -438,7 +437,6 @@ class Editor extends Component {
   }
 
   changePage(page) {
-    const {currentPage} = this.state;
     const {editorContainer} = this.refs;
 
     editorContainer.transitionTo({transform: [{translateX: (page * Dimensions.width) * - 1}]}, 500, `ease-out-circ`);
@@ -842,7 +840,7 @@ class Editor extends Component {
 
     const {
       focusInputValue, descInputValue, nameInputValue,
-      currentSelectedSport, ages, ageIndex, playerGroups, playerGroupIndex, sports, globalEditorSettings, editorDirections
+      currentSelectedSport, ages, ageIndex, playerGroups, playerGroupIndex, sports
     } = this.state;
 
     const data = {
@@ -879,7 +877,7 @@ class Editor extends Component {
         })
         .then(({exercise}) => {
 
-          console.log(`nog niet klaar`);
+          this.setState({savedExercise: exercise._id});
 
           this.saveDirections(exercise);
         })
@@ -891,40 +889,6 @@ class Editor extends Component {
   saveDirections(exercise) {
 
     const {editorDirections, globalEditorSettings} = this.state;
-
-    console.log(editorDirections);
-
-    // fetch(`${DatabaseUrl}/api/directions`, {
-    //   method: `POST`,
-    //   headers: {
-    //     Accept: `application/json`,
-    //     'Content-Type': `application/json`
-    //   },
-    //   body: JSON.stringify({
-    //     x: editorDirections[0].x,
-    //     y: editorDirections[0].y,
-    //     exercise: exercise._id,
-    //     delay: globalEditorSettings.delay,
-    //     combineLights: globalEditorSettings.combineLights,
-    //     directions: {
-    //       top: editorDirections[0].top,
-    //       bottom: editorDirections[0].bottom,
-    //       left: editorDirections[0].left,
-    //       right: editorDirections[0].right
-    //     }
-    //   })
-    // })
-    //   .then(d => {
-    //     return d.json();
-    //   })
-    //   .then(r => {
-    //     console.log(r);
-    //   })
-    //   .catch(e => {
-    //     console.log(e);
-    //   });
-    //
-    // return;
 
     const promises = editorDirections.map(e => {
       return fetch(`${DatabaseUrl}/api/directions`, {
@@ -946,15 +910,13 @@ class Editor extends Component {
       });
     });
 
-    console.log(promises);
-
     Promise.all(promises)
       .then(d => {
         return d[0].json();
       })
-      .then(d => {
+      .then(() => {
         this.setState({loader: false});
-        console.log(d);
+        this.setState({completed: true});
       })
       .catch(e => {
         console.log(`error`);
@@ -1121,7 +1083,7 @@ class Editor extends Component {
   }
 
   goToDetail() {
-    Actions.exerciseDetail({type: ActionConst.REPLACE});
+    Actions.exerciseDetail({type: ActionConst.REPLACE, exerciseId: this.state.savedExercise, origin: `editor`});
   }
 
   loader() {
@@ -1133,13 +1095,26 @@ class Editor extends Component {
     );
   }
 
+  renderCelebration() {
+
+    const {completed} = this.state;
+
+    if (completed) {
+      return (
+        <Animatable.View style={EditorStyle.celebrationImageWrapper} animation='bounceInUp'>
+          <Text style={[TextStyles.bam, EditorStyle.celebrationTitle]}>{`Succes`.toUpperCase()}</Text>
+          <Image style={EditorStyle.celebrationImage} source={require(`../assets/png/beker.png`)}  />
+          <Text style={[TextStyles.subTitle, EditorStyle.celebrationText]}>{`Jouw oefening is succesvol bewaard.`.toUpperCase()}</Text>
+        </Animatable.View>
+      );
+    }
+  }
+
   render() {
     const {
       currentPage, ages, ageIndex, playerGroups, playerGroupIndex,
       focusInputValue, nameInputValue, descInputValue
     } = this.state;
-
-    console.log(this.state.editorDirections);
 
     return (
       <Animatable.View ref='editorContainer' style={{transform: [{translateX: currentPage * Dimensions.width}], flexDirection: `row`}}>
@@ -1173,6 +1148,8 @@ class Editor extends Component {
         <View style={EditorStyle.form}>
 
           {this.loader()}
+
+          {this.renderCelebration()}
 
           <Animatable.View ref='formHeader' style={EditorStyle.formHeader}>
             <View style={EditorStyle.formTitleWrapper}>

@@ -15,7 +15,7 @@ const ButtonStyles = StyleSheet.create({
     borderRadius: 2,
     shadowColor: Colors.orange,
     shadowOffset: {width: 0, height: 5},
-    shadowOpacity: .1,
+    shadowOpacity: .3,
     shadowRadius: 5,
   },
 

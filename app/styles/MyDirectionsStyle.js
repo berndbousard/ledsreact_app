@@ -84,8 +84,7 @@ const MyDirectionsStyle = StyleSheet.create({
     flexDirection: `row`,
     alignItems: `center`,
     borderBottomWidth: 2,
-    borderBottomColor: Colors.lightGrey,
-    paddingBottom: 10
+    borderBottomColor: Colors.lightGrey
   },
 
   recentTabbarTitle: {
@@ -124,11 +123,11 @@ const MyDirectionsStyle = StyleSheet.create({
   },
 
   ExerciseCardImage: {
-    width: 236, height: 174,
-    borderWidth: 2,
-    borderColor: Colors.orange,
-    borderRadius: 2,
-    marginTop: 10
+    borderRadius: 3,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.lightGrey,
+    width: 236,
+    height: 174
   },
 
   ExerciseCardTitle: {
@@ -145,7 +144,7 @@ const MyDirectionsStyle = StyleSheet.create({
     flexDirection: `row`,
     justifyContent: `space-between`,
     alignItems: `center`,
-    marginTop: 10,
+    marginTop: 15,
     marginLeft: - 5
   },
 
@@ -153,11 +152,16 @@ const MyDirectionsStyle = StyleSheet.create({
     flexDirection: `column`,
     justifyContent: `center`,
     alignItems: `center`,
-    borderWidth: 1,
-    borderColor: Colors.lightGrey,
     borderRadius: 3,
-    paddingTop: 5, paddingBottom: 10,
-    marginTop: 10
+    backgroundColor: Colors.pureWhite,
+    paddingTop: 0, paddingBottom: 15,
+    paddingLeft: 5, paddingRight: 5,
+    marginTop: 10,
+
+    shadowColor: Colors.black,
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: .05,
+    shadowRadius: 7
   },
 
   ExerciseCardSpec: {
@@ -172,10 +176,15 @@ const MyDirectionsStyle = StyleSheet.create({
   },
 
   ExerciseCardSpecIconMiddle: {
-    borderLeftWidth: 2,
+    borderLeftWidth: 1,
     borderLeftColor: Colors.lightGrey,
-    borderRightWidth: 2,
+    borderRightWidth: 1,
     borderRightColor: Colors.lightGrey
+  },
+
+
+  ExerciseCardImageElement: {
+    width: 236, height: 174
   }
 });
 
