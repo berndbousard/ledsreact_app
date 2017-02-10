@@ -56,7 +56,7 @@ class MyExercises extends Component {
           <Text style={[TextStyles.secondNav, MyExercisesStyle.secondNavText, {color: currentTab === 3 ? Colors.white : Colors.black, opacity: currentTab === 3 ? 1 : .5}]}>{`ploeg`.toUpperCase()}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[ButtonStyles.primaryButton, MyExercisesStyle.blackButton]}>
+        <TouchableOpacity style={[ButtonStyles.primaryButton, MyExercisesStyle.blackButton]} onPress={() => Actions.editor()}>
           <Image style={[MyExercisesStyle.blackButtonIcon]} source={require(`../assets/png/addIconWhite.png`)} />
           <Text style={TextStyles.primaryButton}>{`Oefening maken`.toUpperCase()}</Text>
         </TouchableOpacity>
@@ -81,7 +81,7 @@ class MyExercises extends Component {
 
         <TouchableOpacity style={[ButtonStyles.secundairyButton]}>
           <Image style={[MyExercisesStyle.blackButtonIcon]} source={require(`../assets/png/filterIconOrange.png`)} />
-          <Text style={TextStyles.secundairyButton}>{`Oefening maken`.toUpperCase()}</Text>
+          <Text style={TextStyles.secundairyButton}>{`filteren`.toUpperCase()}</Text>
         </TouchableOpacity>
 
       </View>
