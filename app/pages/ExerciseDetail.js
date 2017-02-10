@@ -57,6 +57,9 @@ class ExerciseDetail extends Component {
   }
 
   renderHeader() {
+
+    const {exercise, directions} = this.state;
+
     return (
       <View style={ExerciseDetailStyle.headerWrapper}>
         <TouchableOpacity style={ExerciseDetailStyle.backButtonWrapper} onPress={() => this.goBack()} >
@@ -82,7 +85,7 @@ class ExerciseDetail extends Component {
             <Image style={ExerciseDetailStyle.headerAddIcon} source={require(`../assets/png/addIconWhite.png`)} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={ExerciseDetailStyle.primaryButtonWrapper} onPress={() => Actions.deployment({exerciseId: `589ae7834224340ecced6190`})}>
+          <TouchableOpacity style={ExerciseDetailStyle.primaryButtonWrapper} onPress={() => Actions.deployment({exercise: exercise, directions: directions})}>
             <LinearGradient style={[ButtonStyles.primaryButton, ExerciseDetailStyle.buttonWrapper]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
               <Image style={[ExerciseDetailStyle.primaryButtonImage]} source={require(`../assets/png/playIconWhite.png`)} />
               <Text style={[TextStyles.primaryButton, ExerciseDetailStyle.primaryButtonText]}>{`uitproberen`.toUpperCase()}</Text>
@@ -365,7 +368,8 @@ class ExerciseDetail extends Component {
 ExerciseDetail.propTypes = {
   socket: React.PropTypes.object,
   name: React.PropTypes.string,
-  exerciseId: React.PropTypes.string
+  exerciseId: React.PropTypes.string,
+  origin: React.PropTypes.string
 };
 
 export default ExerciseDetail;
