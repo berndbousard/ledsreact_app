@@ -72,14 +72,14 @@ class Editor extends Component {
 
     const {brushIcon, currentColor, deleteIcon, eraserIcon, fieldIcon, redoIcon, saveIcon, undoIcon} = this.refs;
 
-    brushIcon.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
-    currentColor.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
-    deleteIcon.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
-    eraserIcon.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
-    fieldIcon.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
-    redoIcon.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
-    saveIcon.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
-    undoIcon.transition({opacity: 0}, {opacity: 1}, 100, `ease-out-quad`);
+    brushIcon.transition({opacity: 0}, {opacity: 1}, 300, `ease-out-quad`);
+    currentColor.transition({opacity: 0}, {opacity: 1}, 300, `ease-out-quad`);
+    deleteIcon.transition({opacity: 0}, {opacity: 1}, 300, `ease-out-quad`);
+    eraserIcon.transition({opacity: 0}, {opacity: 1}, 300, `ease-out-quad`);
+    fieldIcon.transition({opacity: 0}, {opacity: 1}, 300, `ease-out-quad`);
+    redoIcon.transition({opacity: 0}, {opacity: 1}, 300, `ease-out-quad`);
+    saveIcon.transition({opacity: 0}, {opacity: 1}, 300, `ease-out-quad`);
+    undoIcon.transition({opacity: 0}, {opacity: 1}, 300, `ease-out-quad`);
 
     fetch(`${DatabaseUrl}/api/sports`)
       .then(r => {
@@ -240,23 +240,23 @@ class Editor extends Component {
   }
 
   directionDrawerImagePressHandler() {
-    const {editorDirections} = this.state;
+    const {editorDirections, colors} = this.state;
 
     // Initial Values
     const newDirection = {
       x: Map(Dimensions.width / 2 - (100 / 2), 0, Dimensions.width, 0, 1),
       y: Map(Dimensions.height / 2 - (107 / 2), 0, Dimensions.width, 0, 1),
       top: {
-        colors: []
+        colors: [colors[0]]
       },
       bottom: {
-        colors: []
+        colors: [colors[0]]
       },
       left: {
-        colors: []
+        colors: [colors[0]]
       },
       right: {
-        colors: []
+        colors: [colors[0]]
       }
     };
 
@@ -581,6 +581,7 @@ class Editor extends Component {
   }
 
   directionIsMovingHandler(directionIndex) {
+    // directionIndex om te weten welke er wordt verschoven.
   }
 
   renderEditorDirections() {
@@ -618,7 +619,7 @@ class Editor extends Component {
 
   renderDirectionArrows() {
 
-    const {currentRichting, currentEditorDirectionIndex} = this.state;
+    const {currentRichting} = this.state;
 
     return (
       <View style={EditorStyle.directionArrowsWrapper}>
@@ -1121,12 +1122,15 @@ class Editor extends Component {
         <View style={[EditorStyle.editorContainer]}>
           <View style={{position: `absolute`}} ref='fieldAndDirections'>
 
-            <Svg style={[{zIndex: 1}]} {...this.drawHandler.panHandlers} width={Dimensions.width} height={Dimensions.height} ref='field'>
-              <Rect x='0' y='0' width='100%' height='100%' fill='transparent' />
-              {this.generateUserDrawingFeedback()}
-              {this.generateSvgElements()}
-            </Svg>
-            {this.generateField()}
+            <View ref='field'>
+              <Svg style={[{zIndex: 1}]} {...this.drawHandler.panHandlers} width={Dimensions.width} height={Dimensions.height}>
+                <Rect x='0' y='0' width='100%' height='100%' fill='transparent' />
+                {this.generateUserDrawingFeedback()}
+                {this.generateSvgElements()}
+              </Svg>
+              {this.generateField()}
+            </View>
+
             {this.renderEditorDirections()}
 
           </View>
