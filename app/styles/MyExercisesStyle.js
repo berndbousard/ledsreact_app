@@ -6,6 +6,7 @@ import Fonts from './Fonts';
 
 const MyExercisesStyle = StyleSheet.create({
   pageContainer: {
+
     flexDirection: `column`,
     alignItems: `center`,
     padding: 0
@@ -17,7 +18,7 @@ const MyExercisesStyle = StyleSheet.create({
     paddingTop: 30, paddingBottom: 30,
     paddingLeft: 20, paddingRight: 20,
     alignItems: `center`,
-    width: Dimensions.width - 135,
+    width: Dimensions.width - 110,
     transform: [{translateX: - 14}]
   },
 
@@ -40,12 +41,12 @@ const MyExercisesStyle = StyleSheet.create({
     alignItems: `center`,
     justifyContent: `space-around`,
     backgroundColor: Colors.lightGrey,
-    width: Dimensions.width - 135,
+    width: Dimensions.width - 110,
     transform: [{translateX: - 14}],
     paddingTop: 20, paddingBottom: 20,
     paddingLeft: 20, paddingRight: 20,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.grey
+    borderBottomColor: Colors.borderforGreyBackground
   },
 
   filterSearchWrapper: {

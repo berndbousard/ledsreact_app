@@ -5,7 +5,7 @@ import Fonts from './Fonts';
 
 const NavigationStyle = StyleSheet.create({
   navigationWrapper: {
-    flex: 1,
+    flex: 0.8,
     flexDirection: `row`,
     zIndex: 1
   },
@@ -16,28 +16,27 @@ const NavigationStyle = StyleSheet.create({
     justifyContent: `space-between`,
     alignItems: `center`,
     paddingLeft: 11,
-    paddingRight: 11
+    paddingRight: 11,
+    width: 110,
   },
 
-  navigationLink: {
+
+  mainNav: {
+    marginLeft: - 10,
+    paddingTop: 25,
     alignSelf: `stretch`,
     flexDirection: `column`,
     alignItems: `center`,
     justifyContent: `center`
   },
 
-  mainNav: {
-    paddingTop: 25,
-    alignSelf: `stretch`,
-    flexDirection: `column`,
-    alignItems: `center`,
-  },
-
   subNav: {
-    paddingBottom: 25,
+    marginLeft: - 10,
+    paddingBottom: 10,
     alignSelf: `stretch`,
     flexDirection: `column`,
     alignItems: `center`,
+    justifyContent: `center`
   },
 
   navigationText: {
@@ -46,7 +45,8 @@ const NavigationStyle = StyleSheet.create({
     alignSelf: `stretch`,
     marginTop: 7,
     fontFamily: Fonts.circular.book,
-    fontSize: Fonts.size.navCopy
+    fontSize: Fonts.size.navCopy,
+    backgroundColor: `transparent`,
   },
 
   navigationMyDirectionsIcon: {
@@ -66,7 +66,8 @@ const NavigationStyle = StyleSheet.create({
 
   navigationMyTrainingsIcon: {
     width: 36,
-    height: 25
+    height: 25,
+    transform: [{translateX: 3}]
   },
 
   navigationAnalyticsIcon: {
@@ -81,20 +82,21 @@ const NavigationStyle = StyleSheet.create({
 
   navigationNotificationsIcon: {
     width: 16,
-    height: 21
+    height: 21,
+    transform: [{translateX: - 2}]
   },
 
   navigationSettingsIcon: {
     width: 21,
-    height: 22
+    height: 22,
+    transform: [{translateX: - 2}]
   },
 
   divider: {
-    width: 110,
+    width: 30,
     height: 2,
     opacity: .07,
-    marginTop: 20,
-    marginBottom: 20,
+    marginLeft: 20,
   },
 
   navigationSkew: {
@@ -102,9 +104,42 @@ const NavigationStyle = StyleSheet.create({
     height: 768
   },
 
+
+  navigationLink: {
+    alignSelf: `stretch`,
+    flexDirection: `column`,
+    alignItems: `center`,
+    justifyContent: `center`,
+    width: 120,
+    height: 90,
+    paddingTop: 13,
+    paddingBottom: 8,
+    marginBottom: 8,
+  },
+
+
+  navigationLinkSmall: {
+    height: 10,
+    paddingBottom: 15,
+    marginTop: 15,
+  },
+
   activeNavigationLink: {
     color: Colors.orange,
     fontFamily: Fonts.circular.bold
+  },
+
+  selectedBorder: {
+    borderLeftWidth: 3,
+  },
+
+  selectedNav: {
+    position: `absolute`,
+    height: 100,
+    width: 3,
+    backgroundColor: Colors.orange,
+    left: 0,
+    top: 0
   }
 });
 

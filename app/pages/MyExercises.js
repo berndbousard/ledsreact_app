@@ -4,7 +4,7 @@ import {Actions} from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 import {isEmpty} from 'lodash';
 
-import {GeneralStyle, MyExercisesStyle, MyDirectionsStyle, Colors, TextStyles, ButtonStyles} from '../styles';
+import {GeneralStyle, MyExercisesStyle, MyDirectionsStyle, Colors, TextStyles, ButtonStyles, AnalyticsStyles} from '../styles';
 import {Navigation, Exercise} from '../components';
 import {DatabaseUrl} from '../globals';
 
@@ -65,6 +65,7 @@ class MyExercises extends Component {
           <Image style={[MyExercisesStyle.blackButtonIcon]} source={require(`../assets/png/addIconWhite.png`)} />
           <Text style={TextStyles.primaryButton}>{`Oefening maken`.toUpperCase()}</Text>
         </TouchableOpacity>
+        <LinearGradient style={[AnalyticsStyles.navBorder, {left: currentTab === 0 ? 50 : currentTab === 1 ? 190 : 340}]} colors={[Colors.white, Colors.navBorderWhite]} start={{x: 0, y: 1}} end={{x: 1, y: 1}}></LinearGradient>
 
       </LinearGradient>
     );
@@ -99,7 +100,7 @@ class MyExercises extends Component {
 
     if (!isEmpty(exercises)) {
       return (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={MyExercisesStyle.exercisesContainer}>
             {
               exercises.map((e, index) => {

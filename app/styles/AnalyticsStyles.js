@@ -16,7 +16,7 @@ const AnalyticsStyles = StyleSheet.create({
     justifyContent: `flex-start`,
     paddingTop: 30, paddingBottom: 30,
     paddingLeft: 25, paddingRight: 25,
-    marginRight: - 20,
+    marginRight: - 0,
     alignItems: `center`,
     width: Dimensions.width - 135,
     height: 110
@@ -30,8 +30,8 @@ const AnalyticsStyles = StyleSheet.create({
     height: 2,
     width: 100,
     position: `absolute`,
-    top: 65,
-    left: 330,
+    top: 75,
+    left: 500,
   },
 
   controlBar: {
@@ -150,9 +150,9 @@ const AnalyticsStyles = StyleSheet.create({
   horizontalScroll: {
     width: Dimensions.width - 135,
     marginLeft: - 50,
-    paddingTop: 30,
+    paddingTop: 20,
     paddingLeft: 45,
-    paddingBottom: 10
+    paddingBottom: 0
   },
 
   analyseTitel: {
@@ -320,7 +320,9 @@ const AnalyticsStyles = StyleSheet.create({
 
   doeltref: {
     marginTop: 40
-  }
+  },
+
+
 
 });
 

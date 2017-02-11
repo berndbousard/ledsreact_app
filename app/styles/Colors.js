@@ -6,7 +6,7 @@ export default {
   gradientOrange: `#FF500D`,
   white: `#F8F8F8`,
   pureWhite: `#FFFFFF`,
-  lightGrey: `#efefef`,
+  lightGrey: `#F1F1F1`,
   grey: `#bbbbbb`,
   darkGrey: `#a6a6a6`,
   green: `#49E900`,
