@@ -144,18 +144,11 @@ const ComponentStyle = StyleSheet.create({
   },
 
   fieldsDrawer: {
-    position: `absolute`,
-    left: Dimensions.width / 2 - (Dimensions.width * (9 / 10)) / 2,
-    bottom: Dimensions.height / 2 - (Dimensions.height * (9 / 10)) / 2,
-    borderRadius: 5,
-    shadowColor: Colors.black,
-    shadowOffset: {width: 0, height: 10},
-    shadowOpacity: .05,
-    shadowRadius: 20,
-    width: Dimensions.width * (9 / 10),
-    height: Dimensions.height * (9 / 10),
-    backgroundColor: Colors.white,
-    zIndex: 2,
+    position: `relative`,
+    width: Dimensions.width,
+    height: Dimensions.height,
+    backgroundColor: Colors.opacityBlackFull,
+    zIndex: 10,
     justifyContent: `center`,
     alignItems: `center`
   },
@@ -166,7 +159,7 @@ const ComponentStyle = StyleSheet.create({
   },
 
   fieldsDrawerTitle: {
-    marginTop: 25
+    marginTop: 40
   },
 
   fieldsDrawerItem: {
@@ -204,7 +197,7 @@ const ComponentStyle = StyleSheet.create({
     flexDirection: `row`,
     justifyContent: `space-between`,
     flexWrap: `wrap`,
-    alignItems: `flex-start`,
+    alignItems: `center`,
     flex: 1,
     marginTop: 40
   },
@@ -364,29 +357,25 @@ const ComponentStyle = StyleSheet.create({
     alignItems: `center`
   },
 
-  optionsMenuTitle: {
-    borderBottomWidth: 2,
-    borderBottomColor: Colors.black,
-    marginTop: 25
-  },
-
   optionsMenusubTitle: {
     textAlign: `center`,
-    marginTop: 20
+    marginTop: 18,
+    marginBottom: 5
   },
 
   directionArrowsWrapper: {
     marginTop: 10,
     width: 200,
     justifyContent: `center`,
-    alignItems: `center`,
+    alignItems: `center`
   },
 
   directionArrow: {
     justifyContent: `center`,
     alignItems: `center`,
     width: 44, height: 44,
-    borderRadius: 100
+    borderRadius: 100,
+    borderWidth: 2
   },
 
   directionArrowIcon: {
@@ -486,7 +475,7 @@ const ComponentStyle = StyleSheet.create({
     padding: 15,
     borderColor: Colors.black,
     borderWidth: 2,
-    borderRadius: 2,
+    borderRadius: 4,
     margin: 10
   },
 
@@ -823,8 +812,10 @@ const ComponentStyle = StyleSheet.create({
   },
 
   celebrationButtonWrapper: {
-    right: Dimensions.width / 2 - 100,
-    top: 100
+    top: 30,
+    flexDirection: `row`,
+    justifyContent: `center`,
+    width: Dimensions.width
   },
 
   celebrationImage: {
@@ -849,6 +840,75 @@ const ComponentStyle = StyleSheet.create({
     color: Colors.orange,
     marginRight: 350,
     marginBottom: - 90
+  },
+
+  toolIcon: {
+    width: 50, height: 50,
+    justifyContent: `center`,
+    alignItems: `center`,
+    borderRadius: 50,
+    marginBottom: 25
+  },
+
+  shareIcon: {
+    width: 17, height: 21,
+    marginRight: 10,
+    marginTop: - 2
+  },
+
+  celebButton: {
+    marginLeft: 10,
+    marginRight: 10
+  },
+
+  optionsHeader: {
+    backgroundColor: Colors.black,
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `space-between`,
+    padding: 20,
+    width: 275
+  },
+
+  optionsMainHeaderTitle: {
+    color: Colors.white
+  },
+
+  optionsHeaderCloseIcon: {
+    width: 15, height: 15
+  },
+
+  deleteOptionsIcon: {
+    width: 15, height: 20
+  },
+
+  deleteIconWrapper: {
+    marginLeft: 21,
+    marginRight: 21
+  },
+
+  oplichtenWrapperContent: {
+    marginTop: - 10
+  },
+
+  fieldsDrawerTitlekes: {
+    color: Colors.white
+  },
+
+  closeFieldsDrawerWrapper: {
+    position: `absolute`,
+    top: 25, right: 25,
+    justifyContent: `center`,
+    alignItems: `center`,
+    borderWidth: 2,
+    borderColor: Colors.white,
+    padding: 15,
+    borderRadius: 3,
+    zIndex: 100
+  },
+
+  closeFieldsDrawerIcon: {
+    width: 15, height: 15
   }
 });
 

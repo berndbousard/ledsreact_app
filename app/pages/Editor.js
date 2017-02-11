@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView, TouchableOpacity, TextInput, ActivityIndicator} from 'react-native';
-import {indexOf, isEmpty, findIndex, remove} from 'lodash';
+import {indexOf, isEmpty, findIndex, remove, compact} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
 import {Actions, ActionConst} from "react-native-router-flux";
 import * as Animatable from 'react-native-animatable';
@@ -31,8 +31,9 @@ class Editor extends Component {
       index: 0,
       colors: [Colors.black, Colors.orange]
     },
+    activeTool: 1,
     field: {
-      currentIndex: 0,
+      currentIndex: 1,
       images: [`blanco`, `soccer`, `basket`, `tennis`, `rugby`, `volleyball`],
       drawer: {
         isActive: false
@@ -40,14 +41,11 @@ class Editor extends Component {
     },
 
     editorDirections: [],
-    globalEditorSettings: {
-      delay: 0,
-      combineLights: false
-    },
-
     currentEditorDirectionIndex: 0,
+
     colors: [`#FF0F00`, `#1E6DFF`, `#50E610`, `#FFD100`],
     currentRichting: undefined,
+
     currentPage: 0,
     currentFormTab: 0,
 
@@ -192,19 +190,14 @@ class Editor extends Component {
   }
 
   clearArtboardDirections() {
-    // TODO: bugcheck
     let {editorDirections, directionsInEditor, currentEditorDirectionIndex, currentRichting} = this.state;
-    const {globalEditorSettings} = this.state;
 
     editorDirections = [];
     directionsInEditor = 0;
     currentEditorDirectionIndex = 0;
     currentRichting = undefined;
 
-    globalEditorSettings.delay = 0;
-    globalEditorSettings.combineLights = false;
-
-    this.setState({editorDirections, globalEditorSettings});
+    this.setState({editorDirections});
   }
 
   generateUserDrawingFeedback() {
@@ -271,17 +264,19 @@ class Editor extends Component {
     const newDirection = {
       x: Map(Dimensions.width / 2 - (100 / 2), 0, Dimensions.width, 0, 1),
       y: Map(Dimensions.height / 2 - (107 / 2), 0, Dimensions.width, 0, 1),
+      delay: 0,
+      combineLights: false,
       top: {
         colors: [colors[0]]
       },
       bottom: {
-        colors: [colors[0]]
+        colors: []
       },
       left: {
-        colors: [colors[0]]
+        colors: []
       },
       right: {
-        colors: [colors[0]]
+        colors: []
       }
     };
 
@@ -347,6 +342,8 @@ class Editor extends Component {
 
     field.currentIndex = index;
 
+    this.toggleFieldDrawerHandler();
+
     this.setState({field});
   }
 
@@ -357,13 +354,16 @@ class Editor extends Component {
     if (field.drawer.isActive) {
       return (
         <Animatable.View style={[EditorStyle.fieldsDrawer]} ref='fieldsDrawerRef' duration={200} animation='pulse' easing='ease-out'>
-          <Text style={[TextStyles.title, EditorStyle.fieldsDrawerTitle]}>{`Speelveld`.toUpperCase()}</Text>
+          <Text style={[TextStyles.title, EditorStyle.fieldsDrawerTitle]}>{`kies een speelveld`.toUpperCase()}</Text>
+          <TouchableOpacity style={EditorStyle.closeFieldsDrawerWrapper}>
+            <Image style={EditorStyle.closeFieldsDrawerIcon} source={require(`../assets/png/closeIconSmallWhite.png`)} />
+          </TouchableOpacity>
           <ScrollView style={[EditorStyle.fieldsDrawerScrollview]}>
               <View style={[EditorStyle.fieldsDrawerScrollviewContent]}>
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `blancoIcon`}} />
-                    <Text style={[TextStyles.subTitle]}>{`blanco`.toUpperCase()}</Text>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `blancoIconWhite`}} />
+                    <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`blanco`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`blanco`)}>
@@ -375,8 +375,8 @@ class Editor extends Component {
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `soccerIcon`}} />
-                    <Text style={[TextStyles.subTitle]}>{`voetbal`.toUpperCase()}</Text>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `soccerIconWhite`}} />
+                    <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`voetbal`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`soccer`)}>
@@ -388,8 +388,8 @@ class Editor extends Component {
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `basketballIcon`}} />
-                    <Text style={[TextStyles.subTitle]}>{`basket`.toUpperCase()}</Text>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `basketballIconWhite`}} />
+                    <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`basket`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`basket`)}>
@@ -401,8 +401,8 @@ class Editor extends Component {
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `tennisIcon`}} />
-                    <Text style={[TextStyles.subTitle]}>{`tennis`.toUpperCase()}</Text>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `tennisIconWhite`}} />
+                    <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`tennis`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`tennis`)}>
@@ -414,8 +414,8 @@ class Editor extends Component {
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `rugbyIcon`}} />
-                    <Text style={[TextStyles.subTitle]}>{`rugby`.toUpperCase()}</Text>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `rugbyIconWhite`}} />
+                    <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`rugby`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`rugby`)}>
@@ -427,8 +427,8 @@ class Editor extends Component {
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `volleyBallIcon`}} />
-                    <Text style={[TextStyles.subTitle]}>{`volleybal`.toUpperCase()}</Text>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `volleyballIconWhite`}} />
+                    <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`volleybal`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`volleyball`)}>
@@ -444,7 +444,7 @@ class Editor extends Component {
     }
   }
 
-  fieldIconPressHandler() {
+  toggleFieldDrawerHandler() {
     const {field} = this.state;
     const {fieldsDrawerRef} = this.refs;
 
@@ -460,7 +460,6 @@ class Editor extends Component {
     }
 
     this.setState({field});
-    return;
   }
 
   changePage(page) {
@@ -471,28 +470,36 @@ class Editor extends Component {
 
   renderLeftControls() {
 
-    const {brush, field} = this.state;
+    const {brush, field, activeTool} = this.state;
 
     if (!field.drawer.isActive) {
       return (
         <Animatable.View style={[EditorStyle.leftControls]}>
           <View style={[EditorStyle.leftUpperControls]}>
-            <TouchableWithoutFeedback onPressOut={() => this.changeColorHandler()} onPressIn={() => this.pressInColorHandler()}>
-              <Animatable.View ref='currentColor' style={[EditorStyle.colorIcon, EditorStyle.icon, {backgroundColor: brush.colors[brush.index]}]}>
-              </Animatable.View>
-            </TouchableWithoutFeedback>
 
-            <TouchableWithoutFeedback onPressOut={() => this.refs.brushIcon.bounceIn(800)} onPressIn={() => this.refs.brushIcon.pulse(600)}>
-              <Animatable.View ref='brushIcon'>
-                <Image style={[EditorStyle.brushIcon, EditorStyle.icon]} source={{uri: `brushIcon`}} />
-              </Animatable.View>
-            </TouchableWithoutFeedback>
+            <View style={[EditorStyle.toolIcon, {backgroundColor: activeTool === 0 ? Colors.opacityBlack : `transparent`}]}>
+              <TouchableWithoutFeedback onPressOut={() => this.changeColorHandler()} onPressIn={() => this.pressInColorHandler()}>
+                <Animatable.View ref='currentColor' style={[EditorStyle.colorIcon, {backgroundColor: brush.colors[brush.index]}]}>
+                </Animatable.View>
+              </TouchableWithoutFeedback>
+            </View>
 
-            <TouchableWithoutFeedback onPressOut={() => this.refs.eraserIcon.bounceIn(800)} onPressIn={() => this.refs.eraserIcon.pulse(600)}>
-              <Animatable.View ref='eraserIcon'>
-                <Image style={[EditorStyle.eraserIcon, EditorStyle.icon]} source={{uri: `eraserIcon`}} />
-              </Animatable.View>
-            </TouchableWithoutFeedback>
+            <View style={[EditorStyle.toolIcon, {backgroundColor: activeTool === 1 ? Colors.opacityBlack : `transparent`}]}>
+              <TouchableWithoutFeedback onPress={() => this.setState({activeTool: 1})} onPressOut={() => this.refs.brushIcon.bounceIn(800)} onPressIn={() => this.refs.brushIcon.pulse(600)}>
+                <Animatable.View ref='brushIcon'>
+                  <Image style={[EditorStyle.brushIcon]} source={{uri: `brushIcon`}} />
+                </Animatable.View>
+              </TouchableWithoutFeedback>
+            </View>
+
+            <View style={[EditorStyle.toolIcon, {backgroundColor: activeTool === 2 ? Colors.opacityBlack : `transparent`}]}>
+              <TouchableWithoutFeedback onPressOut={() => this.refs.eraserIcon.bounceIn(800)} onPress={() => this.setState({activeTool: 2})} onPressIn={() => this.refs.eraserIcon.pulse(600)}>
+                <Animatable.View ref='eraserIcon'>
+                  <Image style={[EditorStyle.eraserIcon]} source={{uri: `eraserIcon`}} />
+                </Animatable.View>
+              </TouchableWithoutFeedback>
+            </View>
+
           </View>
 
           <View style={[EditorStyle.leftLowerControls]}>
@@ -546,7 +553,7 @@ class Editor extends Component {
         <TouchableWithoutFeedback style={EditorStyle.fieldIconWrapper}>
           <Animatable.View style={EditorStyle.fieldIconWrapper}>
             <Text style={[EditorStyle.fieldIconText, {opacity: field.drawer.isActive ? 0 : 1}]}>Speelveld</Text>
-            <TouchableWithoutFeedback onPress={() => this.fieldIconPressHandler()} onPressOut={() => this.refs.fieldIcon.bounceIn(800)} onPressIn={() => this.refs.fieldIcon.pulse(600)}>
+            <TouchableWithoutFeedback onPress={() => this.toggleFieldDrawerHandler()} onPressOut={() => this.refs.fieldIcon.bounceIn(800)} onPressIn={() => this.refs.fieldIcon.pulse(600)}>
               <Animatable.Image ref='fieldIcon' style={[EditorStyle.fieldIcon, EditorStyle.icon]} source={url}/>
             </TouchableWithoutFeedback>
           </Animatable.View>
@@ -646,26 +653,27 @@ class Editor extends Component {
 
   renderDirectionArrows() {
 
-    const {currentRichting} = this.state;
+    const {currentRichting, editorDirections, currentEditorDirectionIndex} = this.state;
 
     return (
+
       <View style={EditorStyle.directionArrowsWrapper}>
-        <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `top` ? Colors.orange : Colors.lightGrey}]} onPress={() => this.selectDirection(`top`)} >
-          <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconUp]} source={require(`../assets/png/arrowWhite.png`)} />
+        <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `top` ? Colors.orange : Colors.lightGrey, borderColor: !isEmpty(editorDirections[currentEditorDirectionIndex].top.colors) ? Colors.orange : `transparent`}]} onPress={() => this.selectDirection(`top`)} >
+          <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconUp]} source={{uri: !isEmpty(editorDirections[currentEditorDirectionIndex].top.colors) && currentRichting !== `top` ? `arrowOrangeRotated` : `arrowWhite`}} />
         </TouchableOpacity>
 
         <View style={EditorStyle.directionArrowMiddle}>
-          <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `left` ? Colors.orange : Colors.lightGrey}]} onPress={() => this.selectDirection(`left`)} >
-            <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconLeft]} source={require(`../assets/png/arrowWhite.png`)} />
+          <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `left` ? Colors.orange : Colors.lightGrey, borderColor: !isEmpty(editorDirections[currentEditorDirectionIndex].left.colors) ? Colors.orange : `transparent`}]} onPress={() => this.selectDirection(`left`)} >
+            <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconLeft]} source={{uri: !isEmpty(editorDirections[currentEditorDirectionIndex].left.colors) && currentRichting !== `left` ? `arrowOrangeRotated` : `arrowWhite`}} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `right` ? Colors.orange : Colors.lightGrey}]} onPress={() => this.selectDirection(`right`)} >
-            <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconRight]} source={require(`../assets/png/arrowWhite.png`)} />
+          <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `right` ? Colors.orange : Colors.lightGrey, borderColor: !isEmpty(editorDirections[currentEditorDirectionIndex].right.colors) ? Colors.orange : `transparent`}]} onPress={() => this.selectDirection(`right`)} >
+            <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconRight]} source={{uri: !isEmpty(editorDirections[currentEditorDirectionIndex].right.colors) && currentRichting !== `right` ? `arrowOrangeRotated` : `arrowWhite`}} />
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `bottom` ? Colors.orange : Colors.lightGrey}]} onPress={() => this.selectDirection(`bottom`)} >
-          <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconDown]} source={require(`../assets/png/arrowWhite.png`)} />
+        <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `bottom` ? Colors.orange : Colors.lightGrey, borderColor: !isEmpty(editorDirections[currentEditorDirectionIndex].bottom.colors) ? Colors.orange : `transparent`}]} onPress={() => this.selectDirection(`bottom`)} >
+          <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconDown]} source={{uri: !isEmpty(editorDirections[currentEditorDirectionIndex].bottom.colors) && currentRichting !== `bottom` ? `arrowOrangeRotated` : `arrowWhite`}} />
         </TouchableOpacity>
       </View>
     );
@@ -685,11 +693,9 @@ class Editor extends Component {
         return c === colors[colorIndex];
       });
       if (indexOfElement === - 1) { //Zoniet -> toevoegen
-        // console.log(`kleur niet aanwezig`);
         currentDirection[`${currentRichting}`].colors.push(colors[colorIndex]);
         this.setState({editorDirections});
       } else { //Zoniet -> verwijderen
-        // console.log(`kleur aanwezig`);
         currentDirection[`${currentRichting}`].colors = remove(currentDirection[`${currentRichting}`].colors, c => {
           return c !== colors[colorIndex];
         });
@@ -734,37 +740,54 @@ class Editor extends Component {
     );
   }
 
-  toggleCombinationSetting(combineLights) {
-    const {globalEditorSettings} = this.state;
+  setCombineLights(combineLights) {
+    const {editorDirections, currentEditorDirectionIndex} = this.state;
 
-    if (globalEditorSettings.combineLights === combineLights) return;
-    globalEditorSettings.combineLights = !globalEditorSettings.combineLights;
+    if (editorDirections[currentEditorDirectionIndex].combineLights === combineLights) return;
+    editorDirections[currentEditorDirectionIndex].combineLights = !editorDirections[currentEditorDirectionIndex].combineLights;
 
-    this.setState({globalEditorSettings});
+    this.setState({editorDirections});
   }
 
-  toggleDelaySetting(amount) {
-    const {globalEditorSettings} = this.state;
+  setDelaySetting(amount) {
+    const {editorDirections, currentEditorDirectionIndex} = this.state;
 
-    if (globalEditorSettings.delay + amount < 0 || globalEditorSettings.delay + amount > 10) {
+    if (editorDirections[currentEditorDirectionIndex].delay + amount < 0 || editorDirections[currentEditorDirectionIndex].delay + amount > 10) {
       return;
     }
 
-    globalEditorSettings.delay += amount;
+    editorDirections[currentEditorDirectionIndex].delay += amount;
 
-    this.setState({globalEditorSettings});
+    this.setState({editorDirections});
+  }
+
+  deleteDirectionHandler(directionIndex = this.state.currentEditorDirectionIndex) {
+    // let {editorDirections} = this.state;
+    //
+    // editorDirections = editorDirections.map((e, index) => {
+    //   if (!index === directionIndex) {
+    //     return e;
+    //   }
+    // });
+    //
+    // editorDirections = compact(editorDirections);
+    //
+    // this.setState({editorDirections});
   }
 
   renderOptionsMenu() {
-    const {optionsMenu, editorDirections, currentEditorDirectionIndex, globalEditorSettings} = this.state;
+    const {optionsMenu, editorDirections, currentEditorDirectionIndex} = this.state;
 
     if (optionsMenu.isActive) {
       if (!isEmpty(editorDirections[currentEditorDirectionIndex])) {
         return (
-          <Animatable.View ref='optionsMenuRef' animation='fadeInRightBig' duration={500} easing='ease-out-circ' style={EditorStyle.optionsMenu}>
+          <Animatable.View ref='optionsMenuRef' animation='fadeInRightBig' duration={300} easing='ease-out-circ' style={EditorStyle.optionsMenu}>
             <View style={EditorStyle.optionsMenuDirectionUpper}>
 
-              <Text style={[TextStyles.title, EditorStyle.optionsMenuTitle]}>{`direction ${currentEditorDirectionIndex + 1}`.toUpperCase()}</Text>
+              <View style={[EditorStyle.optionsHeader]}>
+                <Text style={[TextStyles.title, EditorStyle.optionsMainHeaderTitle]}>{`direction ${currentEditorDirectionIndex + 1}`.toUpperCase()}</Text>
+                <Image style={[EditorStyle.optionsHeaderCloseIcon]} source={require(`../assets/png/closeIconSmallWhite.png`)} />
+              </View>
 
               <View style={[EditorStyle.optionsMenuRichting]}>
                 <Text style={[TextStyles.subTitle, EditorStyle.optionsMenusubTitle]}>{`richtingen`.toUpperCase()}</Text>
@@ -779,35 +802,40 @@ class Editor extends Component {
 
             <View style={EditorStyle.optionsMenuDirectionLower}>
 
-              <Text style={[TextStyles.title, EditorStyle.optionsMenuTitle]}>{`globaal`.toUpperCase()}</Text>
-
               <View style={[EditorStyle.optionsMenuRichting]}>
                 <Text style={[TextStyles.subTitle, EditorStyle.optionsMenusubTitle]}>{`delay`.toUpperCase()}</Text>
                 <View style={[EditorStyle.delayButtons]}>
-                  <TouchableOpacity onPress={() => this.toggleDelaySetting(- 1)} style={[EditorStyle.delayButton]}>
+                  <TouchableOpacity onPress={() => this.setDelaySetting(- 1)} style={[EditorStyle.delayButton]}>
                     <Image style={[EditorStyle.delayMinusIcon]} source={require(`../assets/png/minusIconBlack.png`)} />
                   </TouchableOpacity>
 
-                  <Text style={[TextStyles.copy, EditorStyle.delayCopy]}>{`${globalEditorSettings.delay}s`.toUpperCase()}</Text>
+                  <Text style={[TextStyles.copy, EditorStyle.delayCopy]}>{`${editorDirections[currentEditorDirectionIndex].delay}s`.toUpperCase()}</Text>
 
-                  <TouchableOpacity onPress={() => this.toggleDelaySetting(1)} style={[EditorStyle.delayButton]}>
+                  <TouchableOpacity onPress={() => this.setDelaySetting(1)} style={[EditorStyle.delayButton]}>
                     <Image style={[EditorStyle.delayPlusIcon]} source={require(`../assets/png/plusIconBlack.png`)} />
                   </TouchableOpacity>
                 </View>
               </View>
 
-              <View style={[EditorStyle.optionsMenuRichting]}>
+              <View style={[EditorStyle.optionsMenuRichting, EditorStyle.oplichtenWrapperContent]}>
                 <Text style={[TextStyles.subTitle, EditorStyle.optionsMenusubTitle]}>{`oplichten`.toUpperCase()}</Text>
                 <View style={[EditorStyle.oplichtenWrapper]}>
-                  <TouchableOpacity onPress={() => this.toggleCombinationSetting(false)} style={[EditorStyle.oplichtenButton, {backgroundColor: !globalEditorSettings.combineLights ? Colors.orange : `transparent`, borderColor: !globalEditorSettings.combineLights ? Colors.orange : Colors.black}]}>
-                    <Text style={[TextStyles.copy, {color: !globalEditorSettings.combineLights ? Colors.pureWhite : Colors.black}]}>willekeurig</Text>
+                  <TouchableOpacity onPress={() => this.setCombineLights(false)} style={[EditorStyle.oplichtenButton, {backgroundColor: !editorDirections[currentEditorDirectionIndex].combineLights ? Colors.black : `transparent`, borderColor: !editorDirections[currentEditorDirectionIndex].combineLights ? `transparent` : Colors.black}]}>
+                    <Text style={[TextStyles.copy, {color: !editorDirections[currentEditorDirectionIndex].combineLights ? Colors.pureWhite : Colors.black}]}>willekeurig</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => this.toggleCombinationSetting(true)} style={[EditorStyle.oplichtenButton, {backgroundColor: globalEditorSettings.combineLights ? Colors.orange : `transparent`, borderColor: globalEditorSettings.combineLights ? Colors.orange : Colors.black}]}>
-                    <Text style={[TextStyles.copy, {color: globalEditorSettings.combineLights ? Colors.pureWhite : Colors.black}]}>samen</Text>
+                  <TouchableOpacity onPress={() => this.setCombineLights(true)} style={[EditorStyle.oplichtenButton, {backgroundColor: editorDirections[currentEditorDirectionIndex].combineLights ? Colors.black : `transparent`, borderColor: editorDirections[currentEditorDirectionIndex].combineLights ? `transparent` : Colors.black}]}>
+                    <Text style={[TextStyles.copy, {color: editorDirections[currentEditorDirectionIndex].combineLights ? Colors.pureWhite : Colors.black}]}>samen</Text>
                   </TouchableOpacity>
                 </View>
               </View>
+
+              <TouchableOpacity style={EditorStyle.deleteIconWrapper} onPress={() => this.deleteDirectionHandler()}>
+                <LinearGradient style={[ButtonStyles.primaryButton]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
+                  <Image style={[EditorStyle.deleteOptionsIcon]} source={require(`../assets/png/deleteIconWhite.png`)} />
+                  <Text style={[TextStyles.primaryButton]}>{`Direction verwijderen`.toUpperCase()}</Text>
+                </LinearGradient>
+              </TouchableOpacity>
 
             </View>
           </Animatable.View>
@@ -836,7 +864,7 @@ class Editor extends Component {
 
   toTab(tab) {
     let {currentFormTab} = this.state;
-    const {formContent, buttonWrapper, formHeader, celebrationButtonWrapper, headerImage} = this.refs;
+    const {formContent, buttonWrapper, formHeader, headerImage} = this.refs;
 
     currentFormTab += tab;
 
@@ -849,9 +877,9 @@ class Editor extends Component {
     }, 500);
 
     if (currentFormTab === 3) {
-      setTimeout(() => {
-        celebrationButtonWrapper.transitionTo({top: 30}, 300, `ease-out-circ`);
-      }, 400);
+      // setTimeout(() => {
+      //   celebrationButtonWrapper.transitionTo({top: 30}, 300, `ease-out-circ`);
+      // }, 400);
 
       buttonWrapper.transitionTo({transform: [{translateY: Dimensions.height}]}, 300, `ease-in-circ`);
       formHeader.transitionTo({transform: [{translateY: - 160}]}, 300, `ease-in-circ`);
@@ -916,7 +944,7 @@ class Editor extends Component {
 
   saveDirections(exercise) {
 
-    const {editorDirections, globalEditorSettings} = this.state;
+    const {editorDirections} = this.state;
 
     const promises = editorDirections.map(e => {
       return fetch(`${DatabaseUrl}/api/directions`, {
@@ -926,8 +954,8 @@ class Editor extends Component {
           x: e.x,
           y: e.y,
           exercise: exercise._id,
-          delay: globalEditorSettings.delay,
-          combineLights: globalEditorSettings.combineLights,
+          delay: e.delay,
+          combineLights: e.combineLights,
           directions: {
             top: e.top,
             bottom: e.bottom,
@@ -1021,15 +1049,15 @@ class Editor extends Component {
     let copy = undefined;
 
     if (currentFormTab === 0) {
-      copy = `volgende stap`;
+      copy = `sport bepalen`;
     }
 
     if (currentFormTab === 1) {
-      copy = `volgende jonas`;
+      copy = `doelgroep bepalen`;
     }
 
     if (currentFormTab === 2) {
-      copy = `volgende bernd`;
+      copy = `oefening bewaren`;
 
       setTimeout(() => {
         if (!isEmpty(primaryButton)) {
@@ -1050,19 +1078,15 @@ class Editor extends Component {
     let copy = undefined;
 
     if (currentFormTab === 0) {
-      copy = `vorige stap`;
+      copy = `naam aanpassen`;
     }
 
     if (currentFormTab === 1) {
-      copy = `jonas`;
+      copy = `naam aanpassen`;
     }
 
     if (currentFormTab === 2) {
-      copy = `bernd`;
-    }
-
-    if (currentFormTab === 3) {
-      copy = `kut wouter`;
+      copy = `sport aanpassen`;
     }
 
     return (
@@ -1097,16 +1121,28 @@ class Editor extends Component {
   }
 
   renderCelebrationButton() {
-    return (
-      <Animatable.View ref='celebrationButtonWrapper' style={[EditorStyle.primaryButtonInForm, EditorStyle.celebrationButtonWrapper]}>
-        <TouchableOpacity onPress={() => this.goToDetail()}>
-          <LinearGradient style={[ButtonStyles.primaryButton, EditorStyle.formButtonPrimaryWrapper]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
-            <Animatable.Text style={[TextStyles.primaryButton]}>{`Oefening bekijken`.toUpperCase()}</Animatable.Text>
-            <Image style={[EditorStyle.primaryButtonFormImage]} source={require(`../assets/png/arrowButtonWhite.png`)} />
-          </LinearGradient>
-        </TouchableOpacity>
-      </Animatable.View>
-    );
+
+    const {completed} = this.state;
+
+    if (completed) {
+      return (
+        <Animatable.View animation='fadeInUp' duration={300} easing='ease-out' ref='celebrationButtonWrapper' style={[EditorStyle.primaryButtonInForm, EditorStyle.celebrationButtonWrapper]}>
+          <TouchableOpacity style={EditorStyle.celebButton}>
+            <View style={[ButtonStyles.secundairyButton]}>
+              <Image style={[EditorStyle.shareIcon]} source={require(`../assets/png/shareIconOrange.png`)} />
+              <Text style={[TextStyles.secundairyButton]}>{`oefening delen`.toUpperCase()}</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={EditorStyle.celebButton} onPress={() => this.goToDetail()}>
+            <LinearGradient style={[ButtonStyles.primaryButton]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
+              <Animatable.Text style={[TextStyles.primaryButton]}>{`Oefening bekijken`.toUpperCase()}</Animatable.Text>
+              <Image style={[EditorStyle.primaryButtonFormImage]} source={require(`../assets/png/arrowButtonWhite.png`)} />
+            </LinearGradient>
+          </TouchableOpacity>
+        </Animatable.View>
+      );
+    }
   }
 
   goToDetail() {
@@ -1138,6 +1174,7 @@ class Editor extends Component {
   }
 
   render() {
+
     const {
       currentPage, ages, ageIndex, playerGroups, playerGroupIndex,
       focusInputValue, nameInputValue, descInputValue
