@@ -12,7 +12,7 @@ class Main extends PureComponent {
     super();
 
     // IP adres fixed erin steken om op iPad te laten werken
-    this.socket = io(`ws://localhost:3000`, {jsonp: false, transports: [`websocket`], query: `client=app`}); //http://stackoverflow.com/questions/13745519/send-custom-data-along-with-handshakedata-in-socket-io/13940399#13940399
+    this.socket = io(`ws://${DatabaseUrl.substr(7)}`, {jsonp: false, transports: [`websocket`], query: `client=app`}); //http://stackoverflow.com/questions/13745519/send-custom-data-along-with-handshakedata-in-socket-io/13940399#13940399
   }
 
   render() {
