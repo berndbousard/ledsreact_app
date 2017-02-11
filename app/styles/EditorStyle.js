@@ -824,8 +824,10 @@ const ComponentStyle = StyleSheet.create({
   },
 
   celebrationButtonWrapper: {
-    right: Dimensions.width / 2 - 100,
-    top: 100
+    top: 30,
+    flexDirection: `row`,
+    justifyContent: `center`,
+    width: Dimensions.width
   },
 
   celebrationImage: {
@@ -858,6 +860,17 @@ const ComponentStyle = StyleSheet.create({
     alignItems: `center`,
     borderRadius: 50,
     marginBottom: 25
+  },
+
+  shareIcon: {
+    width: 17, height: 21,
+    marginRight: 10,
+    marginTop: - 2
+  },
+
+  celebButton: {
+    marginLeft: 10,
+    marginRight: 10
   }
 });
 

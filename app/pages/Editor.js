@@ -41,10 +41,6 @@ class Editor extends Component {
     },
 
     editorDirections: [],
-    globalEditorSettings: {
-      delay: 0,
-      combineLights: false
-    },
 
     currentEditorDirectionIndex: 0,
     colors: [`#FF0F00`, `#1E6DFF`, `#50E610`, `#FFD100`],
@@ -193,19 +189,14 @@ class Editor extends Component {
   }
 
   clearArtboardDirections() {
-    // TODO: bugcheck
     let {editorDirections, directionsInEditor, currentEditorDirectionIndex, currentRichting} = this.state;
-    const {globalEditorSettings} = this.state;
 
     editorDirections = [];
     directionsInEditor = 0;
     currentEditorDirectionIndex = 0;
     currentRichting = undefined;
 
-    globalEditorSettings.delay = 0;
-    globalEditorSettings.combineLights = false;
-
-    this.setState({editorDirections, globalEditorSettings});
+    this.setState({editorDirections});
   }
 
   generateUserDrawingFeedback() {
@@ -272,6 +263,8 @@ class Editor extends Component {
     const newDirection = {
       x: Map(Dimensions.width / 2 - (100 / 2), 0, Dimensions.width, 0, 1),
       y: Map(Dimensions.height / 2 - (107 / 2), 0, Dimensions.width, 0, 1),
+      delay: 0,
+      combineLights: false,
       top: {
         colors: [colors[0]]
       },
@@ -747,29 +740,29 @@ class Editor extends Component {
     );
   }
 
-  toggleCombinationSetting(combineLights) {
-    const {globalEditorSettings} = this.state;
+  setCombineLights(combineLights) {
+    const {editorDirections, currentEditorDirectionIndex} = this.state;
 
-    if (globalEditorSettings.combineLights === combineLights) return;
-    globalEditorSettings.combineLights = !globalEditorSettings.combineLights;
+    if (editorDirections[currentEditorDirectionIndex].combineLights === combineLights) return;
+    editorDirections[currentEditorDirectionIndex].combineLights = !editorDirections[currentEditorDirectionIndex].combineLights;
 
-    this.setState({globalEditorSettings});
+    this.setState({editorDirections});
   }
 
-  toggleDelaySetting(amount) {
-    const {globalEditorSettings} = this.state;
+  setDelaySetting(amount) {
+    const {editorDirections, currentEditorDirectionIndex} = this.state;
 
-    if (globalEditorSettings.delay + amount < 0 || globalEditorSettings.delay + amount > 10) {
+    if (editorDirections[currentEditorDirectionIndex].delay + amount < 0 || editorDirections[currentEditorDirectionIndex].delay + amount > 10) {
       return;
     }
 
-    globalEditorSettings.delay += amount;
+    editorDirections[currentEditorDirectionIndex].delay += amount;
 
-    this.setState({globalEditorSettings});
+    this.setState({editorDirections});
   }
 
   renderOptionsMenu() {
-    const {optionsMenu, editorDirections, currentEditorDirectionIndex, globalEditorSettings} = this.state;
+    const {optionsMenu, editorDirections, currentEditorDirectionIndex} = this.state;
 
     if (optionsMenu.isActive) {
       if (!isEmpty(editorDirections[currentEditorDirectionIndex])) {
@@ -797,13 +790,13 @@ class Editor extends Component {
               <View style={[EditorStyle.optionsMenuRichting]}>
                 <Text style={[TextStyles.subTitle, EditorStyle.optionsMenusubTitle]}>{`delay`.toUpperCase()}</Text>
                 <View style={[EditorStyle.delayButtons]}>
-                  <TouchableOpacity onPress={() => this.toggleDelaySetting(- 1)} style={[EditorStyle.delayButton]}>
+                  <TouchableOpacity onPress={() => this.setDelaySetting(- 1)} style={[EditorStyle.delayButton]}>
                     <Image style={[EditorStyle.delayMinusIcon]} source={require(`../assets/png/minusIconBlack.png`)} />
                   </TouchableOpacity>
 
-                  <Text style={[TextStyles.copy, EditorStyle.delayCopy]}>{`${globalEditorSettings.delay}s`.toUpperCase()}</Text>
+                  <Text style={[TextStyles.copy, EditorStyle.delayCopy]}>{`${editorDirections[currentEditorDirectionIndex].delay}s`.toUpperCase()}</Text>
 
-                  <TouchableOpacity onPress={() => this.toggleDelaySetting(1)} style={[EditorStyle.delayButton]}>
+                  <TouchableOpacity onPress={() => this.setDelaySetting(1)} style={[EditorStyle.delayButton]}>
                     <Image style={[EditorStyle.delayPlusIcon]} source={require(`../assets/png/plusIconBlack.png`)} />
                   </TouchableOpacity>
                 </View>
@@ -812,12 +805,12 @@ class Editor extends Component {
               <View style={[EditorStyle.optionsMenuRichting]}>
                 <Text style={[TextStyles.subTitle, EditorStyle.optionsMenusubTitle]}>{`oplichten`.toUpperCase()}</Text>
                 <View style={[EditorStyle.oplichtenWrapper]}>
-                  <TouchableOpacity onPress={() => this.toggleCombinationSetting(false)} style={[EditorStyle.oplichtenButton, {backgroundColor: !globalEditorSettings.combineLights ? Colors.orange : `transparent`, borderColor: !globalEditorSettings.combineLights ? Colors.orange : Colors.black}]}>
-                    <Text style={[TextStyles.copy, {color: !globalEditorSettings.combineLights ? Colors.pureWhite : Colors.black}]}>willekeurig</Text>
+                  <TouchableOpacity onPress={() => this.setCombineLights(false)} style={[EditorStyle.oplichtenButton, {backgroundColor: !editorDirections[currentEditorDirectionIndex].combineLights ? Colors.orange : `transparent`, borderColor: !editorDirections[currentEditorDirectionIndex].combineLights ? Colors.orange : Colors.black}]}>
+                    <Text style={[TextStyles.copy, {color: !editorDirections[currentEditorDirectionIndex].combineLights ? Colors.pureWhite : Colors.black}]}>willekeurig</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => this.toggleCombinationSetting(true)} style={[EditorStyle.oplichtenButton, {backgroundColor: globalEditorSettings.combineLights ? Colors.orange : `transparent`, borderColor: globalEditorSettings.combineLights ? Colors.orange : Colors.black}]}>
-                    <Text style={[TextStyles.copy, {color: globalEditorSettings.combineLights ? Colors.pureWhite : Colors.black}]}>samen</Text>
+                  <TouchableOpacity onPress={() => this.setCombineLights(true)} style={[EditorStyle.oplichtenButton, {backgroundColor: editorDirections[currentEditorDirectionIndex].combineLights ? Colors.orange : `transparent`, borderColor: editorDirections[currentEditorDirectionIndex].combineLights ? Colors.orange : Colors.black}]}>
+                    <Text style={[TextStyles.copy, {color: editorDirections[currentEditorDirectionIndex].combineLights ? Colors.pureWhite : Colors.black}]}>samen</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -862,9 +855,9 @@ class Editor extends Component {
     }, 500);
 
     if (currentFormTab === 3) {
-      setTimeout(() => {
-        celebrationButtonWrapper.transitionTo({top: 30}, 300, `ease-out-circ`);
-      }, 400);
+      // setTimeout(() => {
+      //   celebrationButtonWrapper.transitionTo({top: 30}, 300, `ease-out-circ`);
+      // }, 400);
 
       buttonWrapper.transitionTo({transform: [{translateY: Dimensions.height}]}, 300, `ease-in-circ`);
       formHeader.transitionTo({transform: [{translateY: - 160}]}, 300, `ease-in-circ`);
@@ -929,7 +922,7 @@ class Editor extends Component {
 
   saveDirections(exercise) {
 
-    const {editorDirections, globalEditorSettings} = this.state;
+    const {editorDirections} = this.state;
 
     const promises = editorDirections.map(e => {
       return fetch(`${DatabaseUrl}/api/directions`, {
@@ -939,8 +932,8 @@ class Editor extends Component {
           x: e.x,
           y: e.y,
           exercise: exercise._id,
-          delay: globalEditorSettings.delay,
-          combineLights: globalEditorSettings.combineLights,
+          delay: e.delay,
+          combineLights: e.combineLights,
           directions: {
             top: e.top,
             bottom: e.bottom,
@@ -1034,15 +1027,15 @@ class Editor extends Component {
     let copy = undefined;
 
     if (currentFormTab === 0) {
-      copy = `volgende stap`;
+      copy = `sport bepalen`;
     }
 
     if (currentFormTab === 1) {
-      copy = `volgende jonas`;
+      copy = `doelgroep bepalen`;
     }
 
     if (currentFormTab === 2) {
-      copy = `volgende bernd`;
+      copy = `oefening bewaren`;
 
       setTimeout(() => {
         if (!isEmpty(primaryButton)) {
@@ -1063,19 +1056,15 @@ class Editor extends Component {
     let copy = undefined;
 
     if (currentFormTab === 0) {
-      copy = `vorige stap`;
+      copy = `naam aanpassen`;
     }
 
     if (currentFormTab === 1) {
-      copy = `jonas`;
+      copy = `naam aanpassen`;
     }
 
     if (currentFormTab === 2) {
-      copy = `bernd`;
-    }
-
-    if (currentFormTab === 3) {
-      copy = `kut wouter`;
+      copy = `sport aanpassen`;
     }
 
     return (
@@ -1110,16 +1099,28 @@ class Editor extends Component {
   }
 
   renderCelebrationButton() {
-    return (
-      <Animatable.View ref='celebrationButtonWrapper' style={[EditorStyle.primaryButtonInForm, EditorStyle.celebrationButtonWrapper]}>
-        <TouchableOpacity onPress={() => this.goToDetail()}>
-          <LinearGradient style={[ButtonStyles.primaryButton, EditorStyle.formButtonPrimaryWrapper]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
-            <Animatable.Text style={[TextStyles.primaryButton]}>{`Oefening bekijken`.toUpperCase()}</Animatable.Text>
-            <Image style={[EditorStyle.primaryButtonFormImage]} source={require(`../assets/png/arrowButtonWhite.png`)} />
-          </LinearGradient>
-        </TouchableOpacity>
-      </Animatable.View>
-    );
+
+    const {completed} = this.state;
+
+    if (completed) {
+      return (
+        <Animatable.View animation='fadeInUp' duration={300} easing='ease-out' ref='celebrationButtonWrapper' style={[EditorStyle.primaryButtonInForm, EditorStyle.celebrationButtonWrapper]}>
+          <TouchableOpacity style={EditorStyle.celebButton}>
+            <View style={[ButtonStyles.secundairyButton]}>
+              <Image style={[EditorStyle.shareIcon]} source={require(`../assets/png/shareIconOrange.png`)} />
+              <Text style={[TextStyles.secundairyButton]}>{`oefening delen`.toUpperCase()}</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={EditorStyle.celebButton} onPress={() => this.goToDetail()}>
+            <LinearGradient style={[ButtonStyles.primaryButton]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
+              <Animatable.Text style={[TextStyles.primaryButton]}>{`Oefening bekijken`.toUpperCase()}</Animatable.Text>
+              <Image style={[EditorStyle.primaryButtonFormImage]} source={require(`../assets/png/arrowButtonWhite.png`)} />
+            </LinearGradient>
+          </TouchableOpacity>
+        </Animatable.View>
+      );
+    }
   }
 
   goToDetail() {
