@@ -31,6 +31,7 @@ class Editor extends Component {
       index: 0,
       colors: [Colors.black, Colors.orange]
     },
+    activeTool: 1,
     field: {
       currentIndex: 0,
       images: [`blanco`, `soccer`, `basket`, `tennis`, `rugby`, `volleyball`],
@@ -275,13 +276,13 @@ class Editor extends Component {
         colors: [colors[0]]
       },
       bottom: {
-        colors: [colors[0]]
+        colors: []
       },
       left: {
-        colors: [colors[0]]
+        colors: []
       },
       right: {
-        colors: [colors[0]]
+        colors: []
       }
     };
 
@@ -471,28 +472,36 @@ class Editor extends Component {
 
   renderLeftControls() {
 
-    const {brush, field} = this.state;
+    const {brush, field, activeTool} = this.state;
 
     if (!field.drawer.isActive) {
       return (
         <Animatable.View style={[EditorStyle.leftControls]}>
           <View style={[EditorStyle.leftUpperControls]}>
-            <TouchableWithoutFeedback onPressOut={() => this.changeColorHandler()} onPressIn={() => this.pressInColorHandler()}>
-              <Animatable.View ref='currentColor' style={[EditorStyle.colorIcon, EditorStyle.icon, {backgroundColor: brush.colors[brush.index]}]}>
-              </Animatable.View>
-            </TouchableWithoutFeedback>
 
-            <TouchableWithoutFeedback onPressOut={() => this.refs.brushIcon.bounceIn(800)} onPressIn={() => this.refs.brushIcon.pulse(600)}>
-              <Animatable.View ref='brushIcon'>
-                <Image style={[EditorStyle.brushIcon, EditorStyle.icon]} source={{uri: `brushIcon`}} />
-              </Animatable.View>
-            </TouchableWithoutFeedback>
+            <View style={[EditorStyle.toolIcon, {backgroundColor: activeTool === 0 ? Colors.opacityBlack : `transparent`}]}>
+              <TouchableWithoutFeedback onPressOut={() => this.changeColorHandler()} onPressIn={() => this.pressInColorHandler()}>
+                <Animatable.View ref='currentColor' style={[EditorStyle.colorIcon, {backgroundColor: brush.colors[brush.index]}]}>
+                </Animatable.View>
+              </TouchableWithoutFeedback>
+            </View>
 
-            <TouchableWithoutFeedback onPressOut={() => this.refs.eraserIcon.bounceIn(800)} onPressIn={() => this.refs.eraserIcon.pulse(600)}>
-              <Animatable.View ref='eraserIcon'>
-                <Image style={[EditorStyle.eraserIcon, EditorStyle.icon]} source={{uri: `eraserIcon`}} />
-              </Animatable.View>
-            </TouchableWithoutFeedback>
+            <View style={[EditorStyle.toolIcon, {backgroundColor: activeTool === 1 ? Colors.opacityBlack : `transparent`}]}>
+              <TouchableWithoutFeedback onPress={() => this.setState({activeTool: 1})} onPressOut={() => this.refs.brushIcon.bounceIn(800)} onPressIn={() => this.refs.brushIcon.pulse(600)}>
+                <Animatable.View ref='brushIcon'>
+                  <Image style={[EditorStyle.brushIcon]} source={{uri: `brushIcon`}} />
+                </Animatable.View>
+              </TouchableWithoutFeedback>
+            </View>
+
+            <View style={[EditorStyle.toolIcon, {backgroundColor: activeTool === 2 ? Colors.opacityBlack : `transparent`}]}>
+              <TouchableWithoutFeedback onPressOut={() => this.refs.eraserIcon.bounceIn(800)} onPress={() => this.setState({activeTool: 2})} onPressIn={() => this.refs.eraserIcon.pulse(600)}>
+                <Animatable.View ref='eraserIcon'>
+                  <Image style={[EditorStyle.eraserIcon]} source={{uri: `eraserIcon`}} />
+                </Animatable.View>
+              </TouchableWithoutFeedback>
+            </View>
+
           </View>
 
           <View style={[EditorStyle.leftLowerControls]}>
@@ -646,26 +655,30 @@ class Editor extends Component {
 
   renderDirectionArrows() {
 
-    const {currentRichting} = this.state;
+    // console.log(this.state.editorDirections[this.state.currentEditorDirectionIndex]);
+    const {currentRichting, editorDirections, currentEditorDirectionIndex} = this.state;
+
+    console.log(!isEmpty(editorDirections[currentEditorDirectionIndex].top.colors));
 
     return (
+
       <View style={EditorStyle.directionArrowsWrapper}>
-        <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `top` ? Colors.orange : Colors.lightGrey}]} onPress={() => this.selectDirection(`top`)} >
-          <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconUp]} source={require(`../assets/png/arrowWhite.png`)} />
+        <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `top` ? Colors.orange : Colors.lightGrey, borderColor: !isEmpty(editorDirections[currentEditorDirectionIndex].top.colors) ? Colors.orange : `transparent`}]} onPress={() => this.selectDirection(`top`)} >
+          <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconUp]} source={{uri: !isEmpty(editorDirections[currentEditorDirectionIndex].top.colors) && currentRichting !== `top` ? `arrowOrangeRotated` : `arrowWhite`}} />
         </TouchableOpacity>
 
         <View style={EditorStyle.directionArrowMiddle}>
-          <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `left` ? Colors.orange : Colors.lightGrey}]} onPress={() => this.selectDirection(`left`)} >
-            <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconLeft]} source={require(`../assets/png/arrowWhite.png`)} />
+          <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `left` ? Colors.orange : Colors.lightGrey, borderColor: !isEmpty(editorDirections[currentEditorDirectionIndex].left.colors) ? Colors.orange : `transparent`}]} onPress={() => this.selectDirection(`left`)} >
+            <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconLeft]} source={{uri: !isEmpty(editorDirections[currentEditorDirectionIndex].left.colors) && currentRichting !== `left` ? `arrowOrangeRotated` : `arrowWhite`}} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `right` ? Colors.orange : Colors.lightGrey}]} onPress={() => this.selectDirection(`right`)} >
-            <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconRight]} source={require(`../assets/png/arrowWhite.png`)} />
+          <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `right` ? Colors.orange : Colors.lightGrey, borderColor: !isEmpty(editorDirections[currentEditorDirectionIndex].right.colors) ? Colors.orange : `transparent`}]} onPress={() => this.selectDirection(`right`)} >
+            <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconRight]} source={{uri: !isEmpty(editorDirections[currentEditorDirectionIndex].right.colors) && currentRichting !== `right` ? `arrowOrangeRotated` : `arrowWhite`}} />
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `bottom` ? Colors.orange : Colors.lightGrey}]} onPress={() => this.selectDirection(`bottom`)} >
-          <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconDown]} source={require(`../assets/png/arrowWhite.png`)} />
+        <TouchableOpacity style={[EditorStyle.directionArrow, {backgroundColor: currentRichting === `bottom` ? Colors.orange : Colors.lightGrey, borderColor: !isEmpty(editorDirections[currentEditorDirectionIndex].bottom.colors) ? Colors.orange : `transparent`}]} onPress={() => this.selectDirection(`bottom`)} >
+          <Image style={[EditorStyle.directionArrowIcon, EditorStyle.directionArrowIconDown]} source={{uri: !isEmpty(editorDirections[currentEditorDirectionIndex].bottom.colors) && currentRichting !== `bottom` ? `arrowOrangeRotated` : `arrowWhite`}} />
         </TouchableOpacity>
       </View>
     );
@@ -761,7 +774,7 @@ class Editor extends Component {
     if (optionsMenu.isActive) {
       if (!isEmpty(editorDirections[currentEditorDirectionIndex])) {
         return (
-          <Animatable.View ref='optionsMenuRef' animation='fadeInRightBig' duration={500} easing='ease-out-circ' style={EditorStyle.optionsMenu}>
+          <Animatable.View ref='optionsMenuRef' animation='fadeInRightBig' duration={300} easing='ease-out-circ' style={EditorStyle.optionsMenu}>
             <View style={EditorStyle.optionsMenuDirectionUpper}>
 
               <Text style={[TextStyles.title, EditorStyle.optionsMenuTitle]}>{`direction ${currentEditorDirectionIndex + 1}`.toUpperCase()}</Text>
@@ -1138,6 +1151,7 @@ class Editor extends Component {
   }
 
   render() {
+
     const {
       currentPage, ages, ageIndex, playerGroups, playerGroupIndex,
       focusInputValue, nameInputValue, descInputValue

@@ -379,14 +379,15 @@ const ComponentStyle = StyleSheet.create({
     marginTop: 10,
     width: 200,
     justifyContent: `center`,
-    alignItems: `center`,
+    alignItems: `center`
   },
 
   directionArrow: {
     justifyContent: `center`,
     alignItems: `center`,
     width: 44, height: 44,
-    borderRadius: 100
+    borderRadius: 100,
+    borderWidth: 2
   },
 
   directionArrowIcon: {
@@ -849,6 +850,14 @@ const ComponentStyle = StyleSheet.create({
     color: Colors.orange,
     marginRight: 350,
     marginBottom: - 90
+  },
+
+  toolIcon: {
+    width: 50, height: 50,
+    justifyContent: `center`,
+    alignItems: `center`,
+    borderRadius: 50,
+    marginBottom: 25
   }
 });
 
