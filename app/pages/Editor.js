@@ -34,7 +34,7 @@ class Editor extends Component {
     activeTool: 1,
     field: {
       currentIndex: 1,
-      images: [`blanco`, `soccer`, `basket`, `tennis`, `rugby`, `volleyball`],
+      images: [`blanco`, `soccerBackground`, `basketBackground`, `tennisBackground`, `rugbyBackground`, `volleyballBackground`],
       drawer: {
         isActive: false
       }
@@ -307,38 +307,20 @@ class Editor extends Component {
 
     const {field} = this.state;
 
-    let url = field.images[field.currentIndex];
+    const url = field.images[field.currentIndex];
 
-    if (url === `soccer`) {
-      url = {uri: `soccerBackground`};
-    }
 
-    if (url === `basket`) {
-      url = {uri: `basketBackground`};
-    }
-
-    if (url === `tennis`) {
-      url = {uri: `tennisBackground`};
-    }
-
-    if (url === `rugby`) {
-      url = {uri: `rugbyBackground`};
-    }
-
-    if (url === `volleyball`) {
-      url = {uri: `volleyballBackground`};
-    }
+    console.log(url);
 
     if (url === `blanco`) {
       return;
     }
 
-    return <Animatable.Image style={[EditorStyle.field]} source={url} />;
+    return <Animatable.Image style={[EditorStyle.field]} source={{uri: `${url}`}} />;
   }
 
-  fieldsThumbnailHandler(image) {
+  fieldsThumbnailHandler(index) {
     const {field} = this.state;
-    const index = indexOf(field.images, image);
 
     field.currentIndex = index;
 
@@ -355,7 +337,7 @@ class Editor extends Component {
       return (
         <Animatable.View style={[EditorStyle.fieldsDrawer]} ref='fieldsDrawerRef' duration={200} animation='pulse' easing='ease-out'>
           <Text style={[TextStyles.title, EditorStyle.fieldsDrawerTitle]}>{`kies een speelveld`.toUpperCase()}</Text>
-          <TouchableOpacity style={EditorStyle.closeFieldsDrawerWrapper}>
+          <TouchableOpacity style={EditorStyle.closeFieldsDrawerWrapper} onPress={() => this.toggleFieldDrawerHandler()}>
             <Image style={EditorStyle.closeFieldsDrawerIcon} source={require(`../assets/png/closeIconSmallWhite.png`)} />
           </TouchableOpacity>
           <ScrollView style={[EditorStyle.fieldsDrawerScrollview]}>
@@ -366,7 +348,7 @@ class Editor extends Component {
                     <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`blanco`.toUpperCase()}</Text>
                   </View>
 
-                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`blanco`)}>
+                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(0)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 0 ? Colors.orange : `transparent`}]}>
                       <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `blancoFieldThumbnail`}} />
                     </View>
@@ -379,7 +361,7 @@ class Editor extends Component {
                     <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`voetbal`.toUpperCase()}</Text>
                   </View>
 
-                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`soccer`)}>
+                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(1)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 1 ? Colors.orange : `transparent`}]}>
                       <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `soccerFieldThumbnail`}} />
                     </View>
@@ -392,7 +374,7 @@ class Editor extends Component {
                     <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`basket`.toUpperCase()}</Text>
                   </View>
 
-                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`basket`)}>
+                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(2)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 2 ? Colors.orange : `transparent`}]}>
                       <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `basketFieldThumbnail`}} />
                     </View>
@@ -405,7 +387,7 @@ class Editor extends Component {
                     <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`tennis`.toUpperCase()}</Text>
                   </View>
 
-                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`tennis`)}>
+                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(3)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 3 ? Colors.orange : `transparent`}]}>
                       <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `tennisFieldThumbnail`}} />
                     </View>
@@ -418,7 +400,7 @@ class Editor extends Component {
                     <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`rugby`.toUpperCase()}</Text>
                   </View>
 
-                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`rugby`)}>
+                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(4)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 4 ? Colors.orange : `transparent`}]}>
                       <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `rugbyFieldThumbnail`}} />
                     </View>
@@ -431,7 +413,7 @@ class Editor extends Component {
                     <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`volleybal`.toUpperCase()}</Text>
                   </View>
 
-                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`volleyball`)}>
+                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(5)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 5 ? Colors.orange : `transparent`}]}>
                       <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `volleyballFieldThumbnail`}} />
                     </View>
@@ -451,7 +433,7 @@ class Editor extends Component {
     field.drawer.isActive = !field.drawer.isActive;
 
     if (!field.drawer.isActive) {
-      fieldsDrawerRef.transition({opacity: 1}, {opacity: 0}, 200, `ease-out`);
+      fieldsDrawerRef.transition({opacity: 1}, {opacity: 0}, 150, `linear`);
       setTimeout(() => {
         field.drawer.isActive = false;
         this.setState({field});
