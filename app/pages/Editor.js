@@ -342,6 +342,8 @@ class Editor extends Component {
 
     field.currentIndex = index;
 
+    this.toggleFieldDrawerHandler();
+
     this.setState({field});
   }
 
@@ -352,13 +354,16 @@ class Editor extends Component {
     if (field.drawer.isActive) {
       return (
         <Animatable.View style={[EditorStyle.fieldsDrawer]} ref='fieldsDrawerRef' duration={200} animation='pulse' easing='ease-out'>
-          <Text style={[TextStyles.title, EditorStyle.fieldsDrawerTitle]}>{`Speelveld`.toUpperCase()}</Text>
+          <Text style={[TextStyles.title, EditorStyle.fieldsDrawerTitle]}>{`kies een speelveld`.toUpperCase()}</Text>
+          <TouchableOpacity style={EditorStyle.closeFieldsDrawerWrapper}>
+            <Image style={EditorStyle.closeFieldsDrawerIcon} source={require(`../assets/png/closeIconSmallWhite.png`)} />
+          </TouchableOpacity>
           <ScrollView style={[EditorStyle.fieldsDrawerScrollview]}>
               <View style={[EditorStyle.fieldsDrawerScrollviewContent]}>
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `blancoIcon`}} />
-                    <Text style={[TextStyles.subTitle]}>{`blanco`.toUpperCase()}</Text>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `blancoIconWhite`}} />
+                    <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`blanco`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`blanco`)}>
@@ -370,8 +375,8 @@ class Editor extends Component {
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `soccerIcon`}} />
-                    <Text style={[TextStyles.subTitle]}>{`voetbal`.toUpperCase()}</Text>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `soccerIconWhite`}} />
+                    <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`voetbal`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`soccer`)}>
@@ -383,8 +388,8 @@ class Editor extends Component {
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `basketballIcon`}} />
-                    <Text style={[TextStyles.subTitle]}>{`basket`.toUpperCase()}</Text>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `basketballIconWhite`}} />
+                    <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`basket`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`basket`)}>
@@ -396,8 +401,8 @@ class Editor extends Component {
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `tennisIcon`}} />
-                    <Text style={[TextStyles.subTitle]}>{`tennis`.toUpperCase()}</Text>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `tennisIconWhite`}} />
+                    <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`tennis`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`tennis`)}>
@@ -409,8 +414,8 @@ class Editor extends Component {
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `rugbyIcon`}} />
-                    <Text style={[TextStyles.subTitle]}>{`rugby`.toUpperCase()}</Text>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `rugbyIconWhite`}} />
+                    <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`rugby`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`rugby`)}>
@@ -422,8 +427,8 @@ class Editor extends Component {
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
                   <View style={[EditorStyle.fieldsDrawerItemHeader]}>
-                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `volleyBallIcon`}} />
-                    <Text style={[TextStyles.subTitle]}>{`volleybal`.toUpperCase()}</Text>
+                    <Image style={[EditorStyle.fieldsDrawerItemHeaderImage]} source={{uri: `volleyballIconWhite`}} />
+                    <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`volleybal`.toUpperCase()}</Text>
                   </View>
 
                   <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(`volleyball`)}>
@@ -439,7 +444,7 @@ class Editor extends Component {
     }
   }
 
-  fieldIconPressHandler() {
+  toggleFieldDrawerHandler() {
     const {field} = this.state;
     const {fieldsDrawerRef} = this.refs;
 
@@ -455,7 +460,6 @@ class Editor extends Component {
     }
 
     this.setState({field});
-    return;
   }
 
   changePage(page) {
@@ -549,7 +553,7 @@ class Editor extends Component {
         <TouchableWithoutFeedback style={EditorStyle.fieldIconWrapper}>
           <Animatable.View style={EditorStyle.fieldIconWrapper}>
             <Text style={[EditorStyle.fieldIconText, {opacity: field.drawer.isActive ? 0 : 1}]}>Speelveld</Text>
-            <TouchableWithoutFeedback onPress={() => this.fieldIconPressHandler()} onPressOut={() => this.refs.fieldIcon.bounceIn(800)} onPressIn={() => this.refs.fieldIcon.pulse(600)}>
+            <TouchableWithoutFeedback onPress={() => this.toggleFieldDrawerHandler()} onPressOut={() => this.refs.fieldIcon.bounceIn(800)} onPressIn={() => this.refs.fieldIcon.pulse(600)}>
               <Animatable.Image ref='fieldIcon' style={[EditorStyle.fieldIcon, EditorStyle.icon]} source={url}/>
             </TouchableWithoutFeedback>
           </Animatable.View>

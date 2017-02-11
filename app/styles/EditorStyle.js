@@ -144,18 +144,11 @@ const ComponentStyle = StyleSheet.create({
   },
 
   fieldsDrawer: {
-    position: `absolute`,
-    left: Dimensions.width / 2 - (Dimensions.width * (9 / 10)) / 2,
-    bottom: Dimensions.height / 2 - (Dimensions.height * (9 / 10)) / 2,
-    borderRadius: 5,
-    shadowColor: Colors.black,
-    shadowOffset: {width: 0, height: 10},
-    shadowOpacity: .05,
-    shadowRadius: 20,
-    width: Dimensions.width * (9 / 10),
-    height: Dimensions.height * (9 / 10),
-    backgroundColor: Colors.white,
-    zIndex: 2,
+    position: `relative`,
+    width: Dimensions.width,
+    height: Dimensions.height,
+    backgroundColor: Colors.opacityBlackFull,
+    zIndex: 10,
     justifyContent: `center`,
     alignItems: `center`
   },
@@ -166,7 +159,7 @@ const ComponentStyle = StyleSheet.create({
   },
 
   fieldsDrawerTitle: {
-    marginTop: 25
+    marginTop: 40
   },
 
   fieldsDrawerItem: {
@@ -204,7 +197,7 @@ const ComponentStyle = StyleSheet.create({
     flexDirection: `row`,
     justifyContent: `space-between`,
     flexWrap: `wrap`,
-    alignItems: `flex-start`,
+    alignItems: `center`,
     flex: 1,
     marginTop: 40
   },
@@ -896,6 +889,26 @@ const ComponentStyle = StyleSheet.create({
 
   oplichtenWrapperContent: {
     marginTop: - 10
+  },
+
+  fieldsDrawerTitlekes: {
+    color: Colors.white
+  },
+
+  closeFieldsDrawerWrapper: {
+    position: `absolute`,
+    top: 25, right: 25,
+    justifyContent: `center`,
+    alignItems: `center`,
+    borderWidth: 2,
+    borderColor: Colors.white,
+    padding: 15,
+    borderRadius: 3,
+    zIndex: 100
+  },
+
+  closeFieldsDrawerIcon: {
+    width: 15, height: 15
   }
 });
 
