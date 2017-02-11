@@ -111,9 +111,8 @@ const ComponentStyle = StyleSheet.create({
   addEditorIcon: {
     width: 51,
     height: 51,
-    position: `absolute`,
     left: (Dimensions.width / 2) - 25,
-    bottom: 25,
+    top: Dimensions.height - 75,
     zIndex: 2
   },
 

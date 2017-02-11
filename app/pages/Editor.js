@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView, TouchableOpacity, TextInput, ActivityIndicator} from 'react-native';
-import {indexOf, isEmpty, findIndex, remove, compact} from 'lodash';
+import {isEmpty, findIndex, remove} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
 import {Actions, ActionConst} from "react-native-router-flux";
 import * as Animatable from 'react-native-animatable';
@@ -233,10 +233,6 @@ class Editor extends Component {
     this.setState({brush});
   }
 
-  pressInColorHandler() {
-    this.refs.currentColor.pulse(600);
-  }
-
   toggleObjectsDrawer() {
     const {drawer} = this.state;
     const {addEditorIcon, drawerRef} = this.refs;
@@ -296,9 +292,9 @@ class Editor extends Component {
 
     return (
       <Animatable.View ref='drawerRef' duration={200} animation='pulse' easing='ease-out' style={[EditorStyle.drawer]}>
-        <TouchableWithoutFeedback onPress={() => this.objectsDrawerDirectionPressHandler()}>
+        <TouchableOpacity onPress={() => this.objectsDrawerDirectionPressHandler()}>
           <Image style={[EditorStyle.directionDrawerImage]} source={{uri: `direction`}} />
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </Animatable.View>
     );
   }
@@ -309,9 +305,6 @@ class Editor extends Component {
 
     const url = field.images[field.currentIndex];
 
-
-    console.log(url);
-
     if (url === `blanco`) {
       return;
     }
@@ -320,6 +313,8 @@ class Editor extends Component {
   }
 
   fieldsThumbnailHandler(index) {
+
+    console.log(index);
     const {field} = this.state;
 
     field.currentIndex = index;
@@ -348,11 +343,11 @@ class Editor extends Component {
                     <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`blanco`.toUpperCase()}</Text>
                   </View>
 
-                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(0)}>
+                  <TouchableOpacity onPress={() => this.fieldsThumbnailHandler(0)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 0 ? Colors.orange : `transparent`}]}>
                       <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `blancoFieldThumbnail`}} />
                     </View>
-                  </TouchableWithoutFeedback>
+                  </TouchableOpacity>
                 </View>
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
@@ -361,11 +356,11 @@ class Editor extends Component {
                     <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`voetbal`.toUpperCase()}</Text>
                   </View>
 
-                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(1)}>
+                  <TouchableOpacity onPress={() => this.fieldsThumbnailHandler(1)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 1 ? Colors.orange : `transparent`}]}>
                       <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `soccerFieldThumbnail`}} />
                     </View>
-                  </TouchableWithoutFeedback>
+                  </TouchableOpacity>
                 </View>
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
@@ -374,11 +369,11 @@ class Editor extends Component {
                     <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`basket`.toUpperCase()}</Text>
                   </View>
 
-                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(2)}>
+                  <TouchableOpacity onPress={() => this.fieldsThumbnailHandler(2)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 2 ? Colors.orange : `transparent`}]}>
                       <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `basketFieldThumbnail`}} />
                     </View>
-                  </TouchableWithoutFeedback>
+                  </TouchableOpacity>
                 </View>
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
@@ -387,11 +382,11 @@ class Editor extends Component {
                     <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`tennis`.toUpperCase()}</Text>
                   </View>
 
-                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(3)}>
+                  <TouchableOpacity onPress={() => this.fieldsThumbnailHandler(3)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 3 ? Colors.orange : `transparent`}]}>
                       <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `tennisFieldThumbnail`}} />
                     </View>
-                  </TouchableWithoutFeedback>
+                  </TouchableOpacity>
                 </View>
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
@@ -400,11 +395,11 @@ class Editor extends Component {
                     <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`rugby`.toUpperCase()}</Text>
                   </View>
 
-                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(4)}>
+                  <TouchableOpacity onPress={() => this.fieldsThumbnailHandler(4)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 4 ? Colors.orange : `transparent`}]}>
                       <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `rugbyFieldThumbnail`}} />
                     </View>
-                  </TouchableWithoutFeedback>
+                  </TouchableOpacity>
                 </View>
 
                 <View style={[EditorStyle.fieldsDrawerItem]}>
@@ -413,11 +408,11 @@ class Editor extends Component {
                     <Text style={[TextStyles.subTitle, EditorStyle.fieldsDrawerTitlekes]}>{`volleybal`.toUpperCase()}</Text>
                   </View>
 
-                  <TouchableWithoutFeedback onPress={() => this.fieldsThumbnailHandler(5)}>
+                  <TouchableOpacity onPress={() => this.fieldsThumbnailHandler(5)}>
                     <View style={[EditorStyle.fielsDrawerItemImageWrapper, {borderColor: field.currentIndex === 5 ? Colors.orange : `transparent`}]}>
                       <Image style={[EditorStyle.fielsDrawerItemImage]} source={{uri: `volleyballFieldThumbnail`}} />
                     </View>
-                  </TouchableWithoutFeedback>
+                  </TouchableOpacity>
                 </View>
               </View>
           </ScrollView>
@@ -460,54 +455,54 @@ class Editor extends Component {
           <View style={[EditorStyle.leftUpperControls]}>
 
             <View style={[EditorStyle.toolIcon, {backgroundColor: activeTool === 0 ? Colors.opacityBlack : `transparent`}]}>
-              <TouchableWithoutFeedback onPressOut={() => this.changeColorHandler()} onPressIn={() => this.pressInColorHandler()}>
+              <TouchableOpacity onPressOut={() => this.changeColorHandler()}>
                 <Animatable.View ref='currentColor' style={[EditorStyle.colorIcon, {backgroundColor: brush.colors[brush.index]}]}>
                 </Animatable.View>
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
             </View>
 
             <View style={[EditorStyle.toolIcon, {backgroundColor: activeTool === 1 ? Colors.opacityBlack : `transparent`}]}>
-              <TouchableWithoutFeedback onPress={() => this.setState({activeTool: 1})} onPressOut={() => this.refs.brushIcon.bounceIn(800)} onPressIn={() => this.refs.brushIcon.pulse(600)}>
+              <TouchableOpacity onPress={() => this.setState({activeTool: 1})} onPressOut={() => this.refs.brushIcon.bounceIn(800)}>
                 <Animatable.View ref='brushIcon'>
                   <Image style={[EditorStyle.brushIcon]} source={{uri: `brushIcon`}} />
                 </Animatable.View>
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
             </View>
 
             <View style={[EditorStyle.toolIcon, {backgroundColor: activeTool === 2 ? Colors.opacityBlack : `transparent`}]}>
-              <TouchableWithoutFeedback onPressOut={() => this.refs.eraserIcon.bounceIn(800)} onPress={() => this.setState({activeTool: 2})} onPressIn={() => this.refs.eraserIcon.pulse(600)}>
+              <TouchableOpacity onPressOut={() => this.refs.eraserIcon.bounceIn(800)} onPress={() => this.setState({activeTool: 2})}>
                 <Animatable.View ref='eraserIcon'>
                   <Image style={[EditorStyle.eraserIcon]} source={{uri: `eraserIcon`}} />
                 </Animatable.View>
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
             </View>
 
           </View>
 
           <View style={[EditorStyle.leftLowerControls]}>
-            <TouchableWithoutFeedback onPress={() => this.deleteLastActionHandler()} onPressOut={() => this.refs.undoIcon.bounceIn(800)} onPressIn={() => this.refs.undoIcon.pulse(600)}>
+            <TouchableOpacity onPress={() => this.deleteLastActionHandler()} onPressOut={() => this.refs.undoIcon.bounceIn(800)}>
               <Animatable.View ref='undoIcon'>
                 <Image style={[EditorStyle.undoIcon, EditorStyle.icon]} source={{uri: `undoIcon`}} />
               </Animatable.View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
 
-            <TouchableWithoutFeedback onPressOut={() => this.refs.redoIcon.bounceIn(800)} onPressIn={() => this.refs.redoIcon.pulse(600)}>
+            <TouchableOpacity onPressOut={() => this.refs.redoIcon.bounceIn(800)}>
               <Animatable.View ref='redoIcon'>
                 <Image style={[EditorStyle.redoIcon, EditorStyle.icon]} source={{uri: `redoIcon`}} />
               </Animatable.View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
 
-            <TouchableWithoutFeedback onPress={() => this.changePage(1)} onPressOut={() => this.refs.saveIcon.bounceIn(800)} onPressIn={() => this.refs.saveIcon.pulse(600)}>
+            <TouchableOpacity onPress={() => this.changePage(1)} onPressOut={() => this.refs.saveIcon.bounceIn(800)}>
               <Animatable.View ref='saveIcon'>
                 <Image style={[EditorStyle.saveIcon, EditorStyle.icon]} source={{uri: `saveIcon`}} />
               </Animatable.View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
 
-            <TouchableWithoutFeedback onPress={() => this.clearArtboardHandler()} onPressOut={() => this.refs.deleteIcon.bounceIn(800)} onPressIn={() => this.refs.deleteIcon.pulse(600)}>
+            <TouchableOpacity onPress={() => this.clearArtboardHandler()} onPressOut={() => this.refs.deleteIcon.bounceIn(800)}>
               <Animatable.View ref='deleteIcon'>
                 <Image style={[EditorStyle.deleteIcon, EditorStyle.icon]} source={{uri: `deleteIcon`}} />
               </Animatable.View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
           </View>
         </Animatable.View>
       );
@@ -517,29 +512,22 @@ class Editor extends Component {
   renderRightControls() {
     const {field} = this.state;
 
-    let url = ``;
-    if (field.drawer.isActive) {
-      url = {uri: `closeIcon`};
-    } else {
-      url = {uri: `fieldIcon`};
-    }
-
     return (
       <View style={[EditorStyle.rightControls]}>
-        <TouchableWithoutFeedback onPressOut={() => Actions.pop()} onPressIn={() => this.refs.closeIcon.pulse(600)}>
+        <TouchableOpacity onPressOut={() => Actions.pop()}>
           <Animatable.View style={[{opacity: field.drawer.isActive ? 0 : 1}]} ref='closeIcon'>
             <Image style={[EditorStyle.closeIcon, EditorStyle.icon]} source={{uri: `closeIcon`}} />
           </Animatable.View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
 
-        <TouchableWithoutFeedback style={EditorStyle.fieldIconWrapper}>
-          <Animatable.View style={EditorStyle.fieldIconWrapper}>
-            <Text style={[EditorStyle.fieldIconText, {opacity: field.drawer.isActive ? 0 : 1}]}>Speelveld</Text>
-            <TouchableWithoutFeedback onPress={() => this.toggleFieldDrawerHandler()} onPressOut={() => this.refs.fieldIcon.bounceIn(800)} onPressIn={() => this.refs.fieldIcon.pulse(600)}>
-              <Animatable.Image ref='fieldIcon' style={[EditorStyle.fieldIcon, EditorStyle.icon]} source={url}/>
-            </TouchableWithoutFeedback>
+        <TouchableOpacity style={EditorStyle.fieldIconWrapper}>
+          <Animatable.View style={[EditorStyle.fieldIconWrapper, {opacity: field.drawer.isActive ? 0 : 1}]}>
+            <Text style={[EditorStyle.fieldIconText]}>Speelveld</Text>
+            <TouchableOpacity onPress={() => this.toggleFieldDrawerHandler()} onPressOut={() => this.refs.fieldIcon.bounceIn(800)}>
+              <Animatable.Image ref='fieldIcon' style={[EditorStyle.fieldIcon, EditorStyle.icon]} source={{uri: `fieldIcon`}}/>
+            </TouchableOpacity>
           </Animatable.View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -549,9 +537,9 @@ class Editor extends Component {
 
     if (!field.drawer.isActive) {
       return (
-        <TouchableWithoutFeedback onPress={() => this.toggleObjectsDrawer()}>
+        <TouchableOpacity onPress={() => this.toggleObjectsDrawer()}>
           <Animatable.Image ref='addEditorIcon' style={EditorStyle.addEditorIcon} source={{uri: `addEditorIcon`}} />
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       );
     }
   }
