@@ -101,7 +101,7 @@ class Deployment extends Component {
           directions.map((d, index) => {
             return (
               <Animatable.View style={[DeploymentStyle.directionImageWrapper, {borderColor: currentSelectedDirectionIndex === index ? Colors.black : `transparent`}]} ref={`direction${index}`} key={index}>
-                <Image style={[DeploymentStyle.directionImage]} source={require(`../assets/png/direction.png`)} />
+                <Image style={[DeploymentStyle.directionImage]} source={{uri: currentSelectedDirectionIndex === index ? `directionLighted` : `direction`}} />
               </Animatable.View>
             );
           })

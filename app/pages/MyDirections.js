@@ -99,9 +99,11 @@ class MyDirections extends Component {
 
     const {connectedDirections} = this.state;
 
-    const updatedDirections = connectedDirections.push(direction);
+    direction.image = `direction`;
 
-    this.setState({updatedDirections});
+    connectedDirections.push(direction);
+
+    this.setState({connectedDirections});
   }
 
   handleWScheckDirections(connectedDirections) {
