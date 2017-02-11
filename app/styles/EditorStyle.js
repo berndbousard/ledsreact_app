@@ -364,15 +364,10 @@ const ComponentStyle = StyleSheet.create({
     alignItems: `center`
   },
 
-  optionsMenuTitle: {
-    borderBottomWidth: 2,
-    borderBottomColor: Colors.black,
-    marginTop: 25
-  },
-
   optionsMenusubTitle: {
     textAlign: `center`,
-    marginTop: 20
+    marginTop: 18,
+    marginBottom: 5
   },
 
   directionArrowsWrapper: {
@@ -487,7 +482,7 @@ const ComponentStyle = StyleSheet.create({
     padding: 15,
     borderColor: Colors.black,
     borderWidth: 2,
-    borderRadius: 2,
+    borderRadius: 4,
     margin: 10
   },
 
@@ -871,6 +866,36 @@ const ComponentStyle = StyleSheet.create({
   celebButton: {
     marginLeft: 10,
     marginRight: 10
+  },
+
+  optionsHeader: {
+    backgroundColor: Colors.black,
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `space-between`,
+    padding: 20,
+    width: 275
+  },
+
+  optionsMainHeaderTitle: {
+    color: Colors.white
+  },
+
+  optionsHeaderCloseIcon: {
+    width: 15, height: 15
+  },
+
+  deleteOptionsIcon: {
+    width: 15, height: 20
+  },
+
+  deleteIconWrapper: {
+    marginLeft: 21,
+    marginRight: 21
+  },
+
+  oplichtenWrapperContent: {
+    marginTop: - 10
   }
 });
 

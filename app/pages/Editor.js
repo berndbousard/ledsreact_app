@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView, TouchableOpacity, TextInput, ActivityIndicator} from 'react-native';
-import {indexOf, isEmpty, findIndex, remove} from 'lodash';
+import {indexOf, isEmpty, findIndex, remove, compact} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
 import {Actions, ActionConst} from "react-native-router-flux";
 import * as Animatable from 'react-native-animatable';
@@ -33,7 +33,7 @@ class Editor extends Component {
     },
     activeTool: 1,
     field: {
-      currentIndex: 0,
+      currentIndex: 1,
       images: [`blanco`, `soccer`, `basket`, `tennis`, `rugby`, `volleyball`],
       drawer: {
         isActive: false
@@ -41,10 +41,11 @@ class Editor extends Component {
     },
 
     editorDirections: [],
-
     currentEditorDirectionIndex: 0,
+
     colors: [`#FF0F00`, `#1E6DFF`, `#50E610`, `#FFD100`],
     currentRichting: undefined,
+
     currentPage: 0,
     currentFormTab: 0,
 
@@ -648,10 +649,7 @@ class Editor extends Component {
 
   renderDirectionArrows() {
 
-    // console.log(this.state.editorDirections[this.state.currentEditorDirectionIndex]);
     const {currentRichting, editorDirections, currentEditorDirectionIndex} = this.state;
-
-    console.log(!isEmpty(editorDirections[currentEditorDirectionIndex].top.colors));
 
     return (
 
@@ -691,11 +689,9 @@ class Editor extends Component {
         return c === colors[colorIndex];
       });
       if (indexOfElement === - 1) { //Zoniet -> toevoegen
-        // console.log(`kleur niet aanwezig`);
         currentDirection[`${currentRichting}`].colors.push(colors[colorIndex]);
         this.setState({editorDirections});
       } else { //Zoniet -> verwijderen
-        // console.log(`kleur aanwezig`);
         currentDirection[`${currentRichting}`].colors = remove(currentDirection[`${currentRichting}`].colors, c => {
           return c !== colors[colorIndex];
         });
@@ -761,6 +757,20 @@ class Editor extends Component {
     this.setState({editorDirections});
   }
 
+  deleteDirectionHandler(directionIndex = this.state.currentEditorDirectionIndex) {
+    // let {editorDirections} = this.state;
+    //
+    // editorDirections = editorDirections.map((e, index) => {
+    //   if (!index === directionIndex) {
+    //     return e;
+    //   }
+    // });
+    //
+    // editorDirections = compact(editorDirections);
+    //
+    // this.setState({editorDirections});
+  }
+
   renderOptionsMenu() {
     const {optionsMenu, editorDirections, currentEditorDirectionIndex} = this.state;
 
@@ -770,7 +780,10 @@ class Editor extends Component {
           <Animatable.View ref='optionsMenuRef' animation='fadeInRightBig' duration={300} easing='ease-out-circ' style={EditorStyle.optionsMenu}>
             <View style={EditorStyle.optionsMenuDirectionUpper}>
 
-              <Text style={[TextStyles.title, EditorStyle.optionsMenuTitle]}>{`direction ${currentEditorDirectionIndex + 1}`.toUpperCase()}</Text>
+              <View style={[EditorStyle.optionsHeader]}>
+                <Text style={[TextStyles.title, EditorStyle.optionsMainHeaderTitle]}>{`direction ${currentEditorDirectionIndex + 1}`.toUpperCase()}</Text>
+                <Image style={[EditorStyle.optionsHeaderCloseIcon]} source={require(`../assets/png/closeIconSmallWhite.png`)} />
+              </View>
 
               <View style={[EditorStyle.optionsMenuRichting]}>
                 <Text style={[TextStyles.subTitle, EditorStyle.optionsMenusubTitle]}>{`richtingen`.toUpperCase()}</Text>
@@ -784,8 +797,6 @@ class Editor extends Component {
             </View>
 
             <View style={EditorStyle.optionsMenuDirectionLower}>
-
-              <Text style={[TextStyles.title, EditorStyle.optionsMenuTitle]}>{`globaal`.toUpperCase()}</Text>
 
               <View style={[EditorStyle.optionsMenuRichting]}>
                 <Text style={[TextStyles.subTitle, EditorStyle.optionsMenusubTitle]}>{`delay`.toUpperCase()}</Text>
@@ -802,18 +813,25 @@ class Editor extends Component {
                 </View>
               </View>
 
-              <View style={[EditorStyle.optionsMenuRichting]}>
+              <View style={[EditorStyle.optionsMenuRichting, EditorStyle.oplichtenWrapperContent]}>
                 <Text style={[TextStyles.subTitle, EditorStyle.optionsMenusubTitle]}>{`oplichten`.toUpperCase()}</Text>
                 <View style={[EditorStyle.oplichtenWrapper]}>
-                  <TouchableOpacity onPress={() => this.setCombineLights(false)} style={[EditorStyle.oplichtenButton, {backgroundColor: !editorDirections[currentEditorDirectionIndex].combineLights ? Colors.orange : `transparent`, borderColor: !editorDirections[currentEditorDirectionIndex].combineLights ? Colors.orange : Colors.black}]}>
+                  <TouchableOpacity onPress={() => this.setCombineLights(false)} style={[EditorStyle.oplichtenButton, {backgroundColor: !editorDirections[currentEditorDirectionIndex].combineLights ? Colors.black : `transparent`, borderColor: !editorDirections[currentEditorDirectionIndex].combineLights ? `transparent` : Colors.black}]}>
                     <Text style={[TextStyles.copy, {color: !editorDirections[currentEditorDirectionIndex].combineLights ? Colors.pureWhite : Colors.black}]}>willekeurig</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => this.setCombineLights(true)} style={[EditorStyle.oplichtenButton, {backgroundColor: editorDirections[currentEditorDirectionIndex].combineLights ? Colors.orange : `transparent`, borderColor: editorDirections[currentEditorDirectionIndex].combineLights ? Colors.orange : Colors.black}]}>
+                  <TouchableOpacity onPress={() => this.setCombineLights(true)} style={[EditorStyle.oplichtenButton, {backgroundColor: editorDirections[currentEditorDirectionIndex].combineLights ? Colors.black : `transparent`, borderColor: editorDirections[currentEditorDirectionIndex].combineLights ? `transparent` : Colors.black}]}>
                     <Text style={[TextStyles.copy, {color: editorDirections[currentEditorDirectionIndex].combineLights ? Colors.pureWhite : Colors.black}]}>samen</Text>
                   </TouchableOpacity>
                 </View>
               </View>
+
+              <TouchableOpacity style={EditorStyle.deleteIconWrapper} onPress={() => this.deleteDirectionHandler()}>
+                <LinearGradient style={[ButtonStyles.primaryButton]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
+                  <Image style={[EditorStyle.deleteOptionsIcon]} source={require(`../assets/png/deleteIconWhite.png`)} />
+                  <Text style={[TextStyles.primaryButton]}>{`Direction verwijderen`.toUpperCase()}</Text>
+                </LinearGradient>
+              </TouchableOpacity>
 
             </View>
           </Animatable.View>
@@ -842,7 +860,7 @@ class Editor extends Component {
 
   toTab(tab) {
     let {currentFormTab} = this.state;
-    const {formContent, buttonWrapper, formHeader, celebrationButtonWrapper, headerImage} = this.refs;
+    const {formContent, buttonWrapper, formHeader, headerImage} = this.refs;
 
     currentFormTab += tab;
 
