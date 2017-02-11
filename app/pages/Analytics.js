@@ -43,7 +43,7 @@ class Analytics extends Component {
 				<Text style={[TextStyles.secondNav, MyExercisesStyle.secondNavText, {color: currentTab === 2 ? Colors.white : Colors.black, opacity: currentTab === 2 ? 1 : .5}]}>{`mijn oefeningen`.toUpperCase()}</Text>
 			</TouchableOpacity>
 
-			<LinearGradient style={[AnalyticsStyles.navBorder, {left: currentTab === 0 ? 50 : currentTab === 1 ? 180 : 330}]} colors={[Colors.white, Colors.navBorderWhite]} start={{x: 0, y: 1}} end={{x: 1, y: 1}}></LinearGradient>
+			<LinearGradient style={[AnalyticsStyles.navBorder, {left: currentTab === 0 ? 60 : currentTab === 1 ? 190 : 340}]} colors={[Colors.white, Colors.navBorderWhite]} start={{x: 0, y: 1}} end={{x: 1, y: 1}}></LinearGradient>
 
 		</LinearGradient>
     );
@@ -67,7 +67,7 @@ class Analytics extends Component {
 				</TouchableOpacity>
 			</View>
 			<View style={AnalyticsStyles.dropDown}>
-				<Text style={[TextStyles.subTitle, AnalyticsStyles.label, {color: Colors.black}]} >{`sorteren op`.toUpperCase()}</Text>
+				<Text style={[TextStyles.subTitle, AnalyticsStyles.label, {color: Colors.black}]} >{`Weergeven per`.toUpperCase()}</Text>
 				<TouchableOpacity>
 				<View style={[AnalyticsStyles.dropDownBox]}>
 					<Text style={[TextStyles.dropDownText, {color: Colors.black}]}>{`maand`}</Text>
@@ -152,11 +152,11 @@ class Analytics extends Component {
 				<View style={[AnalyticsStyles.topGraph]}>
 					<Image style={AnalyticsStyles.lineGraphImage} source={require(`../assets/png/analyse/graph.png`)} />
 					<View>
-						<Text style={[TextStyles.graph, AnalyticsStyles.yAS]} >{`500Km`}</Text>
-						<Text style={[TextStyles.graph, AnalyticsStyles.yAS]} >{`400Km`}</Text>
-						<Text style={[TextStyles.graph, AnalyticsStyles.yAS]} >{`300Km`}</Text>
-						<Text style={[TextStyles.graph, AnalyticsStyles.yAS]} >{`200Km`}</Text>
-						<Text style={[TextStyles.graph, AnalyticsStyles.yAS]} >{`100Km`}</Text>
+						<Text style={[TextStyles.graph, AnalyticsStyles.yAS]} >{`500km`}</Text>
+						<Text style={[TextStyles.graph, AnalyticsStyles.yAS]} >{`400km`}</Text>
+						<Text style={[TextStyles.graph, AnalyticsStyles.yAS]} >{`300km`}</Text>
+						<Text style={[TextStyles.graph, AnalyticsStyles.yAS]} >{`200km`}</Text>
+						<Text style={[TextStyles.graph, AnalyticsStyles.yAS]} >{`100km`}</Text>
 					</View>
 				</View>
 				<View style={[AnalyticsStyles.xASWrapper]}>
@@ -334,7 +334,7 @@ class Analytics extends Component {
 
     return (
 			<View style={GeneralStyle.pageContainer}>
-				<Navigation currentPage={this.props.name} />
+				<Navigation currentPage={this.props.name}  />
 
 					<View >
 						{this.renderSecondNav()}
