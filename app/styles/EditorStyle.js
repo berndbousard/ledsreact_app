@@ -223,17 +223,75 @@ const ComponentStyle = StyleSheet.create({
     position: `absolute`,
     left: (Dimensions.width / 2) - (100 / 2),
     top: (Dimensions.height / 2) - (107 / 2),
-    borderRadius: 100,
-    width: 120, height: 120
+    borderRadius: 100
   },
 
-  // directionLink: {
-  //   padding: 5
-  // },
+  selectedArea: {
+    position: `absolute`,
+    width: 150, height: 150,
+    left: - 25, top: - 20,
+    zIndex: 9,
+    borderRadius: 100
+  },
+
+  directionLink: {
+    position: `relative`,
+    zIndex: 10
+  },
 
   directionImage: {
     width: 100,
     height: 107,
+    marginTop: 7
+  },
+
+
+  //-------------------------------{Direction colors}---------------------------------
+
+  directionColors: {
+    position: `absolute`,
+    zIndex: 100,
+  },
+
+  directionColorsTop: {
+    flexDirection: `row`,
+    top: - 15,
+    width: 100,
+    justifyContent: `center`
+  },
+
+  directionColorsBottom: {
+    bottom: - 7,
+    flexDirection: `row`,
+    width: 100,
+    justifyContent: `center`
+  },
+
+  directionColorsLeft: {
+    flexDirection: `column`,
+    left: - 15,
+    height: 100,
+    justifyContent: `center`
+  },
+
+  directionColorsRight: {
+    flexDirection: `column`,
+    right: - 15,
+    height: 100,
+    justifyContent: `center`
+  },
+
+  directionColorsSamples: {
+    width: 8, height: 8,
+    borderRadius: 10
+  },
+
+  verticalSamples: {
+    marginTop: 2, marginBottom: 2
+  },
+
+  horizontalSamples: {
+    marginLeft: 2, marginRight: 2
   },
 
   //-------------------------------{Direction Params}---------------------------------
@@ -446,7 +504,8 @@ const ComponentStyle = StyleSheet.create({
     flexDirection: `column`,
     alignItems: `center`,
     width: Dimensions.width,
-    marginTop: 20
+    marginTop: 20,
+    zIndex: 20
   },
 
   formBackWrapper: {
@@ -472,7 +531,7 @@ const ComponentStyle = StyleSheet.create({
     top: 0,
     left: 0,
     width: Dimensions.width, height: 224,
-    zIndex: - 1
+    zIndex: 2
   },
 
   formTitle: {

@@ -19,6 +19,7 @@ class Editor extends Component {
     connectedDirections: this.props.connectedDirections,
     directionsInEditor: 0,
     svgElements: [],
+    svgTimer: 0,
     userDrawingFeedback: [],
     drawer: {
       isActive: false
@@ -104,11 +105,14 @@ class Editor extends Component {
       },
 
       onPanResponderMove: e => {
-        // this.addSvgElement(e);
+        if (this.state.svgTimer % 2 === 0) {
 
-        // Build array of X & Y data
-        this.points.push({x: e.nativeEvent.locationX, y: e.nativeEvent.locationY});
-        this.setState({userDrawingFeedback: this.points});
+          // Build array of X & Y data
+          this.points.push({x: e.nativeEvent.locationX, y: e.nativeEvent.locationY});
+          this.setState({userDrawingFeedback: this.points});
+        }
+
+        this.setState({svgTimer: this.state.svgTimer + 1});
       },
 
       onPanResponderRelease: () => { //Gets invoked when we release the view.
@@ -178,8 +182,29 @@ class Editor extends Component {
     this.setState({svgElements});
   }
 
-  deleteAllActionsHandler() {
+  clearArtboardHandler() {
+    this.clearArtboardSVG();
+    this.clearArtboardDirections();
+  }
+
+  clearArtboardSVG() {
     this.setState({svgElements: []});
+  }
+
+  clearArtboardDirections() {
+    // TODO: bugcheck
+    let {editorDirections, directionsInEditor, currentEditorDirectionIndex, currentRichting} = this.state;
+    const {globalEditorSettings} = this.state;
+
+    editorDirections = [];
+    directionsInEditor = 0;
+    currentEditorDirectionIndex = 0;
+    currentRichting = undefined;
+
+    globalEditorSettings.delay = 0;
+    globalEditorSettings.combineLights = false;
+
+    this.setState({editorDirections, globalEditorSettings});
   }
 
   generateUserDrawingFeedback() {
@@ -239,7 +264,7 @@ class Editor extends Component {
     }
   }
 
-  directionDrawerImagePressHandler() {
+  objectsDrawerDirectionPressHandler() {
     const {editorDirections, colors} = this.state;
 
     // Initial Values
@@ -263,6 +288,8 @@ class Editor extends Component {
     editorDirections.push(newDirection);
 
     this.setState({editorDirections});
+
+    this.toggleObjectsDrawer(); //Drawer wegdoen wanneer eentje aangetikt.
   }
 
   renderObjectsDrawer() {
@@ -274,7 +301,7 @@ class Editor extends Component {
 
     return (
       <Animatable.View ref='drawerRef' duration={200} animation='pulse' easing='ease-out' style={[EditorStyle.drawer]}>
-        <TouchableWithoutFeedback onPress={() => this.directionDrawerImagePressHandler()}>
+        <TouchableWithoutFeedback onPress={() => this.objectsDrawerDirectionPressHandler()}>
           <Image style={[EditorStyle.directionDrawerImage]} source={{uri: `direction`}} />
         </TouchableWithoutFeedback>
       </Animatable.View>
@@ -487,7 +514,7 @@ class Editor extends Component {
               </Animatable.View>
             </TouchableWithoutFeedback>
 
-            <TouchableWithoutFeedback onPress={() => this.deleteAllActionsHandler()} onPressOut={() => this.refs.deleteIcon.bounceIn(800)} onPressIn={() => this.refs.deleteIcon.pulse(600)}>
+            <TouchableWithoutFeedback onPress={() => this.clearArtboardHandler()} onPressOut={() => this.refs.deleteIcon.bounceIn(800)} onPressIn={() => this.refs.deleteIcon.pulse(600)}>
               <Animatable.View ref='deleteIcon'>
                 <Image style={[EditorStyle.deleteIcon, EditorStyle.icon]} source={{uri: `deleteIcon`}} />
               </Animatable.View>

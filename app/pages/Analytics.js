@@ -16,8 +16,6 @@ class Analytics extends Component {
 
   componentDidMount() {
 
-    console.log(this.refs);
-
     let delay = 300;
 
     forIn(this.refs, r => {

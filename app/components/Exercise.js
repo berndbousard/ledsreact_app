@@ -14,7 +14,7 @@ const Exercise = ({index, name, groupSize, intensivity, imageWithDirections}) =>
     <Animatable.View animation='fadeInUp' duration={600} delay={8 * index}>
       <View style={MyDirectionsStyle.ExerciseCardHeader}>
         <Image style={MyDirectionsStyle.ExerciseCardSportIcon} source={require(`../assets/png/soccerIcon.png`)} />
-        <Text style={[TextStyles.subTitle, MyDirectionsStyle.ExerciseCardTitle]}>{`${name.length > 25 ? `${name.substring(0, 22)}...` : name}`.toUpperCase()}</Text>
+        <Text style={[TextStyles.subTitle, MyDirectionsStyle.ExerciseCardTitle]}>{`${name.length > 26 ? `${name.substring(0, 23)}...` : name}`.toUpperCase()}</Text>
       </View>
 
       <View style={MyDirectionsStyle.ExerciseCardImageWrapper}>

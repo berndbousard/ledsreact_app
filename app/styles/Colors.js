@@ -1,6 +1,6 @@
 export default {
   black: `#1E1E1E`,
-  opacityBlack: `rgba(31, 31, 31, 0.15)`,
+  opacityBlack: `rgba(31, 31, 31, 0.1)`,
   lightBlack: `#232323`,
   orange: `#FF272F`,
   gradientOrange: `#FF500D`,
@@ -13,5 +13,4 @@ export default {
   opacityWhite: `rgba(255, 255, 255, .1)`,
   navBorderWhite: `rgba(255, 255, 255, 0)`,
   borderforGreyBackground: `#E9E9E9`
-
 };

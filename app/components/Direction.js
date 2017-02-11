@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Animated, PanResponder, TouchableOpacity} from 'react-native';
+import {Animated, PanResponder, TouchableOpacity, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import {EditorStyle, Colors} from '../styles';
@@ -112,12 +112,53 @@ class Direction extends Component {
 
     const {position, scale} = this.state;
     const [translateX, translateY] = [position.x, position.y];
+    const {top, bottom, left, right} = this.props;
 
     return (
-      <Animated.View {...this.dragHandler.panHandlers} style={[EditorStyle.directionWrapper, {transform: [{translateX}, {translateY}, {scale}], backgroundColor: this.props.isSelected ? Colors.opacityBlack : `transparent`}]}>
+      <Animated.View {...this.dragHandler.panHandlers} style={[EditorStyle.directionWrapper, {transform: [{translateX}, {translateY}, {scale}]}]}>
         <TouchableOpacity style={[EditorStyle.directionLink]} onPress={() => this.toggleSettings()}>
+
+          {/* TOP */}
+          <View style={[EditorStyle.directionColorsTop, EditorStyle.directionColors]}>
+            {
+              top.colors.map((c, index) => {
+                return <Animatable.View animation='fadeIn' duration={500} key={index} style={[EditorStyle.horizontalSamples, EditorStyle.directionColorsSamples, {backgroundColor: `${c}`}]}></Animatable.View>;
+              })
+            }
+          </View>
+
+          {/* BOTTOM */}
+          <View style={[EditorStyle.directionColorsBottom, EditorStyle.directionColors]}>
+            {
+              bottom.colors.map((c, index) => {
+                return <Animatable.View animation='fadeIn' duration={500} key={index} style={[EditorStyle.horizontalSamples, EditorStyle.directionColorsSamples, {backgroundColor: `${c}`}]}></Animatable.View>;
+              })
+            }
+          </View>
+
+          {/* LEFT */}
+          <View style={[EditorStyle.directionColorsLeft, EditorStyle.directionColors]}>
+            {
+              left.colors.map((c, index) => {
+                return <Animatable.View animation='fadeIn' duration={500} key={index} style={[EditorStyle.verticalSamples, EditorStyle.directionColorsSamples, {backgroundColor: `${c}`}]}></Animatable.View>;
+              })
+            }
+          </View>
+
+          {/* RIGHT */}
+          <View style={[EditorStyle.directionColorsRight, EditorStyle.directionColors]}>
+            {
+              right.colors.map((c, index) => {
+                return <Animatable.View animation='fadeIn' duration={500} key={index} style={[EditorStyle.verticalSamples, EditorStyle.directionColorsSamples, {backgroundColor: `${c}`}]}></Animatable.View>;
+              })
+            }
+          </View>
+
           <Animatable.Image ref='direction' animation='bounceIn' easing='ease-out' style={[EditorStyle.directionImage]} source={require(`../assets/png/direction.png`)} />
         </TouchableOpacity>
+        <View style={[EditorStyle.selectedArea, {backgroundColor: this.props.isSelected ? Colors.opacityBlack : `transparent`}]}>
+
+        </View>
       </Animated.View>
     );
   }

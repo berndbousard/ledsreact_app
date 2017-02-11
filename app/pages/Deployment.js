@@ -208,7 +208,7 @@ class Deployment extends Component {
             </Animatable.View>
 
             <Animatable.View ref='exerciseButtons' style={[DeploymentStyle.bottomBarWrapper, DeploymentStyle.bottomBarWrapperExercise]}>
-              <TouchableOpacity style={[ButtonStyles.secundairyButton, DeploymentStyle.buttonBottom]} onPress={() => this.stepHandler(- 1)}>
+              <TouchableOpacity style={[ButtonStyles.secundairyButton, DeploymentStyle.buttonBottom]}>
                 <Image style={[DeploymentStyle.takeNoteIcon]} source={require(`../assets/png/takeNoteIconOrange.png`)} />
               </TouchableOpacity>
 
