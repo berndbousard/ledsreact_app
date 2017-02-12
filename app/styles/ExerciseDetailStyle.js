@@ -21,6 +21,10 @@ const ExerciseDetailStyle = StyleSheet.create({
     borderBottomColor: Colors.opacityWhite
   },
 
+  scrollContentWrapper: {
+    marginTop: - 1
+  },
+
   backButtonWrapper: {
     flexDirection: `row`,
     alignItems: `center`
@@ -101,7 +105,7 @@ const ExerciseDetailStyle = StyleSheet.create({
   scrollContent: {
     position: `relative`,
     flexDirection: `row`,
-    justifyContent: `center`
+    justifyContent: `center`,
   },
 
   background: {
@@ -187,15 +191,20 @@ const ExerciseDetailStyle = StyleSheet.create({
 
   schemaIconWrapper: {
     position: `absolute`,
-    top: 10, right: 10,
+    top: 15, right: 15,
     padding: 14,
     borderWidth: 2,
     borderColor: Colors.orange,
-    borderRadius: 100
+    borderRadius: 100,
+    width: 50,
+    height: 50,
+    flexDirection: `row`,
+    justifyContent: `center`,
+    alignItems: `center`
   },
 
   schemaIcon: {
-    width: 28, height: 28
+    width: 20, height: 20
   },
 
   schemaWrapperSchema: {
@@ -418,10 +427,11 @@ const ExerciseDetailStyle = StyleSheet.create({
 
   textInput: {
     marginTop: 10,
-    width: 860, height: 50,
-    backgroundColor: Colors.pureWhite,
+    width: 860, height: 200,
+    borderWidth: 2,
+    borderColor: Colors.black,
     paddingLeft: 20,
-    borderRadius: 4
+    borderRadius: 6,
   },
 
   primaryButtonImage3: {
@@ -433,7 +443,53 @@ const ExerciseDetailStyle = StyleSheet.create({
     marginLeft: 670,
     marginBottom: 50,
     width: 190
+  },
+
+  transparentBackground: {
+    zIndex: 9999,
+    position: `absolute`,
+    top: 0,
+    width: Dimensions.width,
+    height: Dimensions.height,
+    backgroundColor: Colors.opacityBlackFull,
+    flexDirection: `row`,
+    justifyContent: `center`,
+    alignItems: `center`,
+
+  },
+
+  popUp: {
+    width: 500,
+    backgroundColor: Colors.white,
+    borderRadius: 6,
+    shadowColor: Colors.black,
+    shadowOffset: {width: 0, height: 20},
+    shadowOpacity: .7,
+    shadowRadius: 30,
+    padding: 40,
+    flexDirection: `column`,
+    justifyContent: `center`,
+    alignItems: `center`,
+  },
+
+  missingDirectionImage: {
+    width: 259,
+    height: 73,
+    margin: 30,
+  },
+
+  popUpTekstje: {
+    textAlign: `center`,
+    width: 400,
+    marginBottom: 30,
+  },
+
+  primaryPopButtonImage: {
+    width: 15,
+    height: 15
   }
+
+
 });
 
 export default ExerciseDetailStyle;

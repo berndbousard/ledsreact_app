@@ -7,8 +7,7 @@ import {DatabaseUrl} from '../globals';
 
 const Exercise = ({index, name, groupSize, intensivity, imageWithDirections}) => {
 
-
-  console.log(imageWithDirections);
+  // console.log(imageWithDirections);
 
   return (
     <Animatable.View animation='fadeInUp' duration={600} delay={8 * index}>

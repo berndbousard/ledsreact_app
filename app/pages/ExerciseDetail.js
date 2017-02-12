@@ -8,17 +8,24 @@ import {DatabaseUrl} from '../globals';
 
 import {GeneralStyle, ExerciseDetailStyle, Colors, TextStyles, ButtonStyles} from '../styles';
 
+let enoughDirections = false;
+let largerPic =  false;
+
 class ExerciseDetail extends Component {
 
   state = {
     exercise: {},
     directions: [],
-    largerPic: false,
-    connectedDirections: []
+    connectedDirections: [],
+    showPopUp: false
   }
 
   goBack() {
     Actions.pop();
+  }
+
+  componentWillReceiveProps(props) {
+    console.log(`willreceive`, props);
   }
 
   componentDidMount() {
@@ -50,9 +57,7 @@ class ExerciseDetail extends Component {
         });
     }
 
-
     this.props.socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
-
     this.props.socket.emit(`checkDirections`);
   }
 
@@ -61,14 +66,99 @@ class ExerciseDetail extends Component {
   }
 
   handleWScheckDirections(directions) {
-    this.setState({connectedDirections: directions});
+
+
+    const {connectedDirections} = this.state;
+
+    if (connectedDirections.length !== directions.length) {
+      this.setState({connectedDirections: directions});
+    }
+  }
+
+  checkDirections() {
+    const {exercise, directions, connectedDirections} = this.state;
+    const canTry = connectedDirections.length >= directions.length;
+
+    console.log(`hey`);
+
+    if (canTry) {
+      this.hidePopUp();
+      Actions.deployment({exercise: exercise, directions: directions});
+    } else {
+      this.setState({showPopUp: true});
+    }
+  }
+
+  hidePopUp() {
+    enoughDirections = true;
+    this.setState({showPopUp: false});
+  }
+
+
+
+
+
+  checkForConnectedDirections() {
+    if (!enoughDirections) {
+      console.log(`check`);
+      this.props.socket.emit(`checkDirections`);
+      setTimeout(() => {
+        this.checkForConnectedDirections();
+      }, 2000);
+    }
+  }
+
+
+  handlePopUpButton() {
+
+    const {exercise, directions, connectedDirections} = this.state;
+    const canTry = connectedDirections.length >= directions.length;
+
+    if (canTry) {
+      Actions.deployment({exercise: exercise, directions: directions});
+    } else {
+      this.hidePopUp();
+    }
+  }
+
+
+  renderPopUp(missingDirectionCount, directionLength) {
+
+    const {directions, connectedDirections, showPopUp} = this.state;
+    const canTry = connectedDirections.length >= directions.length;
+
+    missingDirectionCount = directions.length - connectedDirections.length;
+    directionLength = connectedDirections.length;
+
+
+
+    //checkout wordt niet uitgevoerd na het opnieuw tonen van het venster
+
+
+    if (!canTry) {
+      setTimeout(() => this.checkForConnectedDirections(), 2000);
+    }
+
+    if (showPopUp) {
+      return (
+        <View style={ExerciseDetailStyle.transparentBackground}>
+          <View style={ExerciseDetailStyle.popUp}>
+              <Text style={[TextStyles.title, {color: Colors.black}]} >{`Je mist ${missingDirectionCount} Directions voor deze oefening.`.toUpperCase()}</Text>
+              <Image style={[ExerciseDetailStyle.missingDirectionImage]} source={require(`../assets/png/exercisedetail/popupImage.png`)} />
+              <Text style={[TextStyles.graph], ExerciseDetailStyle.popUpTekstje} >{`Om deze oefeningen te kunnen uitproberen heb je ${missingDirectionCount} extra Directions nodig. Je hebt er momenteel ${directionLength} verbonden.`}</Text>
+              <TouchableOpacity style={ExerciseDetailStyle.primaryButtonWrapper} onPress={() => this.handlePopUpButton()}>
+                <LinearGradient style={[ButtonStyles.primaryButton, ExerciseDetailStyle.buttonWrapper]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
+                  <Image style={[ExerciseDetailStyle.primaryPopButtonImage]} source={require(`../assets/png/crossIconWhite.png`)} />
+                  <Text style={[TextStyles.primaryButton, ExerciseDetailStyle.primaryButtonText]}>{`dit venster sluiten`.toUpperCase()}</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+          </View>
+        </View>
+      );
+    }
   }
 
   renderHeader() {
-
-    const {exercise, directions, connectedDirections} = this.state;
-
-    const canTry = connectedDirections.length >= directions.length;
 
     return (
       <View style={ExerciseDetailStyle.headerWrapper}>
@@ -95,7 +185,7 @@ class ExerciseDetail extends Component {
             <Image style={ExerciseDetailStyle.headerAddIcon} source={require(`../assets/png/addIconWhite.png`)} />
           </TouchableOpacity>
 
-          <TouchableOpacity disabled={canTry ? false : true} style={ExerciseDetailStyle.primaryButtonWrapper} onPress={() => Actions.deployment({exercise: exercise, directions: directions})}>
+          <TouchableOpacity style={ExerciseDetailStyle.primaryButtonWrapper} onPress={() => this.checkDirections()}>
             <LinearGradient style={[ButtonStyles.primaryButton, ExerciseDetailStyle.buttonWrapper]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
               <Image style={[ExerciseDetailStyle.primaryButtonImage]} source={require(`../assets/png/playIconWhite.png`)} />
               <Text style={[TextStyles.primaryButton, ExerciseDetailStyle.primaryButtonText]}>{`uitproberen`.toUpperCase()}</Text>
@@ -139,7 +229,6 @@ class ExerciseDetail extends Component {
   }
 
   enlargeMyPic() {
-    const {largerPic} = this.state;
     const {pic, mainSpecs} = this.refs;
 
     // width: 510
@@ -151,7 +240,9 @@ class ExerciseDetail extends Component {
     //   pic.transition({transform: [{translateX: 0}, {translateY: 0}, {scale: 1}]}, {transform: [{translateX: 510 / 2}, {translateY: 372 / 2}, {scale: 2}]}, 500, `ease-in-out`);
     // }
 
-    if (largerPic) {
+    console.log(`largerpic`);
+
+    if (!largerPic) {
 
       mainSpecs.transitionTo({transform: [{translateY: 50}], opacity: 0}, 200, `ease-out`);
       setTimeout(() => {
@@ -168,7 +259,7 @@ class ExerciseDetail extends Component {
     }
 
     setTimeout(() => {
-      this.setState({largerPic: !largerPic});
+      largerPic = !largerPic;
     }, 500);
   }
 
@@ -288,7 +379,7 @@ class ExerciseDetail extends Component {
         <View>
           <Text style={TextStyles.subTitle}>{`gemiddelde resultaten`.toUpperCase()}</Text>
           <Text style={[TextStyles.copy, ExerciseDetailStyle.textCopyAnalyse]}>Bekijk en vergelijk de prestaties van je team op provinciaal en nationaal niveau via Mijn Teamanalyse</Text>
-          <TouchableOpacity style={ExerciseDetailStyle.analyseButtonWrapper} onPressOut={() => console.log(`analyse`)}>
+          <TouchableOpacity style={ExerciseDetailStyle.analyseButtonWrapper}  onPressOut={() => Actions.analytics()}>
             <LinearGradient style={[ButtonStyles.primaryButton]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
               <Image style={[ExerciseDetailStyle.primaryButtonImage2]} source={require(`../assets/png/analyticsIconWhite.png`)} />
               <Text style={[TextStyles.primaryButton]}>{`mijn teamanalyse`.toUpperCase()}</Text>
@@ -340,6 +431,8 @@ class ExerciseDetail extends Component {
     );
   }
 
+  checkPopUp() {}
+
   render() {
 
     const {origin} = this.props;
@@ -347,9 +440,10 @@ class ExerciseDetail extends Component {
     return (
       <Animatable.View animation={isEmpty(origin) ? `fadeIn` : `fadeInUpBig`} duration={isEmpty(origin) ? 300 : 500} style={[GeneralStyle.pageContainer, ExerciseDetailStyle.pageContainer]}>
         <View>
+          {this.renderPopUp()}
           {this.renderHeader()}
 
-          <ScrollView>
+          <ScrollView style={ExerciseDetailStyle.scrollContentWrapper}>
             <View style={ExerciseDetailStyle.scrollContent}>
 
               <Image style={ExerciseDetailStyle.background} source={require(`../assets/png/detailBackground.png`)} />
@@ -369,7 +463,7 @@ class ExerciseDetail extends Component {
 
                 <View style={ExerciseDetailStyle.commentInputWrapper}>
                   <Text style={[TextStyles.subTitle]}>{`schrijf een notitie bij deze oefening`.toUpperCase()}</Text>
-                  <TextInput style={[ExerciseDetailStyle.textInput, TextStyles.copy]}/>
+                  <TextInput style={[ExerciseDetailStyle.textInput, TextStyles.copy]} placeholder='Typ hier je notitie.' multiline={true}/>
                 </View>
 
                 <TouchableOpacity style={[ExerciseDetailStyle.analyseButtonWrapper, ExerciseDetailStyle.analyseButtonWrapperEnd]} onPressOut={() => console.log(`analyse`)}>

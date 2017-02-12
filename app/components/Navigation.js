@@ -10,8 +10,6 @@ import {NavigationStyle, Dimensions} from '../styles';
 
 const Navigation = ({currentPage}) => {
 
-  console.log(currentPage);
-
   return (
     <Animatable.View  duration={300} easing={`ease-out-quad`} style={NavigationStyle.navigationWrapper}>
       <View style={NavigationStyle.navigation}>
