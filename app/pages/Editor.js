@@ -291,15 +291,14 @@ class Editor extends Component {
   }
 
   addFootballHandler() {
-    // TODO:
 
     const {editorFootballs} = this.state;
-
-    console.log(editorFootballs);
 
     const newFootball = {};
 
     editorFootballs.push(newFootball);
+
+    this.toggleObjectsDrawer();
 
     this.setState({editorFootballs});
   }
@@ -1272,10 +1271,11 @@ class Editor extends Component {
                 {this.generateSvgElements()}
               </Svg>
               {this.generateField()}
+              {this.renderEditorFootballs()}
             </View>
 
             {this.renderEditorDirections()}
-            {this.renderEditorFootballs()}
+
 
           </View>
           {this.renderLeftControls()}
