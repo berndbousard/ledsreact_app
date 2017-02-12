@@ -171,7 +171,36 @@ class MyDirections extends Component {
         })
       );
     } else {
-      return <Text style={[TextStyles.copy, MyDirectionsStyle.noConnectedContent]}>Er zijn geen Directions verbonden</Text>;
+      // return <Text style={[TextStyles.copy, MyDirectionsStyle.noConnectedContent]}>Er zijn geen Directions verbonden</Text>;
+      return (
+        <Animatable.View animation='fadeInUp' duration={500} easing='ease-out-quad' style={MyDirectionsStyle.notfoundContainer}>
+          <Image style={MyDirectionsStyle.notfoundImage} source={require(`../assets/png/directionNotFound.png`)} />
+          <View style={MyDirectionsStyle.notFoundContentWrapper}>
+
+            <Text style={TextStyles.subTitle}>{`Problemen met verbinden?`.toUpperCase()}</Text>
+
+            <View style={MyDirectionsStyle.stepWrapper}>
+              <View style={MyDirectionsStyle.notFoundNumberWrapper}>
+                <Text style={[TextStyles.subTitle, MyDirectionsStyle.notFoundNumber]}>1</Text>
+              </View>
+              <Text style={TextStyles.copy}>Schakel de Direction in die je wilt verbinden.</Text>
+            </View>
+
+            <View style={MyDirectionsStyle.stepWrapper}>
+              <View style={MyDirectionsStyle.notFoundNumberWrapper}>
+                <Text style={[TextStyles.subTitle, MyDirectionsStyle.notFoundNumber]}>2</Text>
+              </View>
+              <View style={MyDirectionsStyle.stepTwoWrapper}>
+                <Text style={TextStyles.copy}>Controleer of de Bluetooth</Text>
+                <Image style={MyDirectionsStyle.bluetoothIcon} source={require(`../assets/png/bluetoothIconBlack.png`)}/>
+
+                <Text style={TextStyles.copy}>van dit toestel aan staat</Text>
+              </View>
+            </View>
+
+          </View>
+        </Animatable.View>
+      );
     }
   }
 
@@ -210,6 +239,26 @@ class MyDirections extends Component {
     }
   }
 
+  renderConnectedText() {
+
+    const {connectedDirections} = this.state;
+
+    if (connectedDirections.length > 0) {
+      return (
+        <View>
+          <Animatable.Text animation='fadeInUp' duration={500} easing='ease-out-quad' style={[TextStyles.title, MyDirectionsStyle.directionsHeaderTitle]}>{`verbonden directions: ${connectedDirections.length}`.toUpperCase()}</Animatable.Text>
+          <Animatable.Text animation='fadeInUp' duration={550} easing='ease-out-quad' style={[TextStyles.copy, MyDirectionsStyle.directionsHeaderCopy, {opacity: connectedDirections.length > 0 ? 1 : 0}]}>Druk op een Direction om deze te doen oplichten</Animatable.Text>
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <Animatable.Text animation='fadeInUp' duration={500} easing='ease-out-quad' style={[TextStyles.title, MyDirectionsStyle.directionsHeaderTitle]}>{`Geen directions verbonden`.toUpperCase()}</Animatable.Text>
+        </View>
+      );
+    }
+  }
+
   render() {
 
     const {connectedDirections, currentRecentTab} = this.state;
@@ -222,10 +271,8 @@ class MyDirections extends Component {
         <Animatable.View style={[GeneralStyle.contentContainer]} ref='contentContainer'>
           <View>
             <View style={[MyDirectionsStyle.directionsHeaderWrapper]}>
-              <View>
-                <Text style={[TextStyles.title, MyDirectionsStyle.directionsHeaderTitle]}>{`verbonden directions: ${connectedDirections.length}`.toUpperCase()}</Text>
-                <Text style={[TextStyles.copy, MyDirectionsStyle.directionsHeaderCopy]}>Druk op een Direction om deze te doen oplichten</Text>
-              </View>
+
+              {this.renderConnectedText()}
 
               <View style={[MyDirectionsStyle.directionsHeaderButtonWrapper]}>
                 <TouchableOpacity style={[MyDirectionsStyle.directionsHeaderSecundairyButtonWrapper]}>

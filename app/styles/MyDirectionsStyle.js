@@ -2,7 +2,6 @@ import {StyleSheet} from 'react-native';
 
 import Colors from './Colors';
 import Dimensions from './Dimensions';
-import Fonts from './Fonts';
 
 const MyDirectionsStyle = StyleSheet.create({
   directionsHeaderWrapper: {
@@ -192,6 +191,49 @@ const MyDirectionsStyle = StyleSheet.create({
   noConnectedContent: {
     width: 792,
     textAlign: `center`
+  },
+
+  notfoundContainer: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `flex-start`
+  },
+
+  notfoundImage: {
+    width: 138, height: 145
+  },
+
+  notFoundNumberWrapper: {
+    borderWidth: 2,
+    borderColor: Colors.black,
+    padding: 2,
+    justifyContent: `center`,
+    alignItems: `center`,
+    width: 44,
+    height: 44,
+    borderRadius: 44,
+    marginRight: 10
+  },
+
+  stepWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    marginTop: 15
+  },
+
+  stepTwoWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`
+  },
+
+  bluetoothIcon: {
+    width: 10, height: 19,
+    marginRight: 7,
+    marginLeft: 7
+  },
+
+  notFoundContentWrapper: {
+    paddingLeft: 25
   }
 });
 
