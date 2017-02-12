@@ -3,10 +3,17 @@ import {View, TouchableOpacity, Image, Text} from 'react-native';
 import {Actions, ActionConst} from 'react-native-router-flux';
 import Swiper from 'react-native-swiper';
 import LinearGradient from 'react-native-linear-gradient';
+import * as Animatable from 'react-native-animatable';
 
 import {Colors, OnboardingStyle, ButtonStyles, TextStyles} from '../styles';
 
 class Onboarding extends Component {
+
+  componentDidMount() {
+    const {buttons} = this.refs;
+    buttons.transition({transform: [{translateY: 100}], opacity: 0}, {transform: [{translateY: 0}], opacity: 1}, 1500, `ease-out`);
+    // slideOneContent.transition({transform: [{translateY: 100}], opacity: 0}, {transform: [{translateY: 0}], opacity: 1}, 3000, `ease-out`);
+  }
 
   render() {
 
@@ -15,13 +22,13 @@ class Onboarding extends Component {
 
         <Swiper autoplay={true} autoplayTimeout={7} dotStyle={{marginBottom: 125, marginLeft: 5, marginRight: 5, transform: [{scale: .8}]}} activeDotStyle={{marginBottom: 125, marginLeft: 5, marginRight: 5}} activeDotColor={Colors.white} dotColor={Colors.opacityWhite}>
           <View style={[OnboardingStyle.slide]}>
-            <View style={[OnboardingStyle.slideText]}>
+            <Animatable.View style={[OnboardingStyle.slideText]}>
               <Text style={[TextStyles.bam]}>{`led's create`.toUpperCase()}</Text>
               <Text style={[TextStyles.copy, OnboardingStyle.copy]}>Creeër unieke trainingsoefeningen met de Direction en laat je creativiteit de vrije loop.</Text>
               <Image style={[OnboardingStyle.direction1]} source={require(`../assets/png/direction1.png`)} />
-            </View>
+            </Animatable.View>
 
-            <Image style={[OnboardingStyle.slideImage, OnboardingStyle.slideWoman]} source={require(`../assets/png/woman.png`)} />
+            <Animatable.Image style={[OnboardingStyle.slideImage, OnboardingStyle.slideWoman]} source={require(`../assets/png/woman.png`)} />
           </View>
 
           <View style={[OnboardingStyle.slide]}>
@@ -45,7 +52,7 @@ class Onboarding extends Component {
           </View>
         </Swiper>
 
-        <View style={OnboardingStyle.buttonWrapper}>
+        <Animatable.View ref='buttons' style={OnboardingStyle.buttonWrapper}>
           <TouchableOpacity onPressOut={() => Actions.directionOverview({type: ActionConst.RESET})} style={[ButtonStyles.secundairyButton, OnboardingStyle.secundairyButton]}>
             <Image style={[OnboardingStyle.secundairyButtonImage]} source={require(`../assets/png/loginIconWhite.png`)} />
             <Text style={[TextStyles.secundairyButton, OnboardingStyle.secundairyButtonText]}>{`inloggen`.toUpperCase()}</Text>
@@ -57,7 +64,7 @@ class Onboarding extends Component {
               <Text style={[TextStyles.primaryButton]}>{`account aanmaken`.toUpperCase()}</Text>
             </LinearGradient>
           </TouchableOpacity>
-        </View>
+        </Animatable.View>
 
       </View>
     );

@@ -7,8 +7,6 @@ import {DatabaseUrl} from '../globals';
 
 const Exercise = ({index, name, groupSize, intensivity, imageWithDirections}) => {
 
-  // console.log(imageWithDirections);
-
   return (
     <Animatable.View animation='fadeInUp' duration={600} delay={8 * index}>
       <View style={MyDirectionsStyle.ExerciseCardHeader}>
@@ -47,7 +45,8 @@ Exercise.propTypes = {
   imageWithDirections: React.PropTypes.string,
   index: React.PropTypes.number,
   groupSize: React.PropTypes.string,
-  intensivity: React.PropTypes.string
+  intensivity: React.PropTypes.string,
+  name: React.PropTypes.string
 };
 
 export default Exercise;

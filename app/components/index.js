@@ -6,6 +6,7 @@ import Image from './svg/Image';
 import Navigation from './Navigation';
 import PrimaryButton from './PrimaryButton';
 import Exercise from './Exercise';
+import Football from './Football';
 
 exports.TabbarIcon = TabbarIcon;
 exports.Direction = Direction;
@@ -15,3 +16,4 @@ exports.Image = Image;
 exports.Navigation = Navigation;
 exports.PrimaryButton = PrimaryButton;
 exports.Exercise = Exercise;
+exports.Football = Football;

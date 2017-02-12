@@ -78,6 +78,10 @@ class MyDirections extends Component {
   }
 
   handleWSDirections(connectedDirections) {
+    connectedDirections = connectedDirections.map(c => {
+      c.image = `direction`;
+      return c;
+    });
     this.setState({connectedDirections});
   }
 
@@ -95,16 +99,24 @@ class MyDirections extends Component {
 
     const {connectedDirections} = this.state;
 
-    const updatedDirections = connectedDirections.push(direction);
+    direction.image = `direction`;
 
-    this.setState({updatedDirections});
+    connectedDirections.push(direction);
+
+    this.setState({connectedDirections});
   }
 
   handleWScheckDirections(connectedDirections) {
+    connectedDirections = connectedDirections.map(c => {
+      c.image = `direction`;
+      return c;
+    });
     this.setState({connectedDirections});
   }
 
   detectDirection(socketId) {
+
+    let {connectedDirections} = this.state;
 
     const directionLightTrigger = {
       directionSocketId: socketId,
@@ -112,6 +124,19 @@ class MyDirections extends Component {
     };
 
     this.props.socket.emit(`lightUpDirection`, directionLightTrigger);
+
+    connectedDirections = connectedDirections.map(c => {
+      if (c.socketId === socketId) {
+        c.image = `directionLighted`;
+        setTimeout(() => {
+          c.image = `direction`;
+          this.setState({connectedDirections});
+        }, 1000);
+      }
+      return c;
+    });
+
+    this.setState({connectedDirections});
   }
 
   generateDirections() {
@@ -130,7 +155,7 @@ class MyDirections extends Component {
             <Animatable.View animation='fadeInUp' duration={600} delay={8 * index} style={[MyDirectionsStyle.directionListItemWrapper]} key={index}>
 
               <TouchableOpacity onPress={() => this.detectDirection(c.socketId)}>
-                <Image style={[MyDirectionsStyle.directionListItemImage]} source={require(`../assets/png/direction.png`)}/>
+                <Image style={[MyDirectionsStyle.directionListItemImage]} source={{uri: `${c.image}`}}/>
               </TouchableOpacity>
 
               <View style={[MyDirectionsStyle.directionListItemInfo]}>

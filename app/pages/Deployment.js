@@ -101,7 +101,7 @@ class Deployment extends Component {
           directions.map((d, index) => {
             return (
               <Animatable.View style={[DeploymentStyle.directionImageWrapper, {borderColor: currentSelectedDirectionIndex === index ? Colors.black : `transparent`}]} ref={`direction${index}`} key={index}>
-                <Image style={[DeploymentStyle.directionImage]} source={require(`../assets/png/direction.png`)} />
+                <Image style={[DeploymentStyle.directionImage]} source={{uri: currentSelectedDirectionIndex === index ? `directionLighted` : `direction`}} />
               </Animatable.View>
             );
           })
@@ -293,7 +293,7 @@ class Deployment extends Component {
                     <Text style={TextStyles.subTitle}>{`moeilijkheidsgraad`.toUpperCase()}</Text>
                     <View style={[DeploymentStyle.overviewExerciseSpecImageWrapper]}>
                       <Image style={[DeploymentStyle.overviewExerciseSpecIntensivityIcon]} source={require(`../assets/png/intensityIconBlack.png`)} />
-                      <Text style={TextStyles.copy}>{`${exercise.intensity === 0 ? `Makkelijk` : `Moeilijk`}`.toUpperCase()}</Text>
+                      <Text style={TextStyles.copy}>{`${exercise.intensity === 0 ? `Makkelijk` : `Moeilijk`}`}</Text>
                     </View>
                   </View>
                 </View>
