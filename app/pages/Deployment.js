@@ -293,7 +293,7 @@ class Deployment extends Component {
                     <Text style={TextStyles.subTitle}>{`moeilijkheidsgraad`.toUpperCase()}</Text>
                     <View style={[DeploymentStyle.overviewExerciseSpecImageWrapper]}>
                       <Image style={[DeploymentStyle.overviewExerciseSpecIntensivityIcon]} source={require(`../assets/png/intensityIconBlack.png`)} />
-                      <Text style={TextStyles.copy}>{`${exercise.intensity === 0 ? `Makkelijk` : `Moeilijk`}`.toUpperCase()}</Text>
+                      <Text style={TextStyles.copy}>{`${exercise.intensity === 0 ? `Makkelijk` : `Moeilijk`}`}</Text>
                     </View>
                   </View>
                 </View>

@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "directionLighted.png",
+      "filename" : "cone.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "directionLighted-1.png",
+      "filename" : "cone-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "directionLighted-2.png",
+      "filename" : "cone-2.png",
       "scale" : "3x"
     }
   ],

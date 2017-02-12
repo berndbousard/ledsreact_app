@@ -128,7 +128,7 @@ const ComponentStyle = StyleSheet.create({
     width: Dimensions.width * (3 / 4),
     backgroundColor: Colors.pureWhite,
     zIndex: 2,
-    padding: 20
+    padding: 30
   },
 
   field: {
@@ -908,6 +908,75 @@ const ComponentStyle = StyleSheet.create({
 
   closeFieldsDrawerIcon: {
     width: 15, height: 15
+  },
+
+  titlesWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    marginTop: 5,
+    marginBottom: 20
+  },
+
+  itemsDrawerTitle: {
+    marginRight: 30,
+    borderBottomWidth: 2,
+    paddingBottom: 5
+  },
+
+  itemsDrawerFirstTitle: {
+    marginRight: 60
+  },
+
+  drawerItemWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `flex-start`,
+    marginTop: 10
+  },
+
+  drawerItemText: {
+    textAlign: `center`,
+    marginTop: 15
+  },
+
+  drawerItemsWrapper: {
+    flexDirection: `row`,
+    alignItems: `center`
+  },
+
+  drawScroller: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `flex-start`
+  },
+
+  drawerItemsWrapperScroller: {
+    marginLeft: 25
+  },
+
+  drawScrollerItem: {
+    flexDirection: `column`,
+    justifyContent: `space-around`,
+    marginRight: 50
+  },
+
+  firstItemInDrawer: {
+    marginRight: 25,
+    borderRightWidth: 2,
+    borderRightColor: Colors.lightGrey,
+    paddingRight: 40
+  },
+
+  ringDrawerImage: {
+    width: 107, height: 108
+  },
+
+  coneDrawerImage: {
+    width: 107, height: 107
+  },
+
+  potDrawerImage: {
+    width: 108, height: 108
   }
 });
 

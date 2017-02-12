@@ -8,7 +8,7 @@ import Svg, {Rect} from 'react-native-svg';
 import RNFetchBlob from 'react-native-fetch-blob';
 import LinearGradient from 'react-native-linear-gradient';
 
-import {Circle, Path, Direction} from '../components';
+import {Circle, Path, Direction, Football} from '../components';
 import {EditorStyle, Colors, Dimensions, TextStyles, ButtonStyles, GeneralStyle} from '../styles';
 import {DatabaseUrl, Creator} from '../globals';
 import {Map} from '../utils';
@@ -22,7 +22,8 @@ class Editor extends Component {
     svgTimer: 0,
     userDrawingFeedback: [],
     drawer: {
-      isActive: false
+      isActive: false,
+      currentTab: 1
     },
     optionsMenu: {
       isActive: false
@@ -42,6 +43,7 @@ class Editor extends Component {
 
     editorDirections: [],
     currentEditorDirectionIndex: 0,
+    editorFootballs: [],
 
     colors: [`#FF0F00`, `#1E6DFF`, `#50E610`, `#FFD100`],
     currentRichting: undefined,
@@ -183,10 +185,15 @@ class Editor extends Component {
   clearArtboardHandler() {
     this.clearArtboardSVG();
     this.clearArtboardDirections();
+    this.clearArtboardFootballs();
   }
 
   clearArtboardSVG() {
     this.setState({svgElements: []});
+  }
+
+  clearArtboardFootballs() {
+    this.setState({editorFootballs: []});
   }
 
   clearArtboardDirections() {
@@ -283,7 +290,35 @@ class Editor extends Component {
     this.toggleObjectsDrawer(); //Drawer wegdoen wanneer eentje aangetikt.
   }
 
+  addFootballHandler() {
+    // TODO:
+
+    const {editorFootballs} = this.state;
+
+    console.log(editorFootballs);
+
+    const newFootball = {};
+
+    editorFootballs.push(newFootball);
+
+    this.setState({editorFootballs});
+  }
+
+  renderEditorFootballs() {
+
+    const {editorFootballs} = this.state;
+
+    if (!isEmpty(editorFootballs)) {
+      return editorFootballs.map((e, index) => {
+        return (
+          <Football key={index} />
+        );
+      });
+    }
+  }
+
   renderObjectsDrawer() {
+
     const {drawer} = this.state;
 
     if (!drawer.isActive) {
@@ -292,9 +327,83 @@ class Editor extends Component {
 
     return (
       <Animatable.View ref='drawerRef' duration={200} animation='pulse' easing='ease-out' style={[EditorStyle.drawer]}>
-        <TouchableOpacity onPress={() => this.objectsDrawerDirectionPressHandler()}>
-          <Image style={[EditorStyle.directionDrawerImage]} source={{uri: `direction`}} />
-        </TouchableOpacity>
+        <View style={EditorStyle.titlesWrapper}>
+
+          <TouchableOpacity style={[EditorStyle.itemsDrawerTitle, EditorStyle.itemsDrawerFirstTitle, {borderBottomColor: drawer.currentTab === 0 ? Colors.orange : `transparent`}]}>
+            <Text style={[TextStyles.subTitle, {opacity: drawer.currentTab === 0 ? 1 : .4, color: drawer.currentTab === 0 ? Colors.orange : Colors.black}]}>{`Alle sporten`.toUpperCase()}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[EditorStyle.itemsDrawerTitle, {borderBottomColor: drawer.currentTab === 1 ? Colors.orange : `transparent`}]}>
+            <Text style={[TextStyles.subTitle, {opacity: drawer.currentTab === 1 ? 1 : .4, color: drawer.currentTab === 1 ? Colors.orange : Colors.black}]}>{`voetbal`.toUpperCase()}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[EditorStyle.itemsDrawerTitle, {borderBottomColor: drawer.currentTab === 2 ? Colors.orange : `transparent`}]}>
+            <Text style={[TextStyles.subTitle, {opacity: drawer.currentTab === 2 ? 1 : .4, color: drawer.currentTab === 2 ? Colors.orange : Colors.black}]}>{`basketbal`.toUpperCase()}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[EditorStyle.itemsDrawerTitle, {borderBottomColor: drawer.currentTab === 3 ? Colors.orange : `transparent`}]}>
+            <Text style={[TextStyles.subTitle, {opacity: drawer.currentTab === 3 ? 1 : .4, color: drawer.currentTab === 3 ? Colors.orange : Colors.black}]}>{`volleybal`.toUpperCase()}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[EditorStyle.itemsDrawerTitle, {borderBottomColor: drawer.currentTab === 4 ? Colors.orange : `transparent`}]}>
+            <Text style={[TextStyles.subTitle, {opacity: drawer.currentTab === 4 ? 1 : .4, color: drawer.currentTab === 4 ? Colors.orange : Colors.black}]}>{`tennis`.toUpperCase()}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[EditorStyle.itemsDrawerTitle, {borderBottomColor: drawer.currentTab === 5 ? Colors.orange : `transparent`}]}>
+            <Text style={[TextStyles.subTitle, {opacity: drawer.currentTab === 5 ? 1 : .4, color: drawer.currentTab === 5 ? Colors.orange : Colors.black}]}>{`rugby`.toUpperCase()}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[EditorStyle.itemsDrawerTitle, {borderBottomColor: drawer.currentTab === 6 ? Colors.orange : `transparent`}]}>
+            <Text style={[TextStyles.subTitle, {opacity: drawer.currentTab === 6 ? 1 : .4, color: drawer.currentTab === 6 ? Colors.orange : Colors.black}]}>{`squash`.toUpperCase()}</Text>
+          </TouchableOpacity>
+
+        </View>
+
+        <View style={EditorStyle.drawerItemWrapper}>
+
+          <View style={EditorStyle.firstItemInDrawer}>
+            <TouchableOpacity onPress={() => this.objectsDrawerDirectionPressHandler()}>
+              <Image style={[EditorStyle.directionDrawerImage]} source={{uri: `direction`}} />
+            </TouchableOpacity>
+            <Text style={[TextStyles.copy, EditorStyle.drawerItemText]}>Direction</Text>
+          </View>
+
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={EditorStyle.drawerItemsWrapperScroller}>
+            <View style={EditorStyle.drawScroller}>
+
+              <View style={EditorStyle.drawScrollerItem}>
+                <TouchableOpacity>
+                  <Image style={[EditorStyle.coneDrawerImage]} source={{uri: `cone`}} />
+                </TouchableOpacity>
+                <Text style={[TextStyles.copy, EditorStyle.drawerItemText]}>Kegel</Text>
+              </View>
+
+              <View style={EditorStyle.drawScrollerItem}>
+                <TouchableOpacity onPress={() => this.addFootballHandler()}>
+                  <Image style={[EditorStyle.directionDrawerImage]} source={{uri: `football`}} />
+                </TouchableOpacity>
+                <Text style={[TextStyles.copy, EditorStyle.drawerItemText]}>Voetbal</Text>
+              </View>
+
+              <View style={EditorStyle.drawScrollerItem}>
+                <TouchableOpacity>
+                  <Image style={[EditorStyle.ringDrawerImage]} source={{uri: `ring`}} />
+                </TouchableOpacity>
+                <Text style={[TextStyles.copy, EditorStyle.drawerItemText]}>Ring</Text>
+              </View>
+
+              <View style={EditorStyle.drawScrollerItem}>
+                <TouchableOpacity>
+                  <Image style={[EditorStyle.potDrawerImage]} source={{uri: `pot`}} />
+                </TouchableOpacity>
+                <Text style={[TextStyles.copy, EditorStyle.drawerItemText]}>Pot</Text>
+              </View>
+
+
+            </View>
+          </ScrollView>
+        </View>
+
       </Animatable.View>
     );
   }
@@ -1166,6 +1275,7 @@ class Editor extends Component {
             </View>
 
             {this.renderEditorDirections()}
+            {this.renderEditorFootballs()}
 
           </View>
           {this.renderLeftControls()}
