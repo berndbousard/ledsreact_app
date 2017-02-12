@@ -865,7 +865,8 @@ const ComponentStyle = StyleSheet.create({
     flexDirection: `row`,
     alignItems: `center`,
     justifyContent: `space-between`,
-    padding: 20,
+    paddingTop: 20, paddingBottom: 20,
+    paddingLeft: 25, paddingRight: 25,
     width: 275
   },
 
@@ -882,8 +883,8 @@ const ComponentStyle = StyleSheet.create({
   },
 
   deleteIconWrapper: {
-    marginLeft: 21,
-    marginRight: 21
+    marginLeft: 25,
+    marginRight: 25
   },
 
   oplichtenWrapperContent: {

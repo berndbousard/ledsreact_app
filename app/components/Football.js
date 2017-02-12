@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {Animated, PanResponder, TouchableOpacity, View} from 'react-native';
+import {Animated, PanResponder, TouchableOpacity} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
-import {EditorStyle, Colors} from '../styles';
+import {EditorStyle} from '../styles';
 
 class Football extends Component {
 
@@ -30,9 +30,8 @@ class Football extends Component {
         null, {dx: this.state.position.x, dy: this.state.position.y}
       ]),
 
-      onPanResponderRelease: (e, gestureState) => { //Gets invoked when we release the view.
+      onPanResponderRelease: () => { //Gets invoked when we release the view.
         const {position, scale} = this.state;
-        const {moveX, moveY} = gestureState;
 
         position.flattenOffset();
         Animated.spring(scale, {toValue: 1, friction: 3}).start();
@@ -44,7 +43,6 @@ class Football extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
   }
 
   render() {

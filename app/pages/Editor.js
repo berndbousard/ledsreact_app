@@ -421,8 +421,6 @@ class Editor extends Component {
   }
 
   fieldsThumbnailHandler(index) {
-
-    console.log(index);
     const {field} = this.state;
 
     field.currentIndex = index;
@@ -669,10 +667,10 @@ class Editor extends Component {
     optionsMenu.isActive = !optionsMenu.isActive;
 
     if (!optionsMenu.isActive) {
-      optionsMenuRef.transitionTo({transform: [{translateX: Dimensions.width}]}, 1000, `ease-in`);
+      optionsMenuRef.transitionTo({transform: [{translateX: Dimensions.width}]}, 500, `ease-in`);
       setTimeout(() => {
         this.setState({optionsMenu});
-      }, 1000);
+      }, 500);
       return;
     } else {
       this.setState({optionsMenu});
@@ -682,14 +680,30 @@ class Editor extends Component {
   setCurrentEditorDirectionIndex(directionIndex) {
     let {currentEditorDirectionIndex, currentRichting} = this.state;
 
+    console.log(directionIndex, currentEditorDirectionIndex);
+
     if (currentEditorDirectionIndex === directionIndex) {
+
       this.toggleOptionsMenuHandler();
+
+      setTimeout(() => {
+        currentRichting = `top`;
+
+        this.setState({currentRichting});
+      }, 500);
+
+      return;
+
+    } else {
+      currentEditorDirectionIndex = directionIndex;
+      currentRichting = `top`;
+
+      this.setState({currentEditorDirectionIndex, currentRichting});
     }
 
-    currentEditorDirectionIndex = directionIndex;
-    currentRichting = undefined;
 
-    this.setState({currentEditorDirectionIndex, currentRichting});
+
+
   }
 
   directionIsMovingHandler(directionIndex) {
@@ -864,7 +878,9 @@ class Editor extends Component {
 
               <View style={[EditorStyle.optionsHeader]}>
                 <Text style={[TextStyles.title, EditorStyle.optionsMainHeaderTitle]}>{`direction ${currentEditorDirectionIndex + 1}`.toUpperCase()}</Text>
-                <Image style={[EditorStyle.optionsHeaderCloseIcon]} source={require(`../assets/png/closeIconSmallWhite.png`)} />
+                <TouchableOpacity onPress={() => this.toggleOptionsMenuHandler()}>
+                  <Image style={[EditorStyle.optionsHeaderCloseIcon]} source={require(`../assets/png/closeIconSmallWhite.png`)} />
+                </TouchableOpacity>
               </View>
 
               <View style={[EditorStyle.optionsMenuRichting]}>
