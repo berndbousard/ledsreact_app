@@ -679,6 +679,7 @@ class Editor extends Component {
 
   setCurrentEditorDirectionIndex(directionIndex) {
     let {currentEditorDirectionIndex, currentRichting} = this.state;
+    const {optionsMenu} = this.state;
 
     console.log(directionIndex, currentEditorDirectionIndex);
 
@@ -690,15 +691,24 @@ class Editor extends Component {
         currentRichting = `top`;
 
         this.setState({currentRichting});
-      }, 500);
+      }, 300);
 
       return;
 
     } else {
+      if (!optionsMenu.isActive) {
+        this.toggleOptionsMenuHandler();
+      }
+      
       currentEditorDirectionIndex = directionIndex;
       currentRichting = `top`;
 
-      this.setState({currentEditorDirectionIndex, currentRichting});
+      this.setState({currentRichting, currentEditorDirectionIndex});
+
+      // setTimeout(() => {
+      //   this.toggleOptionsMenuHandler();
+      //
+      // }, 50);
     }
 
 
