@@ -27,7 +27,8 @@ const NavigationStyle = StyleSheet.create({
     alignSelf: `stretch`,
     flexDirection: `column`,
     alignItems: `center`,
-    justifyContent: `center`
+    justifyContent: `center`,
+    backgroundColor: `rgba(0,0,0,0)`
   },
 
   subNav: {
@@ -101,7 +102,8 @@ const NavigationStyle = StyleSheet.create({
 
   navigationSkew: {
     width: 22,
-    height: 768
+    height: 768,
+    backgroundColor: `rgba(0,0,0,0)`
   },
 
 

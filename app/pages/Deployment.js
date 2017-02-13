@@ -1,12 +1,24 @@
 import React, {Component} from 'react';
-import {View, Image, TouchableOpacity, Text} from 'react-native';
+import {View, Image, TouchableOpacity, Text, TouchableWithoutFeedback} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import {isEmpty, range} from 'lodash';
 
+// const showInstructions = true;
+
 import {DatabaseUrl} from '../globals';
 import {DeploymentStyle, Dimensions, ButtonStyles, Colors, TextStyles, ExerciseDetailStyle} from '../styles';
+let seconds = 0;
+let minutes = 0;
+let timerGo = true;
+let toggle = true;
+let instructionsClick = false;
+
+const timerText = ``;
+
+let mounted = false;
+
 
 class Deployment extends Component {
 
@@ -15,13 +27,30 @@ class Deployment extends Component {
     deploymentDone: false,
     deployedDirections: [],
     currentPage: 0,
-    arrivalDate: 0
+    arrivalDate: 0,
+    time: ``
+  }
+
+  componentWillUnmount() {
+    timerGo = false;
+    seconds = 0;
+    minutes = 0;
+    mounted = false;
+  }
+
+  componentWillMount() {
+    this.setState({time: ``});
+    seconds = 0;
+    minutes = 0;
+    mounted = true;
+    instructionsClick = false;
   }
 
   componentDidMount() {
+    timerGo = true;
+    mounted = true;
 
     const {directions} = this.props;
-    const {instructions} = this.refs;
 
     this.props.socket.emit(`setDirectionSettings`, directions);
 
@@ -40,9 +69,9 @@ class Deployment extends Component {
 
     }
 
-    setTimeout(() => {
-      instructions.transition({transform: [{translateY: 0}], opacity: 1}, {transform: [{translateY: 90}], opacity: 0}, 500, `ease-in-circ`);
-    }, 10000);
+    // setTimeout(() => {
+    //   instructions.transition({transform: [{translateY: 0}], opacity: 1}, {transform: [{translateY: 90}], opacity: 0}, 500, `ease-in-circ`);
+    // }, 10000);
 
     // setInterval(() => {
     //   const {seconds} = this.state;
@@ -57,13 +86,28 @@ class Deployment extends Component {
 
   deploymentDone() {
 
-    const {deploymentButtons, indicators, stopDeploymentButton, stopExerciseButton, exerciseButtons} = this.refs;
+    if (toggle) {
 
-    deploymentButtons.transitionTo({top: Dimensions.height}, 300, `ease-in-circ`);
-    indicators.transitionTo({opacity: 0}, 300, `ease-in-circ`);
-    stopDeploymentButton.transition({transform: [{translateY: 0}], opacity: 1}, {transform: [{translateY: - 90}], opacity: 0}, 300, `ease-in-circ`);
-    stopExerciseButton.transition({transform: [{translateY: - 90}], opacity: 0}, {transform: [{translateY: 0}], opacity: 1}, 500, 200, `ease-out-circ`);
-    exerciseButtons.transition({transform: [{translateY: 70}], opacity: 0}, {transform: [{translateY: 0}], opacity: 1}, 500, 200, `ease-out-circ`);
+      const {deploymentButtons, indicators, stopDeploymentButton, stopExerciseButton, exerciseButtons} = this.refs;
+
+      deploymentButtons.transitionTo({top: Dimensions.height}, 300, `ease-in-circ`);
+      indicators.transitionTo({opacity: 0}, 300, `ease-in-circ`);
+      stopDeploymentButton.transition({transform: [{translateY: 0}], opacity: 1}, {transform: [{translateY: - 90}], opacity: 0}, 300, `ease-in-circ`);
+      stopExerciseButton.transition({transform: [{translateY: - 90}], opacity: 0}, {transform: [{translateY: 0}], opacity: 1}, 500, 200, `ease-out-circ`);
+      exerciseButtons.transition({transform: [{translateY: 70}], opacity: 0}, {transform: [{translateY: 0}], opacity: 1}, 500, 200, `ease-out-circ`);
+
+      setTimeout(() => {
+        // this.hideControls();
+      }, 5000);
+    }
+  }
+
+  hideControls() {
+
+    toggle = false;
+    const {topControls, bottomControls} = this.refs;
+    topControls.transition({transform: [{translateY: - 90}], opacity: 0}, {transform: [{translateY: 0}], opacity: 1}, 500, 200, `ease-out-circ`);
+    bottomControls.transition({transform: [{translateY: 90}], opacity: 0}, {transform: [{translateY: 0}], opacity: 1}, 500, 200, `ease-out-circ`);
   }
 
   stepHandler(index) {
@@ -72,6 +116,7 @@ class Deployment extends Component {
     const {directions} = this.props;
 
     if (currentSelectedDirectionIndex + index > directions.length - 1) {
+      this.timer();
       this.deploymentDone();
     }
 
@@ -110,15 +155,30 @@ class Deployment extends Component {
     );
   }
 
+  closeInstructionsHandler() {
+
+    if (!instructionsClick) {
+      instructionsClick = true;
+      const {instructions} = this.refs;
+      instructions.transition({transform: [{translateY: 0}], opacity: 1}, {transform: [{translateY: 90}], opacity: 0}, 500, `ease-in-circ`);
+
+    }
+  }
+
   renderInstructions() {
     return (
-      <Animatable.View animation='fadeInUp' delay={1500} ref='instructions' style={DeploymentStyle.instructions}>
-        <View style={DeploymentStyle.instructionsTitleWrapper}>
-          <Animatable.Image animation='swing' delay={2250} ref='instructionsHammer' style={DeploymentStyle.instructionsTitleIcon} source={require(`../assets/png/hammerIconBlack.png`)} />
-          <Text style={[TextStyles.subTitle, DeploymentStyle.instructionsTitle]}>{`Opzetten van de oefening`.toUpperCase()}</Text>
+      <TouchableWithoutFeedback onPress={() => this.closeInstructionsHandler()}>
+        <Animatable.View animation='fadeInUp' duration={500} delay={500} ref='instructions' style={DeploymentStyle.instructions} >
+          <View style={DeploymentStyle.instructionsTitleWrapper}>
+            <Animatable.Image animation='swing' delay={2250} ref='instructionsHammer' style={DeploymentStyle.instructionsTitleIcon} source={require(`../assets/png/hammerIconBlack.png`)} />
+            <Text style={[TextStyles.subTitle, DeploymentStyle.instructionsTitle]}>{`Opzetten van de oefening`.toUpperCase()}</Text>
+          </View>
+          <Text style={[TextStyles.copy, DeploymentStyle.instructionsCopy]}>Plaats de oplichtende Directions op jouw terrein om de oefening op de bouwen.{`\n`}Druk op volgende wanneer de opgelichte Direction juist staat.</Text>
+        <View style={ButtonStyles.dismisInstructions}  >
+          <Text style={[TextStyles.title, {color: Colors.white}, {fontSize: 16}]}>BEGREPEN</Text>
         </View>
-        <Text style={[TextStyles.copy, DeploymentStyle.instructionsCopy]}>Plaats de oplichtende Directions op jouw terrein om de oefening op de bouwen.{`\n`}Druk op volgende wanneer de opgelichte Direction juist staat.</Text>
-      </Animatable.View>
+        </Animatable.View>
+      </TouchableWithoutFeedback>
     );
   }
 
@@ -151,9 +211,31 @@ class Deployment extends Component {
     this.setState({currentPage: currentPage + index});
   }
 
+
+  timer() {
+
+    seconds ++;
+    if (seconds === 60) {
+      seconds = 0;
+      minutes ++;
+    }
+
+    if (timerGo) {
+
+      timerText = `0:${minutes < 10 ? 0 : ``}${minutes}:${seconds < 10 ? 0 : ``}${seconds}`;
+
+      if (mounted) {
+        this.setState({time: timerText});
+      }
+
+      setTimeout(() => this.timer(), 1000);
+    }
+  }
+
   render() {
 
     const {exercise, directions} = this.props;
+    const {time} = this.state;
 
     return (
       <Animatable.View style={DeploymentStyle.container} ref='pageContainer'>
@@ -163,14 +245,14 @@ class Deployment extends Component {
 
           {this.generateDirections()}
 
-          <View style={[DeploymentStyle.topBarWrapper]}>
+          <Animatable.View style={[DeploymentStyle.topBarWrapper]}ref={`topControls`}>
 
-            <TouchableOpacity style={[ButtonStyles.secundairyButton, DeploymentStyle.minimiseButton]}>
-              <Image style={[DeploymentStyle.minimiseImageIcon]} source={require(`../assets/png/arrowOrange.png`)} />
-            </TouchableOpacity>
+            <View style={[ButtonStyles.secundairyButton, DeploymentStyle.minimiseButton]}>
+              <Image style={[DeploymentStyle.minimiseImageIcon, {transform: [{translateY: - 2}]}] } source={require(`../assets/png/arrowOrange.png`)} />
+            </View>
 
             <Animatable.View ref='stopDeploymentButton'>
-              <TouchableOpacity style={DeploymentStyle.buttonBottom} onPress={() => this.stopExcersizeHandler()}>
+              <TouchableOpacity style={DeploymentStyle.buttonBottom, {marginLeft: 20}} onPress={() => this.stopExcersizeHandler()}>
                 <LinearGradient style={[ButtonStyles.primaryButton]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
                   <Image style={[DeploymentStyle.stopIcon]} source={require(`../assets/png/crossIconWhite.png`)} />
                   <Text style={[TextStyles.primaryButton]}>{`opstelling stopzetten`.toUpperCase()}</Text>
@@ -186,13 +268,13 @@ class Deployment extends Component {
                 </LinearGradient>
               </TouchableOpacity>
             </Animatable.View>
-          </View>
+          </Animatable.View>
 
           {this.renderInstructions()}
 
           {this.renderSteps()}
 
-          <View style={{position: `relative`}}>
+          <Animatable.View style={{position: `relative`}}  ref={`bottomControls`}>
             <Animatable.View ref='deploymentButtons' style={[DeploymentStyle.bottomBarWrapper]}>
               <TouchableOpacity style={[ButtonStyles.secundairyButton, DeploymentStyle.buttonBottom]} onPress={() => this.stepHandler(- 1)}>
                 <Image style={[DeploymentStyle.secundairyButtonImageIcon]} source={require(`../assets/png/backArrowOrange.png`)} />
@@ -219,7 +301,7 @@ class Deployment extends Component {
                 </LinearGradient>
               </TouchableOpacity>
             </Animatable.View>
-          </View>
+          </Animatable.View>
         </View>
 
         <View style={[DeploymentStyle.pageContainer, DeploymentStyle.overview]}>
@@ -233,7 +315,7 @@ class Deployment extends Component {
 
             <View style={DeploymentStyle.titleWrapper}>
               <Text style={[TextStyles.title, DeploymentStyle.titleText]}>{`Oefening op aanvallen via de flank`.toUpperCase()}</Text>
-              <Text style={[TextStyles.copy, DeploymentStyle.titleText]}>totale tijd: 0:10</Text>
+              <Text style={[TextStyles.copy, DeploymentStyle.titleText]} ref={`tijd`}>{`Totale tijd: ${time}`}</Text>
             </View>
 
             <TouchableOpacity style={DeploymentStyle.buttonBottom} onPress={() => this.stopExcersizeHandler()}>

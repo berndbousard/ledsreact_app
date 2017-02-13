@@ -67,7 +67,9 @@ const ExerciseDetailStyle = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.white,
     padding: 14,
-    borderRadius: 3,
+    borderRadius: 50,
+    width: 50,
+    height: 50,
     marginRight: 20
   },
 
@@ -177,12 +179,19 @@ const ExerciseDetailStyle = StyleSheet.create({
     marginLeft: 5
   },
 
+
+  //-----------------------
+
   cardContent: {
     backgroundColor: Colors.pureWhite,
     marginTop: 35,
     padding: 40,
     width: 935, //Moet weg
-    borderRadius: 3
+    borderRadius: 6,
+    shadowColor: Colors.black,
+    shadowOffset: {width: 0, height: 20},
+    shadowOpacity: .07,
+    shadowRadius: 15,
   },
 
   schemaWrapper: {
@@ -398,7 +407,11 @@ const ExerciseDetailStyle = StyleSheet.create({
     marginTop: 25,
     backgroundColor: Colors.pureWhite,
     padding: 25,
-    borderRadius: 4
+    borderRadius: 4,
+    shadowColor: Colors.black,
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: .07,
+    shadowRadius: 10,
   },
 
   commentTitle: {
@@ -480,15 +493,28 @@ const ExerciseDetailStyle = StyleSheet.create({
 
   popUpTekstje: {
     textAlign: `center`,
-    width: 400,
+    width: 350,
     marginBottom: 30,
   },
 
-  primaryPopButtonImage: {
-    width: 15,
-    height: 15
-  }
+  popUpClose: {
+    width: 40,
+    height: 40,
+    position: `absolute`,
+    right: 15,
+    top: 15,
+    borderRadius: 50,
+    borderColor: Colors.orange,
+    borderWidth: 2,
+    justifyContent: `center`,
+    alignItems: `center`
+  },
 
+  popUpCloseImage: {
+    width: 15,
+    height: 15,
+    transform: [{translateY: 1}]
+  }
 
 });
 

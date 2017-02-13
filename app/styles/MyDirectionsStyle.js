@@ -102,7 +102,8 @@ const MyDirectionsStyle = StyleSheet.create({
   recentWrapper: {
     flexDirection: `row`,
     alignItems: `center`,
-    justifyContent: `space-between`
+    justifyContent: `space-between`,
+    marginLeft: - 5
   },
 
   recentEmptyText: {
@@ -113,7 +114,7 @@ const MyDirectionsStyle = StyleSheet.create({
 
   ExerciseCard: {
     padding: 10,
-    marginTop: 20,
+    marginTop: 10,
     height: 320
   },
 
@@ -125,10 +126,9 @@ const MyDirectionsStyle = StyleSheet.create({
 
   ExerciseCardImage: {
     borderRadius: 3,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.lightGrey,
+    // borderBottomWidth: 1,
     width: 236,
-    height: 174
+    height: 174,
   },
 
   ExerciseCardTitle: {
@@ -145,7 +145,7 @@ const MyDirectionsStyle = StyleSheet.create({
     flexDirection: `row`,
     justifyContent: `space-between`,
     alignItems: `center`,
-    marginTop: 15,
+    marginTop: 20,
     marginLeft: - 5
   },
 
@@ -185,7 +185,12 @@ const MyDirectionsStyle = StyleSheet.create({
 
 
   ExerciseCardImageElement: {
-    width: 236, height: 174
+    width: 236, height: 174,
+    backgroundColor: `#FBFBFB`,
+    borderWidth: 2,
+    borderColor: `#F5F5F5`,
+    borderRadius: 3,
+    transform: [{scale: 0.95}, {translateY: 8}]
   },
 
   noConnectedContent: {
@@ -234,7 +239,86 @@ const MyDirectionsStyle = StyleSheet.create({
 
   notFoundContentWrapper: {
     paddingLeft: 25
+  },
+
+  trainingsSpecs: {
+    flexDirection: `row`,
+    justifyContent: `center`,
+    alignItems: `center`,
+    marginBottom: 15
+  },
+
+  trainingwrapper: {
+    marginTop: 30,
+    width: Dimensions.width - 220,
+    height: 280,
+    padding: 20,
+    borderWidth: 1,
+    backgroundColor: Colors.pureWhite,
+    borderColor: Colors.borderforGreyBackground,
+    borderRadius: 4,
+    shadowColor: Colors.black,
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: .05,
+    shadowRadius: 7,
+    flexDirection: `row`,
+    justifyContent: `space-between`,
+    alignItems: `center`,
+  },
+
+  timeIcon: {
+    width: 30,
+    height: 30,
+    marginRight: 13
+  },
+
+  dateIcon: {
+    width: 30,
+    height: 30,
+    marginRight: 13
+  },
+
+  trainingsData: {
+    width: 220
+  },
+
+  topContent: {
+    justifyContent: `flex-start`,
+    alignItems: `flex-start`,
+    height: 190,
+  },
+
+  primaryButton: {
+    width: 180
+  },
+
+  buttonIconTrainer: {
+    width: 25,
+    height: 17
+  },
+
+  ExerciseTrainerCardImage: {
+    borderWidth: 1,
+    borderColor: Colors.borderforGreyBackground,
+    borderRadius: 3,
+    marginLeft: 20,
+  },
+
+  exercisesTrainingWrapper: {
+    flexDirection: `row`,
+  },
+
+  exerciseCardSpecsWrapperForTraining: {
+    marginTop: - 2,
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginBottom: 2
+  },
+
+  ExerciseCardImageForTraining: {
+    transform: [{scale: 0.95}, {translateY: - 2}]
   }
+
 });
 
 export default MyDirectionsStyle;

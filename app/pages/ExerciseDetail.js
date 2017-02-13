@@ -8,7 +8,6 @@ import {DatabaseUrl} from '../globals';
 
 import {GeneralStyle, ExerciseDetailStyle, Colors, TextStyles, ButtonStyles} from '../styles';
 
-let enoughDirections = false;
 let largerPic =  false;
 
 class ExerciseDetail extends Component {
@@ -28,8 +27,35 @@ class ExerciseDetail extends Component {
     console.log(`willreceive`, props);
   }
 
+  handleWSupdateDirections(socketId) {
+
+    console.log(`leave`);
+    const {connectedDirections} = this.state;
+
+    const newDirections = connectedDirections.filter(d => {
+      return d.socketId !== socketId;
+    });
+
+    this.setState({connectedDirections: newDirections});
+  }
+
+  handleWSdirectionJoined(direction) {
+
+    console.log(`join`);
+
+    const {connectedDirections} = this.state;
+    connectedDirections.push(direction);
+
+    this.setState({connectedDirections});
+  }
+
   componentDidMount() {
     const {exerciseId} = this.props;
+
+
+    this.props.socket.on(`updateDirections`, socketId => this.handleWSupdateDirections(socketId));
+    this.props.socket.on(`directionJoined`, direction => this.handleWSdirectionJoined(direction));
+
 
     if (!isEmpty(exerciseId)) {
       fetch(`${DatabaseUrl}/api/exercises/${exerciseId}`)
@@ -67,7 +93,6 @@ class ExerciseDetail extends Component {
 
   handleWScheckDirections(directions) {
 
-
     const {connectedDirections} = this.state;
 
     if (connectedDirections.length !== directions.length) {
@@ -79,33 +104,27 @@ class ExerciseDetail extends Component {
     const {exercise, directions, connectedDirections} = this.state;
     const canTry = connectedDirections.length >= directions.length;
 
-    console.log(`hey`);
-
     if (canTry) {
-      this.hidePopUp();
+      this.hidePopUp(true);
       Actions.deployment({exercise: exercise, directions: directions});
     } else {
       this.setState({showPopUp: true});
     }
   }
 
-  hidePopUp() {
-    enoughDirections = true;
-    this.setState({showPopUp: false});
-  }
+  hidePopUp(deploy) {
 
-
-
-
-
-  checkForConnectedDirections() {
-    if (!enoughDirections) {
-      console.log(`check`);
-      this.props.socket.emit(`checkDirections`);
-      setTimeout(() => {
-        this.checkForConnectedDirections();
-      }, 2000);
+    if (!deploy) {
+      const {popUpItem, popUpItemBG} = this.refs;
+      popUpItem.transition({transform: [{translateY: 0}], opacity: 1}, {transform: [{translateY: 90}], opacity: 0}, 500, `ease-out`);
+      popUpItemBG.transition({opacity: 0.85}, {opacity: 0}, 500, `ease-out`);
     }
+
+
+    setTimeout(() => {
+      this.setState({showPopUp: false});
+    }, 510);
+
   }
 
 
@@ -115,45 +134,48 @@ class ExerciseDetail extends Component {
     const canTry = connectedDirections.length >= directions.length;
 
     if (canTry) {
+      this.hidePopUp();
       Actions.deployment({exercise: exercise, directions: directions});
     } else {
       this.hidePopUp();
     }
   }
 
+  closePopUp() {
+
+    this.hidePopUp();
+  }
 
   renderPopUp(missingDirectionCount, directionLength) {
 
     const {directions, connectedDirections, showPopUp} = this.state;
-    const canTry = connectedDirections.length >= directions.length;
 
     missingDirectionCount = directions.length - connectedDirections.length;
     directionLength = connectedDirections.length;
 
-
-
-    //checkout wordt niet uitgevoerd na het opnieuw tonen van het venster
-
-
-    if (!canTry) {
-      setTimeout(() => this.checkForConnectedDirections(), 2000);
-    }
+    const canTry = connectedDirections.length >= directions.length;
 
     if (showPopUp) {
+
       return (
-        <View style={ExerciseDetailStyle.transparentBackground}>
-          <View style={ExerciseDetailStyle.popUp}>
-              <Text style={[TextStyles.title, {color: Colors.black}]} >{`Je mist ${missingDirectionCount} Directions voor deze oefening.`.toUpperCase()}</Text>
-              <Image style={[ExerciseDetailStyle.missingDirectionImage]} source={require(`../assets/png/exercisedetail/popupImage.png`)} />
-              <Text style={[TextStyles.graph], ExerciseDetailStyle.popUpTekstje} >{`Om deze oefeningen te kunnen uitproberen heb je ${missingDirectionCount} extra Directions nodig. Je hebt er momenteel ${directionLength} verbonden.`}</Text>
+        <Animatable.View animation='fadeIn' ref='popUpItemBG' duration={300} style={ExerciseDetailStyle.transparentBackground} >
+          <Animatable.View animation = 'fadeInUp' ref='popUpItem'  duration={300} easing='ease-out' style={ExerciseDetailStyle.popUp}>
+              <TouchableOpacity style={[ExerciseDetailStyle.popUpClose]} onPress={() => this.closePopUp()}>
+                <View  >
+                  <Image style={[ExerciseDetailStyle.popUpCloseImage]} source={require(`../assets/png/exercisedetail/closeIconGradient.png`)} />
+                </View>
+              </TouchableOpacity>
+              <Text style={[TextStyles.title, {color: Colors.black}]} >{canTry === true ? `Je kan de oefening starten!`.toUpperCase() : `Je mist ${missingDirectionCount} ${missingDirectionCount === 1 ? `Direction` : `Directions`} voor deze oefening.`.toUpperCase()}</Text>
+              <Image style={[ExerciseDetailStyle.missingDirectionImage]} source={{uri: canTry === true ? `popupImage2` : `popupImage`}} />
+              <Text style={[TextStyles.graph], ExerciseDetailStyle.popUpTekstje} >{canTry === true ? `Je kan deze oefening nu uitproberen, er zijn genoeg directions verbonden.` :  `Om deze oefeningen te kunnen uitproberen heb je ${missingDirectionCount} extra ${missingDirectionCount === 1 ? `Direction` : `Directions`} nodig. Je hebt er momenteel ${directionLength} verbonden.`}</Text>
               <TouchableOpacity style={ExerciseDetailStyle.primaryButtonWrapper} onPress={() => this.handlePopUpButton()}>
                 <LinearGradient style={[ButtonStyles.primaryButton, ExerciseDetailStyle.buttonWrapper]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
-                  <Image style={[ExerciseDetailStyle.primaryPopButtonImage]} source={require(`../assets/png/crossIconWhite.png`)} />
-                  <Text style={[TextStyles.primaryButton, ExerciseDetailStyle.primaryButtonText]}>{`dit venster sluiten`.toUpperCase()}</Text>
+                  <Image style={[ExerciseDetailStyle.primaryPopButtonImage, {width: canTry === true ? 11.5 : 15}, {height: 15}]}source={{uri: canTry === true ? `playIconWhite` : `crossIconWhite`}} />
+                  <Text style={[TextStyles.primaryButton, ExerciseDetailStyle.primaryButtonText]}>{canTry === true ? `start de oefening`.toUpperCase() : `dit venster sluiten`.toUpperCase()}</Text>
                 </LinearGradient>
               </TouchableOpacity>
-          </View>
-        </View>
+          </Animatable.View>
+        </Animatable.View>
       );
     }
   }
@@ -170,7 +192,7 @@ class ExerciseDetail extends Component {
         <View style={ExerciseDetailStyle.headerButtonsWrapper}>
 
           <TouchableOpacity style={[ExerciseDetailStyle.headerSmallButtonWrapper, ExerciseDetailStyle.headerUploadWrapper]}>
-            <Image style={ExerciseDetailStyle.headerUploadIcon} source={require(`../assets/png/uploadIconWhite.png`)} />
+            <Image style={[ExerciseDetailStyle.headerUploadIcon, {transform: [{translateX: - 2}]} ]} source={require(`../assets/png/uploadIconWhite.png`)} />
           </TouchableOpacity>
 
           <TouchableOpacity style={[ExerciseDetailStyle.headerSmallButtonWrapper, ExerciseDetailStyle.headerEditWrapper]}>

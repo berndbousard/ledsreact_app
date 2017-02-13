@@ -3,15 +3,17 @@ import {View, ScrollView, TouchableOpacity, Text, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {forIn} from 'lodash';
 
-
 import {GeneralStyle, TextStyles, AnalyticsStyles, Colors, MyExercisesStyle, ButtonStyles, MyDirectionsStyle} from '../styles';
-import {Navigation} from '../components';
+import {Navigation, Exercise} from '../components';
 import * as Animatable from 'react-native-animatable';
+import {DatabaseUrl, Creator} from '../globals';
+import {Actions} from 'react-native-router-flux';
 
 class Analytics extends Component {
 
   state = {
-    currentTab: 0
+    currentTab: 0,
+    exercises: [],
   }
 
   componentDidMount() {
@@ -22,6 +24,22 @@ class Analytics extends Component {
       r.transition({transform: [{translateX: 100}], opacity: 0}, {transform: [{translateX: 0}], opacity: 1}, delay, `ease-out-quad`);
       delay += 150;
     });
+
+    this.fetchExercises();
+  }
+
+  fetchExercises() {
+    fetch(`${DatabaseUrl}/api/exercises?creator=${Creator}`)
+      .then(r => {
+        return r.json();
+      })
+      .then(({exercises}) => {
+        console.log(exercises);
+        this.setState({exercises});
+      })
+      .catch(e => {
+        console.log(e);
+      });
   }
 
   renderSecondNav() {
@@ -43,10 +61,23 @@ class Analytics extends Component {
 				<Text style={[TextStyles.secondNav, MyExercisesStyle.secondNavText, {color: currentTab === 2 ? Colors.white : Colors.black, opacity: currentTab === 2 ? 1 : .5}]}>{`mijn oefeningen`.toUpperCase()}</Text>
 			</TouchableOpacity>
 
-			<LinearGradient style={[AnalyticsStyles.navBorder, {left: currentTab === 0 ? 60 : currentTab === 1 ? 190 : 340}]} colors={[Colors.white, Colors.navBorderWhite]} start={{x: 0, y: 1}} end={{x: 1, y: 1}}></LinearGradient>
+			<LinearGradient style={[AnalyticsStyles.navBorder, {left: currentTab === 0 ? 33 : currentTab === 1 ? 190 : 340}]} colors={[Colors.white, Colors.navBorderWhite]} start={{x: 0, y: 1}} end={{x: 1, y: 1}}></LinearGradient>
 
 		</LinearGradient>
     );
+  }
+
+  generateRecentContent() {
+    const {currentRecentTab, myTrainings, exercises} = this.state;
+
+    return exercises.map((e, index) => {
+      if (index > 2) return; //Op home max 3
+      return (
+          <TouchableOpacity onPress={() => Actions.exerciseDetail({exerciseId: `${e._id}`})} style={MyDirectionsStyle.ExerciseCard} key={index}>
+            <Exercise index={index} {...e} />
+          </TouchableOpacity>
+      );
+    });
   }
 
   renderControls() {
@@ -146,11 +177,10 @@ class Analytics extends Component {
 				<TouchableOpacity><Text style={[TextStyles.title, AnalyticsStyles.graphTitle]} >{`snelheid`.toUpperCase()}</Text></TouchableOpacity>
 				<TouchableOpacity><Text style={[TextStyles.title, AnalyticsStyles.graphTitle]} >{`uren training`.toUpperCase()}</Text></TouchableOpacity>
 				<TouchableOpacity><Text style={[TextStyles.title, AnalyticsStyles.graphTitle]} >{`groei`.toUpperCase()}</Text></TouchableOpacity>
-				<TouchableOpacity><Text style={[TextStyles.title, AnalyticsStyles.graphTitle]} >{`gewicht`.toUpperCase()}</Text></TouchableOpacity>
 			</View>
 			<View style={[AnalyticsStyles.lineGraph]}>
 				<View style={[AnalyticsStyles.topGraph]}>
-					<Image style={AnalyticsStyles.lineGraphImage} source={require(`../assets/png/analyse/graph.png`)} />
+					<Image style={[AnalyticsStyles.lineGraphImage]} source={require(`../assets/png/analyse/graph.png`)} />
 					<View>
 						<Text style={[TextStyles.graph, AnalyticsStyles.yAS]} >{`500km`}</Text>
 						<Text style={[TextStyles.graph, AnalyticsStyles.yAS]} >{`400km`}</Text>
@@ -240,92 +270,9 @@ class Analytics extends Component {
 				<View style={[AnalyticsStyles.graphTypeNav, AnalyticsStyles.graphTypeNavFix]}>
 					<Text style={[TextStyles.title, {color: Colors.orange}]} >{`Meest doeltreffende oefeningen`.toUpperCase()}</Text>
 				</View>
-				<View style={[MyExercisesStyle.exercisesContainer, {marginLeft: 45}]}>
-				<Animatable.View animation='fadeInUp' duration={600} style={MyDirectionsStyle.ExerciseCard}>
-					<View style={MyDirectionsStyle.ExerciseCardHeader}>
-						<Image style={MyDirectionsStyle.ExerciseCardSportIcon} source={require(`../assets/png/soccerIcon.png`)} />
-						<Text style={[TextStyles.subTitle, MyDirectionsStyle.ExerciseCardTitle]}>{`Aanvallen op de flank`.toUpperCase()}</Text>
-					</View>
-
-					<View style={MyDirectionsStyle.ExerciseCardImageWrapper}>
-						<View style={MyDirectionsStyle.ExerciseCardImage}></View>
-
-						<View style={MyDirectionsStyle.ExerciseCardSpecsWrapper}>
-							<View style={MyDirectionsStyle.ExerciseCardSpec}>
-								<Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/directionIcon.png`)} />
-								<Text style={TextStyles.copy}>5</Text>
-							</View>
-
-							<View style={[MyDirectionsStyle.ExerciseCardSpec, MyDirectionsStyle.ExerciseCardSpecIconMiddle]}>
-								<Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/groupSizeIcon.png`)} />
-								<Text style={TextStyles.copy}>5- 10</Text>
-							</View>
-
-							<View style={[MyDirectionsStyle.ExerciseCardSpec, MyDirectionsStyle.ExerciseCardSpecIconLast]}>
-								<Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/intensivityIcon.png`)} />
-								<Text style={TextStyles.copy}>Makkelijk</Text>
-							</View>
-						</View>
-					</View>
-				</Animatable.View>
-				<Animatable.View animation='fadeInUp' duration={600} style={MyDirectionsStyle.ExerciseCard}>
-					<View style={MyDirectionsStyle.ExerciseCardHeader}>
-						<Image style={MyDirectionsStyle.ExerciseCardSportIcon} source={require(`../assets/png/soccerIcon.png`)} />
-						<Text style={[TextStyles.subTitle, MyDirectionsStyle.ExerciseCardTitle]}>{`Aanvallen op de flank`.toUpperCase()}</Text>
-					</View>
-
-					<View style={MyDirectionsStyle.ExerciseCardImageWrapper}>
-						<View style={MyDirectionsStyle.ExerciseCardImage}></View>
-
-						<View style={MyDirectionsStyle.ExerciseCardSpecsWrapper}>
-							<View style={MyDirectionsStyle.ExerciseCardSpec}>
-								<Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/directionIcon.png`)} />
-								<Text style={TextStyles.copy}>5</Text>
-							</View>
-
-							<View style={[MyDirectionsStyle.ExerciseCardSpec, MyDirectionsStyle.ExerciseCardSpecIconMiddle]}>
-								<Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/groupSizeIcon.png`)} />
-								<Text style={TextStyles.copy}>5- 10</Text>
-							</View>
-
-							<View style={[MyDirectionsStyle.ExerciseCardSpec, MyDirectionsStyle.ExerciseCardSpecIconLast]}>
-								<Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/intensivityIcon.png`)} />
-								<Text style={TextStyles.copy}>Makkelijk</Text>
-							</View>
-						</View>
-					</View>
-
-				</Animatable.View>
-				<Animatable.View animation='fadeInUp' duration={600} style={MyDirectionsStyle.ExerciseCard}>
-					<View style={MyDirectionsStyle.ExerciseCardHeader}>
-						<Image style={MyDirectionsStyle.ExerciseCardSportIcon} source={require(`../assets/png/soccerIcon.png`)} />
-						<Text style={[TextStyles.subTitle, MyDirectionsStyle.ExerciseCardTitle]}>{`Aanvallen op de flank`.toUpperCase()}</Text>
-					</View>
-
-					<View style={MyDirectionsStyle.ExerciseCardImageWrapper}>
-						<View style={MyDirectionsStyle.ExerciseCardImage}>
-						</View>
-
-						<View style={MyDirectionsStyle.ExerciseCardSpecsWrapper}>
-							<View style={MyDirectionsStyle.ExerciseCardSpec}>
-								<Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/directionIcon.png`)} />
-								<Text style={TextStyles.copy}>5</Text>
-							</View>
-
-							<View style={[MyDirectionsStyle.ExerciseCardSpec, MyDirectionsStyle.ExerciseCardSpecIconMiddle]}>
-								<Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/groupSizeIcon.png`)} />
-								<Text style={TextStyles.copy}>5- 10</Text>
-							</View>
-
-							<View style={[MyDirectionsStyle.ExerciseCardSpec, MyDirectionsStyle.ExerciseCardSpecIconLast]}>
-								<Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/intensivityIcon.png`)} />
-								<Text style={TextStyles.copy}>Makkelijk</Text>
-							</View>
-						</View>
-					</View>
-
-				</Animatable.View>
-				</View>
+        <View style={[MyDirectionsStyle.recentWrapper, AnalyticsStyles.recentWrapper]}>
+          {this.generateRecentContent()}
+        </View>
 			</View>
     );
   }

@@ -89,7 +89,7 @@ const MyExercisesStyle = StyleSheet.create({
     justifyContent: `flex-start`,
     width: Dimensions.width - 175,
     transform: [{translateX: - 10}],
-    padding: 20
+    padding: 20,
   }
 });
 

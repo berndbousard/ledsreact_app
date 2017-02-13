@@ -303,6 +303,9 @@ class Editor extends Component {
     this.setState({editorFootballs});
   }
 
+
+
+
   renderEditorFootballs() {
 
     const {editorFootballs} = this.state;
@@ -325,7 +328,8 @@ class Editor extends Component {
     }
 
     return (
-      <Animatable.View ref='drawerRef' duration={200} animation='pulse' easing='ease-out' style={[EditorStyle.drawer]}>
+
+      <Animatable.View ref='drawerRef' duration={200} animation='pulse' easing='ease-out' style={[EditorStyle.drawer]} >
         <View style={EditorStyle.titlesWrapper}>
 
           <TouchableOpacity style={[EditorStyle.itemsDrawerTitle, EditorStyle.itemsDrawerFirstTitle, {borderBottomColor: drawer.currentTab === 0 ? Colors.orange : `transparent`}]}>
@@ -437,7 +441,7 @@ class Editor extends Component {
     if (field.drawer.isActive) {
       return (
         <Animatable.View style={[EditorStyle.fieldsDrawer]} ref='fieldsDrawerRef' duration={200} animation='pulse' easing='ease-out'>
-          <Text style={[TextStyles.title, EditorStyle.fieldsDrawerTitle]}>{`kies een speelveld`.toUpperCase()}</Text>
+          <Text style={[TextStyles.title, EditorStyle.fieldsDrawerTitle, {fontSize: 25}]}>{`kies een speelveld`.toUpperCase()}</Text>
           <TouchableOpacity style={EditorStyle.closeFieldsDrawerWrapper} onPress={() => this.toggleFieldDrawerHandler()}>
             <Image style={EditorStyle.closeFieldsDrawerIcon} source={require(`../assets/png/closeIconSmallWhite.png`)} />
           </TouchableOpacity>
@@ -644,7 +648,7 @@ class Editor extends Component {
     if (!field.drawer.isActive) {
       return (
         <TouchableOpacity onPress={() => this.toggleObjectsDrawer()}>
-          <Animatable.Image ref='addEditorIcon' style={EditorStyle.addEditorIcon} source={{uri: `addEditorIcon`}} />
+          <Animatable.Image ref='addEditorIcon' style={ EditorStyle.addEditorIcon} source={{uri: `addEditorIcon`}} />
         </TouchableOpacity>
       );
     }
@@ -699,7 +703,7 @@ class Editor extends Component {
       if (!optionsMenu.isActive) {
         this.toggleOptionsMenuHandler();
       }
-      
+
       currentEditorDirectionIndex = directionIndex;
       currentRichting = `top`;
 
@@ -710,8 +714,6 @@ class Editor extends Component {
       //
       // }, 50);
     }
-
-
 
 
   }
@@ -925,11 +927,11 @@ class Editor extends Component {
                 <Text style={[TextStyles.subTitle, EditorStyle.optionsMenusubTitle]}>{`oplichten`.toUpperCase()}</Text>
                 <View style={[EditorStyle.oplichtenWrapper]}>
                   <TouchableOpacity onPress={() => this.setCombineLights(false)} style={[EditorStyle.oplichtenButton, {backgroundColor: !editorDirections[currentEditorDirectionIndex].combineLights ? Colors.black : `transparent`, borderColor: !editorDirections[currentEditorDirectionIndex].combineLights ? `transparent` : Colors.black}]}>
-                    <Text style={[TextStyles.copy, {color: !editorDirections[currentEditorDirectionIndex].combineLights ? Colors.pureWhite : Colors.black}]}>willekeurig</Text>
+                    <Text style={[TextStyles.title, {fontSize: 16}, {color: !editorDirections[currentEditorDirectionIndex].combineLights ? Colors.pureWhite : Colors.black}]}>WILLEKEURIG</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity onPress={() => this.setCombineLights(true)} style={[EditorStyle.oplichtenButton, {backgroundColor: editorDirections[currentEditorDirectionIndex].combineLights ? Colors.black : `transparent`, borderColor: editorDirections[currentEditorDirectionIndex].combineLights ? `transparent` : Colors.black}]}>
-                    <Text style={[TextStyles.copy, {color: editorDirections[currentEditorDirectionIndex].combineLights ? Colors.pureWhite : Colors.black}]}>samen</Text>
+                    <Text style={[TextStyles.title, {fontSize: 16}, {color: editorDirections[currentEditorDirectionIndex].combineLights ? Colors.pureWhite : Colors.black}]}>SAMEN</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -1287,36 +1289,41 @@ class Editor extends Component {
     return (
       <Animatable.View ref='editorContainer' style={{transform: [{translateX: currentPage * Dimensions.width}], flexDirection: `row`}}>
 
-        <View style={[EditorStyle.editorContainer]}>
-          <View style={{position: `absolute`}} ref='fieldAndDirections'>
 
-            <View ref='field'>
-              <Svg style={[{zIndex: 1}]} {...this.drawHandler.panHandlers} width={Dimensions.width} height={Dimensions.height}>
-                <Rect x='0' y='0' width='100%' height='100%' fill='transparent' />
-                {this.generateUserDrawingFeedback()}
-                {this.generateSvgElements()}
-              </Svg>
-              {this.generateField()}
-              {this.renderEditorFootballs()}
+          <View style={[EditorStyle.editorContainer]}>
+            <View style={{position: `absolute`}} ref='fieldAndDirections'>
+
+              <View ref='field' >
+                <Svg style={[{zIndex: 1}]} {...this.drawHandler.panHandlers} width={Dimensions.width} height={Dimensions.height}>
+                  <Rect x='0' y='0' width='100%' height='100%' fill='transparent' />
+                  {this.generateUserDrawingFeedback()}
+                  {this.generateSvgElements()}
+                </Svg>
+                {this.generateField()}
+                {this.renderEditorFootballs()}
+              </View>
+
+              {this.renderEditorDirections()}
+
+
             </View>
+            {this.renderLeftControls()}
 
-            {this.renderEditorDirections()}
 
+            {this.renderRightControls()}
 
+            {this.renderAddObjectsButton()}
+
+            {this.renderObjectsDrawer()}
+
+            {this.renderFieldsDrawer()}
+
+            {this.renderOptionsMenu()}
           </View>
-          {this.renderLeftControls()}
 
 
-          {this.renderRightControls()}
 
-          {this.renderAddObjectsButton()}
 
-          {this.renderObjectsDrawer()}
-
-          {this.renderFieldsDrawer()}
-
-          {this.renderOptionsMenu()}
-        </View>
 
         <View style={EditorStyle.form}>
 

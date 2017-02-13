@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import {isEmpty} from 'lodash';
 import {GeneralStyle, TextStyles, MyDirectionsStyle, ButtonStyles, Colors} from '../styles';
-import {Navigation, Exercise} from '../components';
+import {Navigation, Exercise, ExerciseTraining} from '../components';
 import {DatabaseUrl, ASyncStorage, Creator} from '../globals';
 
 class MyDirections extends Component {
@@ -90,6 +90,7 @@ class MyDirections extends Component {
 
     const newDirections = connectedDirections.filter(d => {
       return d.socketId !== socketId;
+
     });
 
     this.setState({connectedDirections: newDirections});
@@ -107,6 +108,8 @@ class MyDirections extends Component {
   }
 
   handleWScheckDirections(connectedDirections) {
+
+
     connectedDirections = connectedDirections.map(c => {
       c.image = `direction`;
       return c;
@@ -152,7 +155,7 @@ class MyDirections extends Component {
           }
 
           return (
-            <Animatable.View animation='fadeInUp' duration={600} delay={8 * index} style={[MyDirectionsStyle.directionListItemWrapper]} key={index}>
+            <Animatable.View animation='fadeInUp' ref={`direction${index}`} duration={600} delay={8 * index} style={[MyDirectionsStyle.directionListItemWrapper]} key={index}>
 
               <TouchableOpacity onPress={() => this.detectDirection(c.socketId)}>
                 <Image style={[MyDirectionsStyle.directionListItemImage]} source={{uri: `${c.image}`}}/>
@@ -234,9 +237,45 @@ class MyDirections extends Component {
     if (currentRecentTab === 1) {
       // Trainings
       if (isEmpty(myTrainings)) {
-        return <Text style={[TextStyles.copy, MyDirectionsStyle.recentEmptyText]}>Je hebt geen trainingen gepland voor vandaag</Text>;
+        return (
+          <TouchableOpacity>
+            <View style={MyDirectionsStyle.trainingwrapper}>
+              <View style={MyDirectionsStyle.trainingsData}>
+                <View style={MyDirectionsStyle.topContent}>
+                  <Text style={[TextStyles.title, {color: Colors.black}, {textAlign: `left`}, {marginBottom: 15}]}>{`Oefenen op aanvallen via de flank`.toUpperCase()}</Text>
+                  <View style={MyDirectionsStyle.trainingsSpecs}>
+                    <Image style={MyDirectionsStyle.dateIcon} source={require(`../assets/png/training/date.png`)}/>
+                    <Text style={[TextStyles.copy]}>{`Woensdag 1 februari 2017`}</Text>
+                  </View>
+                  <View style={MyDirectionsStyle.trainingsSpecs}>
+                    <Image style={MyDirectionsStyle.timeIcon} source={require(`../assets/png/training/time.png`)}/>
+                    <Text style={[TextStyles.copy]}>{`150 min`}</Text>
+                  </View>
+                </View>
+                <LinearGradient style={[ButtonStyles.primaryButton, MyDirectionsStyle.primaryButton ]} colors={[Colors.orange, Colors.gradientOrange]}>
+                  <Image style={[MyDirectionsStyle.buttonIconTrainer]} source={require(`../assets/png/myTrainingIcon.png`)} />
+                  <Text style={[TextStyles.primaryButton]}>{`bekijk training`.toUpperCase()}</Text>
+                </LinearGradient>
+              </View>
+              <View style={MyDirectionsStyle.exercisesTrainingWrapper}>
+              {this.renderTrainingen()}
+              </View>
+            </View>
+          </TouchableOpacity>
+        );
       }
     }
+  }
+
+  renderTrainingen() {
+
+    const {exercises} = this.state;
+
+    return (exercises.map((e, index) => {
+      if (index < 2) {
+        return (<ExerciseTraining key={index} index={index} {...e}/>);
+      }
+    }));
   }
 
   renderConnectedText() {
@@ -261,7 +300,7 @@ class MyDirections extends Component {
 
   render() {
 
-    const {connectedDirections, currentRecentTab} = this.state;
+    const {currentRecentTab} = this.state;
 
     return (
       <View style={GeneralStyle.pageContainer}>

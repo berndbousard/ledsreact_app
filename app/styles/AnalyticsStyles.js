@@ -15,11 +15,11 @@ const AnalyticsStyles = StyleSheet.create({
     flexDirection: `row`,
     justifyContent: `flex-start`,
     paddingTop: 30, paddingBottom: 30,
-    paddingLeft: 25, paddingRight: 25,
+    paddingLeft: 0, paddingRight: 25,
     marginRight: - 0,
     alignItems: `center`,
     width: Dimensions.width - 135,
-    height: 110
+    height: 110,
   },
 
   navItems: {
@@ -31,7 +31,7 @@ const AnalyticsStyles = StyleSheet.create({
     width: 100,
     position: `absolute`,
     top: 75,
-    left: 500,
+    left: 450,
   },
 
   controlBar: {
@@ -42,7 +42,7 @@ const AnalyticsStyles = StyleSheet.create({
     width: Dimensions.width - 135,
     height: 100,
     paddingTop: 20, paddingBottom: 20,
-    paddingLeft: 20, paddingRight: 20,
+    paddingLeft: 0, paddingRight: 20,
     borderWidth: 2,
     borderColor: Colors.borderforGreyBackground
   },
@@ -58,7 +58,10 @@ const AnalyticsStyles = StyleSheet.create({
 
   buttonWrapper: {
     justifyContent: `center`,
-    alignItems: `center`
+    alignItems: `center`,
+    borderRadius: 50,
+    width: 50,
+    height: 50
   },
 
   backButton: {
@@ -117,7 +120,8 @@ const AnalyticsStyles = StyleSheet.create({
     borderBottomColor: Colors.borderforGreyBackground,
     borderBottomWidth: 2,
     paddingTop: 30,
-    paddingBottom: 30
+    paddingBottom: 30,
+    marginLeft: - 20
   },
 
   items: {
@@ -161,7 +165,7 @@ const AnalyticsStyles = StyleSheet.create({
   },
 
   graph: {
-
+    marginLeft: - 15
     // backgroundColor: `blue`,
   },
 
@@ -253,7 +257,8 @@ const AnalyticsStyles = StyleSheet.create({
   greyBackground: {
     marginTop: 75,
     backgroundColor: Colors.lightGrey,
-    paddingBottom: 40
+    paddingBottom: 40,
+    marginLeft: - 15,
 
   },
 
@@ -263,7 +268,7 @@ const AnalyticsStyles = StyleSheet.create({
 
   goalListItem: {
     marginTop: 30,
-    width: Dimensions.width - 220,
+    width: Dimensions.width - 200,
     flexDirection: `row`,
     justifyContent: `space-between`,
     alignItems: `center`,
@@ -293,12 +298,15 @@ const AnalyticsStyles = StyleSheet.create({
   },
 
   removeButtonIcon: {
-    transform: [{scale: 0.4}, {translateX: - 54}]
+    width: 20,
+    height: 25,
+    transform: [{translateX: - 2}]
   },
 
   removeButton: {
-    width: 44,
-    height: 44,
+    width: 50,
+    height: 50,
+    borderRadius: 50,
   },
 
 
@@ -315,11 +323,17 @@ const AnalyticsStyles = StyleSheet.create({
   },
 
   exercisesContainer: {
-    backgroundColor: `blue`
+    backgroundColor: `blue`,
   },
 
   doeltref: {
-    marginTop: 40
+    marginTop: 40,
+    marginLeft: - 15,
+  },
+
+  recentWrapper: {
+    width: Dimensions.width - 200,
+    marginLeft: 40,
   },
 
 

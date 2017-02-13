@@ -17,6 +17,7 @@
     "react-native-svg": "^5.1.4",
     "react-native-swiper": "^1.5.4",
     "react-native-view-shot": "^1.6.0",
+    "react-timer-mixin": "^0.13.3",
     "socket.io": "^1.7.2"
   },
   "devDependencies": {

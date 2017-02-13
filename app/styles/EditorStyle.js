@@ -113,7 +113,7 @@ const ComponentStyle = StyleSheet.create({
     height: 51,
     left: (Dimensions.width / 2) - 25,
     top: Dimensions.height - 75,
-    zIndex: 2
+    zIndex: 2,
   },
 
   drawer: {
@@ -184,7 +184,9 @@ const ComponentStyle = StyleSheet.create({
     marginTop: 10,
     backgroundColor: Colors.pureWhite,
     borderWidth: 3,
-    borderColor: `transparent`
+    borderColor: `transparent`,
+    marginLeft: 10,
+    marginRight: 10
   },
 
   fielsDrawerItemImage: {
@@ -538,13 +540,14 @@ const ComponentStyle = StyleSheet.create({
   formCloseIconWrapper: {
     borderWidth: 2,
     borderColor: Colors.white,
-    width: 44, height: 44,
+    width: 50, height: 50,
     borderRadius: 3,
     justifyContent: `center`,
     alignItems: `center`,
     position: `absolute`,
     right: 30,
-    top: 30
+    top: 20,
+    borderRadius: 50,
   },
 
   formCloseIcon: {
@@ -903,12 +906,12 @@ const ComponentStyle = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.white,
     padding: 15,
-    borderRadius: 3,
+    borderRadius: 50,
     zIndex: 100
   },
 
   closeFieldsDrawerIcon: {
-    width: 15, height: 15
+    width: 15, height: 15,
   },
 
   titlesWrapper: {
@@ -952,7 +955,10 @@ const ComponentStyle = StyleSheet.create({
   },
 
   drawerItemsWrapperScroller: {
-    marginLeft: 25
+    marginLeft: 25,
+    width: 563,
+    position: `absolute`,
+    left: 150,
   },
 
   drawScrollerItem: {

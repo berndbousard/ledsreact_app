@@ -82,14 +82,15 @@ const DeploymentStyle = StyleSheet.create({
   },
 
   minimiseButton: {
-    width: 44, height: 44,
+    width: 50, height: 50,
     justifyContent: `center`,
     alignItems: `center`,
-    transform: [{rotate: `180deg`}]
+    transform: [{rotate: `180deg`}],
+    borderRadius: 50,
   },
 
   minimiseImageIcon: {
-    width: 15, height: 9,
+    width: 20, height: 13,
   },
 
   stopIcon: {
@@ -104,10 +105,11 @@ const DeploymentStyle = StyleSheet.create({
     alignItems: `center`,
     padding: 20,
     borderRadius: 10,
-    shadowColor: Colors.black,
+    shadowColor: Colors.opacityBlackFull,
     shadowOffset: {width: 0, height: 10},
-    shadowOpacity: .1,
-    shadowRadius: 20
+    shadowOpacity: .4,
+    shadowRadius: 10,
+
   },
 
   instructionsTitle: {
@@ -315,7 +317,8 @@ const DeploymentStyle = StyleSheet.create({
   exercise: {
     paddingTop: 20, paddingBottom: 40,
     paddingLeft: 40, paddingRight: 40
-  }
+  },
+
 });
 
 export default DeploymentStyle;

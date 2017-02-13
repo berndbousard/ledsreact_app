@@ -18,7 +18,7 @@ const GeneralStyle = StyleSheet.create({
 
   contentContainer: {
     flex: 6,
-    marginLeft: 20,
+    marginLeft: 15,
     padding: 40
   },
 

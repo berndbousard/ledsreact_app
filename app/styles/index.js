@@ -13,6 +13,7 @@ import MyExercisesStyle from './MyExercisesStyle';
 import OnboardingStyle from './OnboardingStyle';
 import DeploymentStyle from './DeploymentStyle';
 import AnalyticsStyles from './AnalyticsStyles';
+import TrainingStyle from './TrainingStyle';
 
 exports.GeneralStyle = GeneralStyle;
 exports.ComponentStyle = ComponentStyle;
@@ -29,3 +30,4 @@ exports.MyExercisesStyle = MyExercisesStyle;
 exports.OnboardingStyle = OnboardingStyle;
 exports.DeploymentStyle = DeploymentStyle;
 exports.AnalyticsStyles = AnalyticsStyles;
+exports.TrainingStyle = TrainingStyle;

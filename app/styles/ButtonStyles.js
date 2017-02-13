@@ -41,8 +41,20 @@ const ButtonStyles = StyleSheet.create({
     shadowColor: Colors.orange,
     shadowOffset: {width: 0, height: 5},
     shadowOpacity: 0.2,
-  }
+  },
 
+  dismisInstructions: {
+    marginTop: 20,
+    height: 44,
+    justifyContent: `center`,
+    alignItems: `center`,
+    borderWidth: 2,
+    borderRadius: 2,
+    borderColor: Colors.white,
+    backgroundColor: `rgba(0,0,0,0)`,
+    paddingLeft: 20,
+    paddingRight: 20
+  }
 
 });
 

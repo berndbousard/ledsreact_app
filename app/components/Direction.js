@@ -13,6 +13,10 @@ class Direction extends Component {
 
   componentWillMount() {
 
+
+    console.log(this.props);
+
+
     this.dragHandler = PanResponder.create({
       onMoveShouldSetResponderCapture: () => true, //Allow movement to the view we'll attach this panresponder to
       onMoveShouldSetPanResponderCapture: () => true, //Same as above but for dragging
