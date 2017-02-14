@@ -15,10 +15,7 @@ class MyExercises extends Component {
   }
 
   componentDidMount() {
-
     this.fetchExercises();
-    this.fetchDirections();
-
   }
 
   fetchExercises() {

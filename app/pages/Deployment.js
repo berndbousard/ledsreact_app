@@ -16,6 +16,7 @@ let deploymentDone = false;
 let toggle = true;
 let drawInstructions = true;
 
+
 class Deployment extends Component {
 
   state = {
@@ -26,8 +27,13 @@ class Deployment extends Component {
   }
 
   componentWillMount() {
+
     instructionsClick = false;
     this.fetchExercises();
+  }
+
+  componentWillUnmount() {
+    deploymentDone = false;
   }
 
   fetchExercises() {
@@ -36,8 +42,6 @@ class Deployment extends Component {
         return r.json();
       })
       .then(({exercises}) => {
-
-        console.log(exercises);
         this.setState({exercises});
       })
       .catch(e => {
@@ -53,11 +57,9 @@ class Deployment extends Component {
       return (
           exercises.map((e, index) => {
 
-
-            console.log(e);
             if (this.props.exercise._id !== e._id) {
               return (
-                  <ExerciseDeployment key={index} {...e}/>
+                  <ExerciseDeployment key={index} index={index} {...e}/>
               );
             }
           })
@@ -131,9 +133,8 @@ class Deployment extends Component {
   }
 
   toggleControls() {
-    const {topControls, bottomControls} = this.refs;
-
     if (deploymentDone) {
+      const {topControls, bottomControls} = this.refs;
       if (toggle) {
         topControls.transition({transform: [{marginTop: 0}], opacity: 1}, {transform: [{marginTop: - 90}], opacity: 0}, 500, 200, `ease-out-circ`);
         bottomControls.transition({transform: [{marginBottom: 0}], opacity: 1}, {transform: [{marginBottom: - 90}], opacity: 0}, 500, 200, `ease-out-circ`);
@@ -205,6 +206,8 @@ class Deployment extends Component {
   }
 
   renderInstructions() {
+
+    console.log(`hey`);
     if (drawInstructions) {
 
       return (
@@ -351,7 +354,7 @@ class Deployment extends Component {
             </TouchableOpacity>
 
             <View style={DeploymentStyle.titleWrapper}>
-              <Text style={[TextStyles.title, DeploymentStyle.titleText]}>{`Oefening op aanvallen via de flank`.toUpperCase()}</Text>
+              <Text style={[TextStyles.title, DeploymentStyle.titleText, {fontSize: 24}]}>{`Oefening op aanvallen via de flank`.toUpperCase()}</Text>
               <Text style={[TextStyles.copy, DeploymentStyle.titleText]} ref={`tijd`}>{`Totale tijd: 04:20`}</Text>
             </View>
 
@@ -430,7 +433,9 @@ class Deployment extends Component {
             </View>
             <Text style={[TextStyles.subTitle, DeploymentStyle.overviewContentSubTitle, {fontSize: 20}, {marginLeft: 40}, {color: Colors.orange}, {marginTop: 20}]}>{`andere oefeningen`.toUpperCase()}</Text>
             <View style={[DeploymentStyle.ruler, {marginLeft: 40}]}></View>
-            {this.renderExercises()}
+            <View style={DeploymentStyle.exercise}>
+              {this.renderExercises()}
+            </View>
           </View>
             </TouchableWithoutFeedback>
           </ScrollView>

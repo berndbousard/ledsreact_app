@@ -16,12 +16,12 @@ class Main extends PureComponent {
   render() {
     return (
       <Router>
-        <Scene key='onboarding' component={Onboarding} title='Onboarding' hideNavBar   />
+        <Scene key='onboarding' component={Onboarding} title='Onboarding' hideNavBar  initial />
         <Scene key='login' component={Login} title='Login' backTitle='onboarding' hideNavBar />
 
         {/* <Scene key='myDirections'> */}
         {/* </Scene> */}
-        <Scene key='directionOverview' component={MyDirections} title='overview' socket={this.socket} hideNavBar initial />
+        <Scene key='directionOverview' component={MyDirections} title='overview' socket={this.socket} hideNavBar  />
         <Scene key='editor' component={Editor} title='editor' hideNavBar direction='vertical' panHandlers={null}  />
 
         <Scene key='deployment' component={Deployment} socket={this.socket} title='deployment' hideNavBar direction='vertical' panHandlers={null}  />

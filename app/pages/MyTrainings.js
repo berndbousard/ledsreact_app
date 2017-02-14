@@ -140,8 +140,8 @@ class MyTrainings extends Component {
             </Animatable.View>
               {this.renderTraining(1, 2, `oefenen op centraal verdedigen`, `Vrijdag 17 februari 2017`, 80)}
             <Animatable.View animation='fadeInUp' delay={160} duration={600} style={[TrainingStyle.weekIndicator, TrainingStyle.weekIndicatorNotActive, {marginTop: 30}]}>
-              <Text style={[TextStyles.copy, {color: Colors.black}]}>{`Volgende week`}</Text>
-              <View style={[TrainingStyle.ruler, {width: 650}, {backgroundColor: Colors.black}]}></View>
+              <Text style={[TextStyles.copy, {color: Colors.black}, {opacity: 0.5}]}>{`Volgende week`}</Text>
+              <View style={[TrainingStyle.ruler, {width: 650}, {backgroundColor: Colors.black}, {opacity: 0.1}]}></View>
             </Animatable.View>
             {this.renderTraining(3, 4, `oefenen op aanvallen via flank`, `Maandag 20 februari 2017`, 240)}
           </View>

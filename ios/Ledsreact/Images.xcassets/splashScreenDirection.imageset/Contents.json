@@ -2,17 +2,15 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "directionLightedBernd-1.png",
+      "filename" : "splashScreen.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "directionLightedBernd.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "directionLightedBernd-2.png",
       "scale" : "3x"
     }
   ],

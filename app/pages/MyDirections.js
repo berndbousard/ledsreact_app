@@ -20,6 +20,14 @@ class MyDirections extends Component {
     myTrainings: []
   };
 
+  componentWillReceiveProps() {
+    this.props.socket.on(`init`, directions => this.handleWSDirections(directions));
+    this.props.socket.on(`updateDirections`, socketId => this.handleWSupdateDirections(socketId));
+    this.props.socket.on(`directionJoined`, direction => this.handleWSdirectionJoined(direction));
+    this.props.socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
+    this.props.socket.emit(`checkDirections`);
+  }
+
   componentDidMount() {
 
     this.props.socket.on(`init`, directions => this.handleWSDirections(directions));
@@ -134,7 +142,7 @@ class MyDirections extends Component {
         setTimeout(() => {
           c.image = `direction`;
           this.setState({connectedDirections});
-        }, 1000);
+        }, 2000);
       }
       return c;
     });

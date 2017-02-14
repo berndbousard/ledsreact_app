@@ -9,8 +9,6 @@ import * as Animatable from 'react-native-animatable';
 import {DatabaseUrl, AsyncStorage} from '../globals';
 import {TextStyles, Colors, LoginStyle, EditorStyle, ButtonStyles} from '../styles';
 
-
-
 // https://facebook.github.io/react-native/docs/textinput.html
 
 export default class Login extends Component {
@@ -89,7 +87,7 @@ export default class Login extends Component {
             <Image style={EditorStyle.formCloseIcon} source={require(`../assets/png/closeIconSmallWhite.png`)} />
           </TouchableOpacity> */}
 
-          <TouchableOpacity style={EditorStyle.formBackWrapper} onPress={() => this.changePage(0)}>
+          <TouchableOpacity style={EditorStyle.formBackWrapper}>
             <Image style={EditorStyle.formBackIcon} source={require(`../assets/png/backArrowOrange.png`)} />
             <Text style={[TextStyles.subTitle, EditorStyle.formBackText]}>{`Terug naar menu`.toUpperCase()}</Text>
           </TouchableOpacity>
@@ -115,7 +113,7 @@ export default class Login extends Component {
                   <Text style={[TextStyles.subTitle]}>{`Jouw wachtwoord:`.toUpperCase()}</Text>
                 </View>
                 <View style={[EditorStyle.naamInputWrapper, EditorStyle.descInputWrapper,  {borderRadius: 100}]}>
-                  <TextInput  style={[TextStyles.copy, EditorStyle.descInput, {minHeight: 30}]} placeholder='****' />
+                  <TextInput secureTextEntry={true} style={[TextStyles.copy, EditorStyle.descInput, {minHeight: 30}]} placeholder='****' />
                 </View>
               </Animatable.View>
             </View>

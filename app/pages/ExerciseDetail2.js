@@ -9,7 +9,6 @@ import {DatabaseUrl} from '../globals';
 import {GeneralStyle, ExerciseDetailStyle, Colors, TextStyles, ButtonStyles} from '../styles';
 
 let largerPic =  false;
-let socket;
 
 
 class ExerciseDetail extends Component {
@@ -53,11 +52,6 @@ class ExerciseDetail extends Component {
   }
 
   componentDidMount() {
-
-
-    socket = this.props.socket;
-
-
     this.setState({mount: true});
     const {exerciseId} = this.props;
 
@@ -88,15 +82,17 @@ class ExerciseDetail extends Component {
     }
 
 
-    socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
-    socket.emit(`checkDirections`);
+    this.props.socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
+    this.props.socket.emit(`checkDirections`);
 
   }
 
   componentWillUnmount() {
     this.setState({mount: false});
+    this.props.socket.off(`checkDirections`);
 
-    socket.off(`checkDirections`);
+    this.props.socket.off(`updateDirections`);
+    this.props.socket.off(`updateDirections`);
 
   }
 
@@ -121,8 +117,8 @@ class ExerciseDetail extends Component {
     const {mount} = this.state;
 
     if (mount) {
-      socket.on(`updateDirections`, socketId => this.handleWSupdateDirections(socketId));
-      socket.on(`directionJoined`, direction => this.handleWSdirectionJoined(direction));
+      this.props.socket.on(`updateDirections`, socketId => this.handleWSupdateDirections(socketId));
+      this.props.socket.on(`directionJoined`, direction => this.handleWSdirectionJoined(direction));
     }
 
     if (canTry) {

@@ -108,6 +108,8 @@ class Editor extends Component {
         // if (this.state.svgTimer % 2 === 0) {
 
           // Build array of X & Y data
+
+
         this.points.push({x: e.nativeEvent.locationX, y: e.nativeEvent.locationY});
         this.setState({userDrawingFeedback: this.points});
         // }
@@ -165,9 +167,11 @@ class Editor extends Component {
 
     let d = undefined;
 
+    //<div rounding-test-case="M0 0 L 100 0 L100 100"></div>
+
     object.forEach(p => {
       if (d === undefined) {
-        d = `M${(p.x)} ${(p.y)}`;
+        d = `M${(p.x)} ${(p.y)}  `;
       }
       d = `${d} L${(p.x)} ${(p.y)}`;
     });
@@ -246,8 +250,11 @@ class Editor extends Component {
     const {addEditorIcon, drawerRef} = this.refs;
 
 
+    const {optionsMenu} = this.state;
+
 
     if (drawer.isActive) {
+
       addEditorIcon.transition({transform: [{rotate: `45deg`}]}, {transform: [{rotate: `0deg`}]}, 200, `ease-out`);
       drawerRef.transition({opacity: 1}, {opacity: 0}, 200, `ease-out`);
       setTimeout(() => {
@@ -256,6 +263,13 @@ class Editor extends Component {
       }, 200);
       return;
     } else {
+
+      if (optionsMenu.isActive) {
+        this.toggleOptionsMenuHandler();
+      }
+
+      // this.setState({'field.drawer.isActive': false});
+
       addEditorIcon.transition({transform: [{rotate: `0deg`}]}, {transform: [{rotate: `45deg`}]}, 200, `ease-out`);
       drawer.isActive = true;
       this.setState({drawer});
@@ -265,8 +279,6 @@ class Editor extends Component {
 
   objectsDrawerDirectionPressHandler() {
 
-
-    console.log(`hey`);
     const {editorDirections} = this.state;
 
     // Initial Values
@@ -440,6 +452,13 @@ class Editor extends Component {
   renderFieldsDrawer() {
 
     const {field} = this.state;
+
+
+
+
+    //itemsdrawer
+
+
 
     if (field.drawer.isActive) {
       return (
@@ -730,6 +749,11 @@ class Editor extends Component {
 
   }
 
+  directionIsMovingHandler(directionIndex) {
+    console.log(directionIndex);
+  // directionIndex om te weten welke er wordt verschoven.
+  }
+
   renderEditorDirections() {
     const {editorDirections, currentEditorDirectionIndex, optionsMenu} = this.state;
 
@@ -758,8 +782,6 @@ class Editor extends Component {
   selectDirection(richting) {
     let {currentRichting} = this.state;
 
-
-    console.log(richting);
 
     //----------------------------------------------------
 
@@ -903,6 +925,17 @@ class Editor extends Component {
   renderOptionsMenu() {
     const {optionsMenu, editorDirections, currentEditorDirectionIndex} = this.state;
 
+
+    //Direction options
+
+
+
+
+
+
+
+
+
     if (optionsMenu.isActive) {
       if (!isEmpty(editorDirections[currentEditorDirectionIndex])) {
         return (
@@ -912,7 +945,7 @@ class Editor extends Component {
               <View style={[EditorStyle.optionsHeader]}>
                 <Text style={[TextStyles.title, EditorStyle.optionsMainHeaderTitle]}>{`direction ${currentEditorDirectionIndex + 1}`.toUpperCase()}</Text>
                 <TouchableOpacity onPress={() => this.toggleOptionsMenuHandler()}>
-                  <Image style={[EditorStyle.optionsHeaderCloseIcon]} source={require(`../assets/png/closeIconSmallWhite.png`)} />
+                  <Image style={[EditorStyle.optionsHeaderCloseIcon, {width: 17}, {height: 22}]} source={require(`../assets/png/deleteIconWhite.png`)} />
                 </TouchableOpacity>
               </View>
 
@@ -944,7 +977,7 @@ class Editor extends Component {
                 </View>
               </View>
 
-              <View style={[EditorStyle.optionsMenuRichting, EditorStyle.oplichtenWrapperContent]}>
+              <View style={[EditorStyle.optionsMenuRichting, EditorStyle.oplichtenWrapperContent, {marginTop: - 20}]}>
                 <Text style={[TextStyles.subTitle, EditorStyle.optionsMenusubTitle]}>{`oplichten`.toUpperCase()}</Text>
                 <View style={[EditorStyle.oplichtenWrapper]}>
                   <TouchableOpacity onPress={() => this.setCombineLights(false)} style={[EditorStyle.oplichtenButton, {backgroundColor: !editorDirections[currentEditorDirectionIndex].combineLights ? Colors.black : `transparent`, borderColor: !editorDirections[currentEditorDirectionIndex].combineLights ? `transparent` : Colors.black}]}>
@@ -957,10 +990,10 @@ class Editor extends Component {
                 </View>
               </View>
 
-              <TouchableOpacity style={EditorStyle.deleteIconWrapper} onPress={() => this.deleteDirectionHandler()}>
+              <TouchableOpacity style={[EditorStyle.deleteIconWrapper, {marginTop: - 0}, {width: 215}, {marginLeft: 30}]} onPress={() => this.toggleOptionsMenuHandler()}>
                 <LinearGradient style={[ButtonStyles.primaryButton]} colors={[Colors.orange, Colors.gradientOrange]} start={{x: 0.0, y: 1}} end={{x: 1, y: 0}}>
-                  <Image style={[EditorStyle.deleteOptionsIcon]} source={require(`../assets/png/deleteIconWhite.png`)} />
-                  <Text style={[TextStyles.primaryButton]}>{`Direction verwijderen`.toUpperCase()}</Text>
+                  <Image style={[EditorStyle.deleteOptionsIcon, {width: 15}, {height: 15}]} source={require(`../assets/png/closeIconSmallWhite.png`)} />
+                  <Text style={[TextStyles.primaryButton, ]}>{`sluit de instellingen`.toUpperCase()}</Text>
                 </LinearGradient>
               </TouchableOpacity>
 

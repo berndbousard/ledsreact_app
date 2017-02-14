@@ -10,11 +10,8 @@ const ExerciseDeployment = props => {
   const exercise = props;
   const directions = [0, 0];
 
-
-
   return (
-
-    <View style={DeploymentStyle.exercise}>
+    <View style={{marginBottom: 40}}>
       <View style={[DeploymentStyle.exerciseHeader ]}>
         <View style={[DeploymentStyle.exerciseTitleWrapper]}>
           <Image style={[DeploymentStyle.overviewExerciseImage]} source={{uri: `${exercise.sport.imageName}`}} />
