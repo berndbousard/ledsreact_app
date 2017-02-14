@@ -4,25 +4,24 @@ import './globals/UserAgent'; //Moet enkel pre 1.5.1
 import io from 'socket.io-client';
 import {DatabaseUrl} from './globals';
 
-import {Onboarding, MyDirections, Discover, MyExercises, MyTrainings, Analytics, Editor, ExerciseDetail, Deployment} from './pages';
+import {Onboarding, Login, MyDirections, Discover, MyExercises, MyTrainings, Analytics, Editor, ExerciseDetail, Deployment} from './pages';
 
 class Main extends PureComponent {
 
   constructor() {
     super();
-
     this.socket = io(`ws://${DatabaseUrl.substr(7)}`, {jsonp: false, transports: [`websocket`], query: `client=app`}); //http://stackoverflow.com/questions/13745519/send-custom-data-along-with-handshakedata-in-socket-io/13940399#13940399
   }
 
   render() {
     return (
       <Router>
-        <Scene key='onboarding' component={Onboarding} title='Onboarding' hideNavBar  initial />
-        {/* <Scene key='login' component={Login} title='Login' backTitle='onboarding' /> */}
+        <Scene key='onboarding' component={Onboarding} title='Onboarding' hideNavBar   />
+        <Scene key='login' component={Login} title='Login' backTitle='onboarding' hideNavBar />
 
         {/* <Scene key='myDirections'> */}
         {/* </Scene> */}
-        <Scene key='directionOverview' component={MyDirections} title='overview' socket={this.socket} hideNavBar />
+        <Scene key='directionOverview' component={MyDirections} title='overview' socket={this.socket} hideNavBar initial />
         <Scene key='editor' component={Editor} title='editor' hideNavBar direction='vertical' panHandlers={null}  />
 
         <Scene key='deployment' component={Deployment} socket={this.socket} title='deployment' hideNavBar direction='vertical' panHandlers={null}  />

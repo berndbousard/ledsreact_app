@@ -1,15 +1,8 @@
 import React from 'react';
-import {Image, Text, View} from 'react-native';
-import * as Animatable from 'react-native-animatable';
+import {View} from 'react-native';
 
-import {TextStyles, MyDirectionsStyle} from '../styles';
-import {DatabaseUrl} from '../globals';
-
-const Exercise = ({index, name, groupSize, intensivity, imageWithDirections}) => {
-
-  return (
-
-  );
+const Exercise = () => {
+  return (<View></View>);
 };
 
 Exercise.propTypes = {

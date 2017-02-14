@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {TouchableOpacity, Image, Text} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -6,7 +6,7 @@ import {Colors, TextStyles, ButtonStyles} from '../styles';
 
 const primaryButton = props => {
 
-  const {copy, image} = props;
+  const {copy} = props;
 
   return (
     <TouchableOpacity>
@@ -16,6 +16,10 @@ const primaryButton = props => {
       </LinearGradient>
     </TouchableOpacity>
   );
+};
+
+primaryButton.propTypes = {
+  copy: React.PropTypes.string,
 };
 
 export default primaryButton;

@@ -5,12 +5,6 @@ import Dimensions from './Dimensions';
 
 const AnalyticsStyles = StyleSheet.create({
 
-  //dimensions voor window.innerwidth = Dimensions.height
-  //colors alle kleuren = Color.white
-
-
-  //transform -> transform:[{translateX:50},{translateY:40}]
-
   secondNav: {
     flexDirection: `row`,
     justifyContent: `flex-start`,
@@ -152,7 +146,7 @@ const AnalyticsStyles = StyleSheet.create({
   },
 
   horizontalScroll: {
-    width: Dimensions.width - 135,
+    width: Dimensions.width - 116,
     marginLeft: - 50,
     paddingTop: 20,
     paddingLeft: 45,
@@ -308,9 +302,6 @@ const AnalyticsStyles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
   },
-
-
-  //---------
 
   addGoals: {
     width: 180,

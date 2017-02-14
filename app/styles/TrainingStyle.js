@@ -69,15 +69,6 @@ const TrainingStyle = StyleSheet.create({
     opacity: 0.3
   }
 
-  //dimensions voor window.innerwidth = Dimensions.height
-  //colors alle kleuren = Color.white
-
-
-  //transform -> transform:[{translateX:50},{translateY:40}]
-
-
-
-
 });
 
 export default TrainingStyle;

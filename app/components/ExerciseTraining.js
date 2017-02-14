@@ -4,7 +4,7 @@ import {Image, Text, View} from 'react-native';
 import {TextStyles, MyDirectionsStyle} from '../styles';
 import {DatabaseUrl} from '../globals';
 
-const ExerciseTraining = ({index, name, groupSize, intensivity, imageWithDirections}) => {
+const ExerciseTraining = ({groupSize, intensivity, imageWithDirections}) => {
 
   return (
       <View style={MyDirectionsStyle.ExerciseTrainerCardImage}>

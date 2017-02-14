@@ -14,6 +14,7 @@ import OnboardingStyle from './OnboardingStyle';
 import DeploymentStyle from './DeploymentStyle';
 import AnalyticsStyles from './AnalyticsStyles';
 import TrainingStyle from './TrainingStyle';
+import LoginStyle from './LoginStyle';
 
 exports.GeneralStyle = GeneralStyle;
 exports.ComponentStyle = ComponentStyle;
@@ -31,3 +32,4 @@ exports.OnboardingStyle = OnboardingStyle;
 exports.DeploymentStyle = DeploymentStyle;
 exports.AnalyticsStyles = AnalyticsStyles;
 exports.TrainingStyle = TrainingStyle;
+exports.LoginStyle = LoginStyle;

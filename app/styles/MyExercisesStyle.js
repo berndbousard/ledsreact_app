@@ -2,7 +2,6 @@ import {StyleSheet} from 'react-native';
 
 import Colors from './Colors';
 import Dimensions from './Dimensions';
-import Fonts from './Fonts';
 
 const MyExercisesStyle = StyleSheet.create({
   pageContainer: {
@@ -16,9 +15,9 @@ const MyExercisesStyle = StyleSheet.create({
     flexDirection: `row`,
     justifyContent: `space-around`,
     paddingTop: 30, paddingBottom: 30,
-    paddingLeft: 20, paddingRight: 20,
+    paddingLeft: 35, paddingRight: 20,
     alignItems: `center`,
-    width: Dimensions.width - 110,
+    width: Dimensions.width - 105,
     transform: [{translateX: - 14}]
   },
 

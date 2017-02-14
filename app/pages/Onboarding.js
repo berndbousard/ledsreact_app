@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, TouchableOpacity, Image, Text} from 'react-native';
-import {Actions, ActionConst} from 'react-native-router-flux';
+import {Actions} from 'react-native-router-flux';
 import Swiper from 'react-native-swiper';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
@@ -53,7 +53,7 @@ class Onboarding extends Component {
         </Swiper>
 
         <Animatable.View ref='buttons' style={OnboardingStyle.buttonWrapper}>
-          <TouchableOpacity onPressOut={() => Actions.directionOverview({type: ActionConst.RESET})} style={[ButtonStyles.secundairyButton, OnboardingStyle.secundairyButton]}>
+          <TouchableOpacity onPressOut={() => Actions.login()} style={[ButtonStyles.secundairyButton, OnboardingStyle.secundairyButton]}>
             <Image style={[OnboardingStyle.secundairyButtonImage]} source={require(`../assets/png/loginIconWhite.png`)} />
             <Text style={[TextStyles.secundairyButton, OnboardingStyle.secundairyButtonText]}>{`inloggen`.toUpperCase()}</Text>
           </TouchableOpacity>

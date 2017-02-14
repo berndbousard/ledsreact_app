@@ -12,6 +12,7 @@ Path.propTypes = {
   fill: React.PropTypes.string,
   stroke: React.PropTypes.string,
   strokeWidth: React.PropTypes.number,
+  strokeCap: React.PropTypes.string
 };
 
 export default Path;

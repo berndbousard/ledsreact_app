@@ -34,9 +34,6 @@ class MyExercises extends Component {
       });
   }
 
-  fetchDirections() {
-
-  }
 
   renderSecondNav() {
 
@@ -65,7 +62,7 @@ class MyExercises extends Component {
           <Image style={[MyExercisesStyle.blackButtonIcon]} source={require(`../assets/png/addIconWhite.png`)} />
           <Text style={TextStyles.primaryButton}>{`Oefening maken`.toUpperCase()}</Text>
         </TouchableOpacity>
-        <LinearGradient style={[AnalyticsStyles.navBorder, {left: currentTab === 0 ? 50 : currentTab === 1 ? 190 : 340}]} colors={[Colors.white, Colors.navBorderWhite]} start={{x: 0, y: 1}} end={{x: 1, y: 1}}></LinearGradient>
+        <LinearGradient style={[AnalyticsStyles.navBorder, {left: currentTab === 0 ? 65 : currentTab === 1 ? 190 : 340}]} colors={[Colors.white, Colors.navBorderWhite]} start={{x: 0, y: 1}} end={{x: 1, y: 1}}></LinearGradient>
 
       </LinearGradient>
     );

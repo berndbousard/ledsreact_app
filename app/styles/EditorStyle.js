@@ -541,7 +541,6 @@ const ComponentStyle = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.white,
     width: 50, height: 50,
-    borderRadius: 3,
     justifyContent: `center`,
     alignItems: `center`,
     position: `absolute`,
@@ -601,7 +600,7 @@ const ComponentStyle = StyleSheet.create({
   },
 
   descWrapper: {
-    marginTop: 50
+    marginTop: 80
   },
 
   descInputIcon: {
@@ -759,7 +758,7 @@ const ComponentStyle = StyleSheet.create({
   },
 
   formPageThreeContent: {
-    marginTop: 175,
+    marginTop: 70,
     width: 425,
     justifyContent: `center`,
     marginLeft: 275
@@ -984,6 +983,23 @@ const ComponentStyle = StyleSheet.create({
 
   potDrawerImage: {
     width: 108, height: 108
+  },
+
+  playIcon: {
+    width: 15,
+    height: 20,
+    marginLeft: 3,
+    marginTop: 1
+  },
+
+  playbutton: {
+    justifyContent: `center`,
+    alignItems: `center`,
+    borderRadius: 45,
+    height: 45,
+    width: 45,
+    borderWidth: 2,
+    borderColor: Colors.orange
   }
 });
 

@@ -8,6 +8,7 @@ import PrimaryButton from './PrimaryButton';
 import Exercise from './Exercise';
 import ExerciseTraining from './ExerciseTraining';
 import Football from './Football';
+import ExerciseDeployment from './ExerciseDeployment';
 
 exports.TabbarIcon = TabbarIcon;
 exports.Direction = Direction;
@@ -19,3 +20,4 @@ exports.PrimaryButton = PrimaryButton;
 exports.Exercise = Exercise;
 exports.Football = Football;
 exports.ExerciseTraining = ExerciseTraining;
+exports.ExerciseDeployment = ExerciseDeployment;

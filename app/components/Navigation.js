@@ -20,7 +20,6 @@ const Navigation = ({currentPage}) => {
             </TouchableOpacity>
           </Animatable.View>
 
-
           <Image style={NavigationStyle.divider} source={require(`../assets/png/divider.png`)} />
 
           <Animatable.View animation={currentPage === `discover` ? `fadeIn` : ``} style={{opacity: currentPage === `discover` ? 1 : 0.2}}>
@@ -85,11 +84,8 @@ const Navigation = ({currentPage}) => {
           </Animatable.View>
         </View>
       </View>
-
       <View style={{height: Dimensions.height, marginLeft: - 10, width: 30, backgroundColor: Colors.black, zIndex: - 1, transform: [{skewX: `-1deg`}]}}>
-
       </View>
-      {/* <Image style={NavigationStyle.navigationSkew} source={require(`../assets/png/navigationSkew.png`)} /> */}
     </Animatable.View>
   );
 };
@@ -107,12 +103,3 @@ Navigation.propTypes = {
 };
 
 export default Navigation;
-
-
-/*
-
-1. CurrentPage is de key in App.js
-
-2. Met onPress kan ernaar gesurft worden.
-
-*/

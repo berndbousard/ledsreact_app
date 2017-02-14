@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, PanResponder, TouchableWithoutFeedback, Image, ScrollView, TouchableOpacity, TextInput, ActivityIndicator} from 'react-native';
+import {View, Text, PanResponder, Image, ScrollView, TouchableOpacity, TextInput, ActivityIndicator} from 'react-native';
 import {isEmpty, findIndex, remove} from 'lodash';
 import {takeSnapshot} from "react-native-view-shot";
 import {Actions, ActionConst} from "react-native-router-flux";
@@ -105,14 +105,14 @@ class Editor extends Component {
       },
 
       onPanResponderMove: e => {
-        if (this.state.svgTimer % 2 === 0) {
+        // if (this.state.svgTimer % 2 === 0) {
 
           // Build array of X & Y data
-          this.points.push({x: e.nativeEvent.locationX, y: e.nativeEvent.locationY});
-          this.setState({userDrawingFeedback: this.points});
-        }
+        this.points.push({x: e.nativeEvent.locationX, y: e.nativeEvent.locationY});
+        this.setState({userDrawingFeedback: this.points});
+        // }
 
-        this.setState({svgTimer: this.state.svgTimer + 1});
+        // this.setState({svgTimer: this.state.svgTimer + 1});
       },
 
       onPanResponderRelease: () => { //Gets invoked when we release the view.
@@ -162,13 +162,14 @@ class Editor extends Component {
   }
 
   generatePathFromObject(object) {
+
     let d = undefined;
 
     object.forEach(p => {
       if (d === undefined) {
-        d = `M${Math.round(p.x)} ${Math.round(p.y)}`;
+        d = `M${(p.x)} ${(p.y)}`;
       }
-      d = `${d} L${Math.round(p.x)} ${Math.round(p.y)}`;
+      d = `${d} L${(p.x)} ${(p.y)}`;
     });
 
     return d;
@@ -214,7 +215,7 @@ class Editor extends Component {
 
     return (
       userDrawingFeedback.map((e, index) => {
-        return <Path key={index} d={d} stroke={brush.colors[brush.index]} />;
+        return <Path key={index} d={d} strokeCap={`round`} stroke={brush.colors[brush.index]} />;
       })
     );
   }
@@ -244,6 +245,8 @@ class Editor extends Component {
     const {drawer} = this.state;
     const {addEditorIcon, drawerRef} = this.refs;
 
+
+
     if (drawer.isActive) {
       addEditorIcon.transition({transform: [{rotate: `45deg`}]}, {transform: [{rotate: `0deg`}]}, 200, `ease-out`);
       drawerRef.transition({opacity: 1}, {opacity: 0}, 200, `ease-out`);
@@ -261,7 +264,10 @@ class Editor extends Component {
   }
 
   objectsDrawerDirectionPressHandler() {
-    const {editorDirections, colors} = this.state;
+
+
+    console.log(`hey`);
+    const {editorDirections} = this.state;
 
     // Initial Values
     const newDirection = {
@@ -270,7 +276,7 @@ class Editor extends Component {
       delay: 0,
       combineLights: false,
       top: {
-        colors: [colors[0]]
+        colors: []
       },
       bottom: {
         colors: []
@@ -302,9 +308,6 @@ class Editor extends Component {
 
     this.setState({editorFootballs});
   }
-
-
-
 
   renderEditorFootballs() {
 
@@ -586,33 +589,38 @@ class Editor extends Component {
                 </Animatable.View>
               </TouchableOpacity>
             </View>
-
-          </View>
-
-          <View style={[EditorStyle.leftLowerControls]}>
-            <TouchableOpacity onPress={() => this.deleteLastActionHandler()} onPressOut={() => this.refs.undoIcon.bounceIn(800)}>
+            <TouchableOpacity style={[EditorStyle.toolIcon]} onPress={() => this.deleteLastActionHandler()} onPressOut={() => this.refs.undoIcon.bounceIn(800)}>
               <Animatable.View ref='undoIcon'>
                 <Image style={[EditorStyle.undoIcon, EditorStyle.icon]} source={{uri: `undoIcon`}} />
               </Animatable.View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPressOut={() => this.refs.redoIcon.bounceIn(800)}>
+            <TouchableOpacity style={[EditorStyle.toolIcon]} onPressOut={() => this.refs.redoIcon.bounceIn(800)}>
               <Animatable.View ref='redoIcon'>
                 <Image style={[EditorStyle.redoIcon, EditorStyle.icon]} source={{uri: `redoIcon`}} />
               </Animatable.View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => this.changePage(1)} onPressOut={() => this.refs.saveIcon.bounceIn(800)}>
+            <TouchableOpacity style={[EditorStyle.toolIcon]} onPress={() => this.changePage(1)} onPressOut={() => this.refs.saveIcon.bounceIn(800)}>
               <Animatable.View ref='saveIcon'>
                 <Image style={[EditorStyle.saveIcon, EditorStyle.icon]} source={{uri: `saveIcon`}} />
               </Animatable.View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => this.clearArtboardHandler()} onPressOut={() => this.refs.deleteIcon.bounceIn(800)}>
+            <TouchableOpacity style={[EditorStyle.toolIcon]} onPress={() => this.clearArtboardHandler()} onPressOut={() => this.refs.deleteIcon.bounceIn(800)}>
               <Animatable.View ref='deleteIcon'>
                 <Image style={[EditorStyle.deleteIcon, EditorStyle.icon]} source={{uri: `deleteIcon`}} />
               </Animatable.View>
             </TouchableOpacity>
+          </View>
+          <View style={[EditorStyle.leftLowerControls]}>
+
+          <TouchableOpacity>
+            <View style={EditorStyle.playbutton}>
+              <Image style={[EditorStyle.deleteIcon, EditorStyle.playIcon]} source={require(`../assets/png/editor/playArrowOrange.png`)} />
+            </View>
+          </TouchableOpacity>
+
           </View>
         </Animatable.View>
       );
@@ -683,19 +691,23 @@ class Editor extends Component {
 
   setCurrentEditorDirectionIndex(directionIndex) {
     let {currentEditorDirectionIndex, currentRichting} = this.state;
+    const {drawer} = this.state;
     const {optionsMenu} = this.state;
 
-    console.log(directionIndex, currentEditorDirectionIndex);
+    if (drawer.isActive) {
+      this.toggleObjectsDrawer();
+    }
 
     if (currentEditorDirectionIndex === directionIndex) {
 
       this.toggleOptionsMenuHandler();
 
-      setTimeout(() => {
-        currentRichting = `top`;
 
-        this.setState({currentRichting});
-      }, 300);
+      // setTimeout(() => {
+      //   currentRichting = `top`;
+      //
+      //   this.setState({currentRichting});
+      // }, 300);
 
       return;
 
@@ -716,10 +728,6 @@ class Editor extends Component {
     }
 
 
-  }
-
-  directionIsMovingHandler(directionIndex) {
-    // directionIndex om te weten welke er wordt verschoven.
   }
 
   renderEditorDirections() {
@@ -750,9 +758,22 @@ class Editor extends Component {
   selectDirection(richting) {
     let {currentRichting} = this.state;
 
+
+    console.log(richting);
+
+    //----------------------------------------------------
+
+
+    //standaard kleur toekennen
+
+
+
+    //----------------------------------------------------
     currentRichting = richting;
 
+
     this.setState({currentRichting});
+
   }
 
   renderDirectionArrows() {
@@ -865,19 +886,19 @@ class Editor extends Component {
     this.setState({editorDirections});
   }
 
-  deleteDirectionHandler(directionIndex = this.state.currentEditorDirectionIndex) {
-    // let {editorDirections} = this.state;
-    //
-    // editorDirections = editorDirections.map((e, index) => {
-    //   if (!index === directionIndex) {
-    //     return e;
-    //   }
-    // });
-    //
-    // editorDirections = compact(editorDirections);
-    //
-    // this.setState({editorDirections});
-  }
+  // deleteDirectionHandler(directionIndex = this.state.currentEditorDirectionIndex) {
+  //   // let {editorDirections} = this.state;
+  //   //
+  //   // editorDirections = editorDirections.map((e, index) => {
+  //   //   if (!index === directionIndex) {
+  //   //     return e;
+  //   //   }
+  //   // });
+  //   //
+  //   // editorDirections = compact(editorDirections);
+  //   //
+  //   // this.setState({editorDirections});
+  // }
 
   renderOptionsMenu() {
     const {optionsMenu, editorDirections, currentEditorDirectionIndex} = this.state;
@@ -1322,9 +1343,6 @@ class Editor extends Component {
           </View>
 
 
-
-
-
         <View style={EditorStyle.form}>
 
           {this.loader()}
@@ -1342,9 +1360,9 @@ class Editor extends Component {
               <View style={[EditorStyle.pageIndicator, {opacity: this.state.currentFormTab === 2 ? 1 : 0.2}]}></View>
             </View>
 
-            <TouchableOpacity style={EditorStyle.formCloseIconWrapper}>
+            {/* <TouchableOpacity style={EditorStyle.formCloseIconWrapper}>
               <Image style={EditorStyle.formCloseIcon} source={require(`../assets/png/closeIconSmallWhite.png`)} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <TouchableOpacity style={EditorStyle.formBackWrapper} onPress={() => this.changePage(0)}>
               <Image style={EditorStyle.formBackIcon} source={require(`../assets/png/backArrowOrange.png`)} />

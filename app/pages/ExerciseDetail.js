@@ -52,11 +52,6 @@ class ExerciseDetail extends Component {
   componentDidMount() {
     const {exerciseId} = this.props;
 
-
-    this.props.socket.on(`updateDirections`, socketId => this.handleWSupdateDirections(socketId));
-    this.props.socket.on(`directionJoined`, direction => this.handleWSdirectionJoined(direction));
-
-
     if (!isEmpty(exerciseId)) {
       fetch(`${DatabaseUrl}/api/exercises/${exerciseId}`)
         .then(r => {
@@ -101,8 +96,12 @@ class ExerciseDetail extends Component {
   }
 
   checkDirections() {
+
     const {exercise, directions, connectedDirections} = this.state;
     const canTry = connectedDirections.length >= directions.length;
+
+    this.props.socket.on(`updateDirections`, socketId => this.handleWSupdateDirections(socketId));
+    this.props.socket.on(`directionJoined`, direction => this.handleWSdirectionJoined(direction));
 
     if (canTry) {
       this.hidePopUp(true);

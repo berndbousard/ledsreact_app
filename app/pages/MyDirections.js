@@ -143,6 +143,9 @@ class MyDirections extends Component {
   }
 
   generateDirections() {
+
+
+
     const {connectedDirections} = this.state;
 
     if (!isEmpty(connectedDirections)) {
@@ -239,7 +242,7 @@ class MyDirections extends Component {
       if (isEmpty(myTrainings)) {
         return (
           <TouchableOpacity>
-            <View style={MyDirectionsStyle.trainingwrapper}>
+            <Animatable.View animation='fadeInUp' duration={600} style={MyDirectionsStyle.trainingwrapper}>
               <View style={MyDirectionsStyle.trainingsData}>
                 <View style={MyDirectionsStyle.topContent}>
                   <Text style={[TextStyles.title, {color: Colors.black}, {textAlign: `left`}, {marginBottom: 15}]}>{`Oefenen op aanvallen via de flank`.toUpperCase()}</Text>
@@ -260,7 +263,7 @@ class MyDirections extends Component {
               <View style={MyDirectionsStyle.exercisesTrainingWrapper}>
               {this.renderTrainingen()}
               </View>
-            </View>
+            </Animatable.View>
           </TouchableOpacity>
         );
       }
@@ -330,7 +333,7 @@ class MyDirections extends Component {
               </View>
             </View>
 
-            <ScrollView style={[MyDirectionsStyle.directionsListScroller]} horizontal={true} removeClippedSubviews={true} >
+            <ScrollView style={[MyDirectionsStyle.directionsListScroller]} horizontal={true} >
               <View style={[MyDirectionsStyle.directionsListWrapper]}>
                 {this.generateDirections()}
               </View>

@@ -68,7 +68,7 @@ class Analytics extends Component {
   }
 
   generateRecentContent() {
-    const {currentRecentTab, myTrainings, exercises} = this.state;
+    const {exercises} = this.state;
 
     return exercises.map((e, index) => {
       if (index > 2) return; //Op home max 3

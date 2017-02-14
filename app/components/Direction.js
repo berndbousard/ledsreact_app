@@ -169,7 +169,15 @@ class Direction extends Component {
 }
 
 Direction.propTypes = {
-  setCurrentEditorDirectionIndex: React.PropTypes.func
+  setCurrentEditorDirectionIndex: React.PropTypes.func,
+  top: React.PropTypes.object,
+  bottom: React.PropTypes.object,
+  left: React.PropTypes.object,
+  right: React.PropTypes.object,
+  changeDirectionPositionHandler: React.PropTypes.func,
+  isSelected: React.PropTypes.bool,
+  directionIndex: React.PropTypes.number,
+  directionIsMovingHandler: React.PropTypes.func
 };
 
 export default Direction;

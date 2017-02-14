@@ -2,13 +2,9 @@ import {StyleSheet} from 'react-native';
 
 import Colors from './Colors';
 import Dimensions from './Dimensions';
-import Fonts from './Fonts';
 
 const ExerciseDetailStyle = StyleSheet.create({
 
-  // pageContainer: {
-  //   backgroundColor: Colors.lightBlack
-  // },
   headerWrapper: {
     backgroundColor: Colors.black,
     width: Dimensions.width,

@@ -33,7 +33,6 @@ const DeploymentStyle = StyleSheet.create({
     position: `absolute`,
     opacity: 0,
     padding: 5,
-    borderWidth: 2,
     width: 115, height: 115,
     flexDirection: `row`,
     justifyContent: `center`,
@@ -193,7 +192,7 @@ const DeploymentStyle = StyleSheet.create({
 
   overviewContent: {
     width: Dimensions.width,
-    marginBottom: 150
+    marginBottom: 0
   },
 
   infoBackgroundImage: {
@@ -256,7 +255,7 @@ const DeploymentStyle = StyleSheet.create({
   exerciseHeader: {
     flexDirection: `row`,
     alignItems: `center`,
-    justifyContent: `space-between`
+    justifyContent: `space-between`,
   },
 
   overviewExerciseCard: {
@@ -265,7 +264,12 @@ const DeploymentStyle = StyleSheet.create({
     alignItems: `flex-start`,
     justifyContent: `space-between`,
     padding: 25,
-    marginTop: 20
+    marginTop: 15,
+    borderRadius: 5,
+    shadowColor: Colors.black,
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: .05,
+    shadowRadius: 10,
   },
 
   overviewExercisePreviewImage: {
@@ -278,7 +282,7 @@ const DeploymentStyle = StyleSheet.create({
   },
 
   overviewExerciseSpecDirectionIcon: {
-    width: 23, height: 23,
+    width: 23, height: 24,
     marginRight: 10
   },
 
@@ -290,13 +294,15 @@ const DeploymentStyle = StyleSheet.create({
 
   exerciseSpecs: {
     flexDirection: `column`,
+    justifyContent: `center`,
     borderRightWidth: 2,
     borderRightColor: Colors.lightGrey,
-    paddingRight: 30
+    paddingRight: 30,
+    paddingTop: 2,
   },
 
   overviewExerciseSpecPlayerIcon: {
-    width: 22, height: 23,
+    width: 23, height: 23,
     marginRight: 10
   },
 
@@ -311,13 +317,28 @@ const DeploymentStyle = StyleSheet.create({
   },
 
   exerciseSpec: {
-    marginBottom: 20
+    marginTop: 10,
+    marginBottom: 10
   },
 
   exercise: {
-    paddingTop: 20, paddingBottom: 40,
-    paddingLeft: 40, paddingRight: 40
+    paddingTop: 10, paddingBottom: 40,
+    paddingLeft: 40, paddingRight: 40,
   },
+
+  ruler: {
+    width: Dimensions.width - 80,
+    backgroundColor: Colors.borderforGreyBackground,
+    height: 2,
+    marginLeft: 40,
+    marginBottom: 10,
+    opacity: 0.5
+  },
+
+  description: {
+    marginTop: 10,
+  }
+
 
 });
 

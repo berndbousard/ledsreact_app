@@ -36,8 +36,6 @@ class Football extends Component {
         position.flattenOffset();
         Animated.spring(scale, {toValue: 1, friction: 3}).start();
 
-        // previousPosition = position;
-
       }
     });
   }
