@@ -9,6 +9,6 @@ import {AppRegistry} from 'react-native';
 import App from './app/App';
 
 // global.___DEV___ = false; //Warnings off
-// console.disableYellowBox = true;
+console.disableYellowBox = true;
 
 AppRegistry.registerComponent(`Ledsreact`, () => App);
