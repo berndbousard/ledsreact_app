@@ -87,7 +87,7 @@ export default class Login extends Component {
             <Image style={EditorStyle.formCloseIcon} source={require(`../assets/png/closeIconSmallWhite.png`)} />
           </TouchableOpacity> */}
 
-          <TouchableOpacity style={EditorStyle.formBackWrapper}>
+          <TouchableOpacity style={EditorStyle.formBackWrapper} onPress={() => Actions.pop()}>
             <Image style={EditorStyle.formBackIcon} source={require(`../assets/png/backArrowOrange.png`)} />
             <Text style={[TextStyles.subTitle, EditorStyle.formBackText]}>{`Terug naar menu`.toUpperCase()}</Text>
           </TouchableOpacity>

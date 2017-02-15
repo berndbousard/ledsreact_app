@@ -9,8 +9,6 @@ import {DatabaseUrl} from '../globals';
 import {GeneralStyle, ExerciseDetailStyle, Colors, TextStyles, ButtonStyles} from '../styles';
 
 let largerPic =  false;
-let socket;
-
 
 class ExerciseDetail extends Component {
 
@@ -26,13 +24,7 @@ class ExerciseDetail extends Component {
     Actions.pop();
   }
 
-  componentWillReceiveProps(props) {
-    console.log(`willreceive`, props);
-  }
-
   handleWSupdateDirections(socketId) {
-
-    console.log(`leave`);
     const {connectedDirections} = this.state;
 
     const newDirections = connectedDirections.filter(d => {
@@ -44,8 +36,6 @@ class ExerciseDetail extends Component {
 
   handleWSdirectionJoined(direction) {
 
-    console.log(`join`);
-
     const {connectedDirections} = this.state;
     connectedDirections.push(direction);
 
@@ -53,9 +43,6 @@ class ExerciseDetail extends Component {
   }
 
   componentDidMount() {
-
-
-    socket = this.props.socket;
 
 
     this.setState({mount: true});
@@ -88,16 +75,15 @@ class ExerciseDetail extends Component {
     }
 
 
-    socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
-    socket.emit(`checkDirections`);
+    this.props.socket.on(`checkDirections`, directions => this.handleWScheckDirections(directions));
+    this.props.socket.emit(`checkDirections`);
 
   }
 
   componentWillUnmount() {
     this.setState({mount: false});
 
-    socket.off(`checkDirections`);
-
+    this.props.socket.off(`checkDirections`);
   }
 
   handleWScheckDirections(directions) {
@@ -121,8 +107,8 @@ class ExerciseDetail extends Component {
     const {mount} = this.state;
 
     if (mount) {
-      socket.on(`updateDirections`, socketId => this.handleWSupdateDirections(socketId));
-      socket.on(`directionJoined`, direction => this.handleWSdirectionJoined(direction));
+      this.props.socket.on(`updateDirections`, socketId => this.handleWSupdateDirections(socketId));
+      this.props.socket.on(`directionJoined`, direction => this.handleWSdirectionJoined(direction));
     }
 
     if (canTry) {
@@ -283,8 +269,6 @@ class ExerciseDetail extends Component {
     //   pic.transition({transform: [{translateX: 0}, {translateY: 0}, {scale: 1}]}, {transform: [{translateX: 510 / 2}, {translateY: 372 / 2}, {scale: 2}]}, 500, `ease-in-out`);
     // }
 
-    console.log(`largerpic`);
-
     if (!largerPic) {
 
       mainSpecs.transitionTo({transform: [{translateY: 50}], opacity: 0}, 200, `ease-out`);
@@ -328,8 +312,6 @@ class ExerciseDetail extends Component {
     let proPicUrl = require(`../assets/png/dummyMan.png`);
 
     if (!isEmpty(exercise)) {
-
-      console.log(exercise);
 
       fieldImageUrl = {uri: `${DatabaseUrl}/uploads/${exercise.imageWithDirections}.png`};
       proPicUrl = require(`../assets/png/propic.jpg`);
