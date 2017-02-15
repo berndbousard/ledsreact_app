@@ -7,7 +7,7 @@ import {DatabaseUrl} from '../globals';
 const ExerciseTraining = ({groupSize, intensivity, imageWithDirections}) => {
 
   return (
-      <View style={MyDirectionsStyle.ExerciseTrainerCardImage}>
+      <View style={[MyDirectionsStyle.ExerciseTrainerCardImage, {marginTop: - 5} ]}>
         <View style={[MyDirectionsStyle.ExerciseCardImage, MyDirectionsStyle.ExerciseCardImageForTraining]}>
           <Image style={MyDirectionsStyle.ExerciseCardImageElement} source={{uri: `${DatabaseUrl}/uploads/${imageWithDirections}.png`}} />
         </View>

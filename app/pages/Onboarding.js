@@ -53,7 +53,7 @@ class Onboarding extends Component {
         </Swiper>
 
         <Animatable.View ref='buttons' style={OnboardingStyle.buttonWrapper}>
-          <TouchableOpacity onPressOut={() => Actions.login()} style={[ButtonStyles.secundairyButton, OnboardingStyle.secundairyButton]}>
+          <TouchableOpacity onPressOut={() => Actions.login()} style={[ButtonStyles.secundairyButton, OnboardingStyle.secundairyButton, {marginRight: 25}]}>
             <Image style={[OnboardingStyle.secundairyButtonImage]} source={require(`../assets/png/loginIconWhite.png`)} />
             <Text style={[TextStyles.secundairyButton, OnboardingStyle.secundairyButtonText]}>{`inloggen`.toUpperCase()}</Text>
           </TouchableOpacity>

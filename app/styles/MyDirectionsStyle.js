@@ -188,9 +188,9 @@ const MyDirectionsStyle = StyleSheet.create({
 
   ExerciseCardImageElement: {
     width: 236, height: 174,
-    backgroundColor: `#FBFBFB`,
-    borderWidth: 2,
-    borderColor: `#F5F5F5`,
+    backgroundColor: Colors.pureWhite,
+    borderWidth: 1,
+    borderColor: Colors.borderforGreyBackground,
     borderRadius: 3,
     transform: [{scale: 0.95}, {translateY: 8}]
   },
@@ -311,10 +311,10 @@ const MyDirectionsStyle = StyleSheet.create({
   },
 
   exerciseCardSpecsWrapperForTraining: {
-    marginTop: - 2,
-    paddingTop: 2,
-    paddingBottom: 2,
-    marginBottom: 2
+    marginTop: 7,
+    paddingTop: 5,
+    paddingBottom: 5,
+    marginBottom: 15
   },
 
   ExerciseCardImageForTraining: {
@@ -328,7 +328,7 @@ const MyDirectionsStyle = StyleSheet.create({
   discoverImage: {
     // transform: [{scale: 0.4}]
     width: 892,
-    height: 1216
+    height: 1220
   }
 
 });

@@ -411,7 +411,7 @@ class Deployment extends Component {
                     <Text style={[TextStyles.subTitle, {marginBottom: 2}]}>{`aantal spelers:`.toUpperCase()}</Text>
                     <View style={[DeploymentStyle.overviewExerciseSpecImageWrapper]}>
                       <Image style={[DeploymentStyle.overviewExerciseSpecPlayerIcon]} source={require(`../assets/png/playerAmountIcon.png`)} />
-                      <Text style={TextStyles.copy}>{`${exercise.groupSize}`.toUpperCase()}</Text>
+                      <Text style={TextStyles.copy}>{`${exercise.groupSize}`}</Text>
                     </View>
                   </View>
 

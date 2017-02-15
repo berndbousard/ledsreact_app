@@ -213,10 +213,11 @@ const ExerciseDetailStyle = StyleSheet.create({
   },
 
   schemaWrapperSchema: {
-    width: 510, height: 372,
+    width: 478, height: 346,
     borderWidth: 2,
     borderColor: Colors.lightGrey,
     borderRadius: 4
+
   },
 
   authorWrapper: {
@@ -226,7 +227,7 @@ const ExerciseDetailStyle = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: Colors.lightGrey,
     paddingBottom: 20,
-    width: 300, //Moet weg,
+    width: 310, //Moet weg,
   },
 
   authorText: {
@@ -250,7 +251,8 @@ const ExerciseDetailStyle = StyleSheet.create({
   cardMainSpecsWrapper: {
     flexDirection: `column`,
     alignItems: `flex-start`,
-    width: 300 //Moet weg
+    width: 500,
+    marginLeft: 45,
   },
 
   sportIcon: {
@@ -510,6 +512,15 @@ const ExerciseDetailStyle = StyleSheet.create({
     width: 15,
     height: 15,
     transform: [{translateY: 1}]
+  },
+
+  specifications: {
+    width: 310,
+    flexDirection: `row`,
+    justifyContent: `space-between`,
+    paddingBottom: 50,
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.borderforGreyBackground
   }
 
 });

@@ -942,10 +942,10 @@ class Editor extends Component {
           <Animatable.View ref='optionsMenuRef' animation='fadeInRightBig' duration={300} easing='ease-out-circ' style={EditorStyle.optionsMenu}>
             <View style={EditorStyle.optionsMenuDirectionUpper}>
 
-              <View style={[EditorStyle.optionsHeader]}>
-                <Text style={[TextStyles.title, EditorStyle.optionsMainHeaderTitle]}>{`direction ${currentEditorDirectionIndex + 1}`.toUpperCase()}</Text>
+              <View style={[EditorStyle.optionsHeader, {borderBottomWidth: 2}, {borderBottomColor: Colors.white}]}>
+                <Text style={[TextStyles.title, EditorStyle.optionsMainHeaderTitle, {color: Colors.black}]}>{`direction ${currentEditorDirectionIndex + 1}`.toUpperCase()}</Text>
                 <TouchableOpacity onPress={() => this.toggleOptionsMenuHandler()}>
-                  <Image style={[EditorStyle.optionsHeaderCloseIcon, {width: 17}, {height: 22}]} source={require(`../assets/png/deleteIconWhite.png`)} />
+                  <Image style={[EditorStyle.optionsHeaderCloseIcon, {width: 17}, {height: 22}]} source={require(`../assets/png/editor/trash.png`)} />
                 </TouchableOpacity>
               </View>
 
@@ -1410,7 +1410,7 @@ class Editor extends Component {
                 <View style={EditorStyle.naamWrapper}>
                   <View style={EditorStyle.naamLabelWrapper}>
                     <Image style={EditorStyle.naamInputIcon} source={require(`../assets/png/exerciseIconBlack.png`)} />
-                    <Text style={[TextStyles.subTitle]}>{`Naam van je oefening`.toUpperCase()}</Text>
+                    <Text style={[TextStyles.subTitle]}>{`Naam van je oefening:`.toUpperCase()}</Text>
                   </View>
                   <View style={[EditorStyle.naamInputWrapper]}>
                     <TextInput onChangeText={text => this.setState({nameInputValue: text})} value={nameInputValue} style={[TextStyles.copy, EditorStyle.naamInput]} placeholder='Tiki Taka Tikspel' />
@@ -1420,7 +1420,7 @@ class Editor extends Component {
                 <View style={[EditorStyle.naamWrapper, EditorStyle.descWrapper]}>
                   <View style={EditorStyle.naamLabelWrapper}>
                     <Image style={EditorStyle.descInputIcon} source={require(`../assets/png/brushIcon.png`)} />
-                    <Text style={[TextStyles.subTitle]}>{`Beschrijf je oefening`.toUpperCase()}</Text>
+                    <Text style={[TextStyles.subTitle]}>{`Beschrijf je oefening:`.toUpperCase()}</Text>
                   </View>
                   <View style={[EditorStyle.naamInputWrapper, EditorStyle.descInputWrapper]}>
                     <TextInput onChangeText={text => this.setState({descInputValue: text})} value={descInputValue} multiline={true} style={[TextStyles.copy, EditorStyle.descInput]} placeholder='Deze oefening probeert de reactiesnelheid van de spelers te verbeteren' />
@@ -1471,11 +1471,11 @@ class Editor extends Component {
                 <View style={EditorStyle.sideFormWrapper}>
                   <View style={EditorStyle.naamLabelWrapper}>
                     <Image style={EditorStyle.groupSizeIconForm} source={require(`../assets/png/groupSizeIcon.png`)} />
-                    <Text style={[TextStyles.subTitle]}>{`Aantal spelers`.toUpperCase()}</Text>
+                    <Text style={[TextStyles.subTitle]}>{`Aantal spelers:`.toUpperCase()}</Text>
                   </View>
                   <View style={[EditorStyle.playerAmountWrapper]}>
 
-                    <TouchableOpacity style={EditorStyle.iconFormIconsAmount} onPress={() => this.changeAmount(- 1)}>
+                    <TouchableOpacity style={[EditorStyle.iconFormIconsAmount]} onPress={() => this.changeAmount(- 1)}>
                       <Image style={EditorStyle.minusIconForm} source={require(`../assets/png/minusIconBlack.png`)} />
                     </TouchableOpacity>
 
@@ -1490,7 +1490,7 @@ class Editor extends Component {
                 <View style={[EditorStyle.sideFormWrapper, EditorStyle.descWrapper]}>
                   <View style={EditorStyle.naamLabelWrapper}>
                     <Image style={EditorStyle.birthdayIcon} source={require(`../assets/png/birthdayIconBlack.png`)} />
-                    <Text style={[TextStyles.subTitle]}>{`Leeftijdscategorie`.toUpperCase()}</Text>
+                    <Text style={[TextStyles.subTitle]}>{`Leeftijdscategorie:`.toUpperCase()}</Text>
                   </View>
 
                   <View style={[EditorStyle.playerAmountWrapper]}>

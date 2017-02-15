@@ -328,6 +328,9 @@ class ExerciseDetail extends Component {
     let proPicUrl = require(`../assets/png/dummyMan.png`);
 
     if (!isEmpty(exercise)) {
+
+      console.log(exercise);
+
       fieldImageUrl = {uri: `${DatabaseUrl}/uploads/${exercise.imageWithDirections}.png`};
       proPicUrl = require(`../assets/png/propic.jpg`);
     }
@@ -354,35 +357,63 @@ class ExerciseDetail extends Component {
               </View>
             </View>
 
-            <View style={ExerciseDetailStyle.miniSpecItem}>
-              <Text style={[TextStyles.subTitle, ExerciseDetailStyle.miniSpecTitle]}>{`Sport`.toUpperCase()}</Text>
-              <View style={ExerciseDetailStyle.miniSpecWrapper}>
-                {this.renderSportIcon()}
-                <Text style={TextStyles.copy}>{!isEmpty(exercise) ? capitalize(exercise.sport.name) : `Voetbal`}</Text>
+            <View style={[ExerciseDetailStyle.specifications]}>
+              <View>
+                <View style={ExerciseDetailStyle.miniSpecItem}>
+                  <Text style={[TextStyles.subTitle, ExerciseDetailStyle.miniSpecTitle]}>{`Sport:`.toUpperCase()}</Text>
+                  <View style={ExerciseDetailStyle.miniSpecWrapper}>
+                    {this.renderSportIcon()}
+                    <Text style={TextStyles.copy}>{!isEmpty(exercise) ? capitalize(exercise.sport.name) : `Voetbal`}</Text>
+                  </View>
+                </View>
+
+                <View style={ExerciseDetailStyle.miniSpecItem}>
+                  <Text style={[TextStyles.subTitle, ExerciseDetailStyle.miniSpecTitle]}>{`Aantal spelers:`.toUpperCase()}</Text>
+                  <View style={ExerciseDetailStyle.miniSpecWrapper}>
+                    <Image style={[ExerciseDetailStyle.reactionIcon, {height: 22}, {width: 22}]} source={require(`../assets/png/groupSizeIcon.png`)} />
+                    <Text style={TextStyles.copy}>{!isEmpty(exercise) ? capitalize(exercise.groupSize) : `Aantal spelers`}</Text>
+                  </View>
+                </View>
+
+                <View style={ExerciseDetailStyle.miniSpecItem}>
+                  <Text style={[TextStyles.subTitle, ExerciseDetailStyle.miniSpecTitle]}>{`aantal Directions:`.toUpperCase()}</Text>
+                  <View style={ExerciseDetailStyle.miniSpecWrapper}>
+                    <Image style={[ExerciseDetailStyle.directionIcon, {width: 22}, {height: 22}]} source={require(`../assets/png/directionIcon.png`)} />
+                    <Text style={TextStyles.copy}>{directions.length} Direction{directions.length > 1 ? `s` : ``}</Text>
+                  </View>
+                </View>
+              </View>
+              <View>
+                <View style={ExerciseDetailStyle.miniSpecItem}>
+                  <Text style={[TextStyles.subTitle, ExerciseDetailStyle.miniSpecTitle]}>{`Focus:`.toUpperCase()}</Text>
+                  <View style={ExerciseDetailStyle.miniSpecWrapper}>
+                    <Image style={ExerciseDetailStyle.reactionIcon} source={require(`../assets/png/reactionIconBlack.png`)} />
+                    <Text style={TextStyles.copy}>{!isEmpty(exercise) ? capitalize(exercise.focus) : `Reactiesnelheid`}</Text>
+                  </View>
+                </View>
+
+                <View style={[ExerciseDetailStyle.miniSpecItem, {marginTop: 20}]}>
+                  <Text style={[TextStyles.subTitle, ExerciseDetailStyle.miniSpecTitle]}>{`Leeftijd:`.toUpperCase()}</Text>
+                  <View style={ExerciseDetailStyle.miniSpecWrapper}>
+                    <Image style={[ExerciseDetailStyle.reactionIcon, {width: 27}, {height: 22} ]} source={require(`../assets/png/exercisedetail/taart.png`)} />
+                    <Text style={TextStyles.copy}>{!isEmpty(exercise) ? capitalize(exercise.targetAge) : `16`}</Text>
+                  </View>
+                </View>
+
+                <View style={[ExerciseDetailStyle.miniSpecItem, {marginTop: 22}]}>
+                  <Text style={[TextStyles.subTitle, ExerciseDetailStyle.miniSpecTitle]}>{`Intensiviteit`.toUpperCase()}</Text>
+                  <View style={ExerciseDetailStyle.miniSpecWrapper}>
+                    <Image style={[ExerciseDetailStyle.directionIcon, {width: 22}, {height: 22}]} source={require(`../assets/png/intensivityIcon.png`)} />
+                    <Text style={TextStyles.copy}>{`Makkelijk`}</Text>
+                  </View>
+                </View>
               </View>
             </View>
-
-            <View style={ExerciseDetailStyle.miniSpecItem}>
-              <Text style={[TextStyles.subTitle, ExerciseDetailStyle.miniSpecTitle]}>{`Focus`.toUpperCase()}</Text>
-              <View style={ExerciseDetailStyle.miniSpecWrapper}>
-                <Image style={ExerciseDetailStyle.reactionIcon} source={require(`../assets/png/reactionIconBlack.png`)} />
-                <Text style={TextStyles.copy}>{!isEmpty(exercise) ? capitalize(exercise.focus) : `Reactiesnelheid`}</Text>
-              </View>
-            </View>
-
-            <View style={ExerciseDetailStyle.miniSpecItem}>
-              <Text style={[TextStyles.subTitle, ExerciseDetailStyle.miniSpecTitle]}>{`Benodigde Directions`.toUpperCase()}</Text>
-              <View style={ExerciseDetailStyle.miniSpecWrapper}>
-                <Image style={ExerciseDetailStyle.directionIcon} source={require(`../assets/png/directionIcon.png`)} />
-                <Text style={TextStyles.copy}>{directions.length} Direction{directions.length > 1 ? `s` : ``}</Text>
-              </View>
-            </View>
-
           </Animatable.View>
+          </View>
 
-        </View>
 
-        <View style={ExerciseDetailStyle.cardContentLower}>
+        <View style={[ExerciseDetailStyle.cardContentLower]}>
           <View>
             <Text style={TextStyles.subTitle}>{`Extra benodigdheden`.toUpperCase()}</Text>
             <View style={ExerciseDetailStyle.extraItem}>

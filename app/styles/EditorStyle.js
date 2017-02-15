@@ -791,11 +791,10 @@ const ComponentStyle = StyleSheet.create({
     borderColor: Colors.black,
     justifyContent: `center`,
     alignItems: `center`,
-    borderRadius: 2
+    borderRadius: 44
   },
 
   playerFormAmountText: {
-    marginLeft: 25, marginRight: 25,
     width: 70,
     textAlign: `center`
   },
@@ -863,17 +862,13 @@ const ComponentStyle = StyleSheet.create({
   },
 
   optionsHeader: {
-    backgroundColor: Colors.black,
+    backgroundColor: `#FCFCFC`,
     flexDirection: `row`,
     alignItems: `center`,
     justifyContent: `space-between`,
     paddingTop: 20, paddingBottom: 20,
     paddingLeft: 25, paddingRight: 25,
     width: 275
-  },
-
-  optionsMainHeaderTitle: {
-    color: Colors.white
   },
 
   optionsHeaderCloseIcon: {
@@ -903,7 +898,7 @@ const ComponentStyle = StyleSheet.create({
     justifyContent: `center`,
     alignItems: `center`,
     borderWidth: 2,
-    borderColor: Colors.white,
+    borderColor: `#FCFCFC`,
     padding: 15,
     borderRadius: 50,
     zIndex: 100
@@ -1000,7 +995,8 @@ const ComponentStyle = StyleSheet.create({
     width: 45,
     borderWidth: 2,
     borderColor: Colors.orange
-  }
+  },
+
 });
 
 export default ComponentStyle;

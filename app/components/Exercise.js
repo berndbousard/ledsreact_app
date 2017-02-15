@@ -19,7 +19,7 @@ const Exercise = ({index, name, groupSize, intensivity, imageWithDirections}) =>
           <Image style={MyDirectionsStyle.ExerciseCardImageElement} source={{uri: `${DatabaseUrl}/uploads/${imageWithDirections}.png`}} />
         </View>
 
-        <View style={MyDirectionsStyle.ExerciseCardSpecsWrapper}>
+        <View style={[MyDirectionsStyle.ExerciseCardSpecsWrapper]}>
           <View style={MyDirectionsStyle.ExerciseCardSpec}>
             <Image style={MyDirectionsStyle.ExerciseCardSpecIcon} source={require(`../assets/png/directionIcon.png`)} />
             <Text style={TextStyles.copy}>5</Text>
