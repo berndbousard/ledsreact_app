@@ -780,17 +780,14 @@ class Editor extends Component {
   }
 
   selectDirection(richting) {
-    let {currentRichting} = this.state;
+    let {currentRichting, editorDirections, currentEditorDirectionIndex, colors} = this.state;
 
+    //standaard kleur toekennen indien nog geen kleuren gekozen
+    if (isEmpty(editorDirections[currentEditorDirectionIndex][richting].colors)) {
+      editorDirections[currentEditorDirectionIndex][richting].colors.push(colors[0]);
+      this.setState({editorDirections});
+    }
 
-    //----------------------------------------------------
-
-
-    //standaard kleur toekennen
-
-
-
-    //----------------------------------------------------
     currentRichting = richting;
 
 
