@@ -337,9 +337,51 @@ const DeploymentStyle = StyleSheet.create({
 
   description: {
     marginTop: 10,
+  },
+
+  lightsWrapper: {
+    position: `relative`,
+    zIndex: 2
+  },
+
+  lightsWrapperTop: {
+    position: `absolute`,
+    top: - 65,
+    left: 0,
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `center`,
+    width: 100
+  },
+
+  lightsWrapperBottom: {
+    top: 60
+  },
+
+  lightsWrapperColor: {
+    width: 8,
+    height: 8,
+    margin: 2,
+    borderRadius: 8
+  },
+
+  lightsWrapperMiddle: {
+    position: `relative`,
+    flexDirection: `row`,
+    alignItems: `center`,
+    justifyContent: `space-between`
+  },
+
+  lightsWrapperLeft: {
+    flexDirection: `column`,
+    justifyContent: `center`,
+    position: `absolute`,
+    left: - 15
+  },
+
+  lightsWrapperRight: {
+    left: 110
   }
-
-
 });
 
 export default DeploymentStyle;

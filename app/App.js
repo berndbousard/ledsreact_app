@@ -19,8 +19,6 @@ class Main extends PureComponent {
         <Scene key='onboarding' component={Onboarding} title='Onboarding' hideNavBar  initial />
         <Scene key='login' component={Login} title='Login' backTitle='onboarding' hideNavBar />
 
-        {/* <Scene key='myDirections'> */}
-        {/* </Scene> */}
         <Scene key='directionOverview' component={MyDirections} title='overview' socket={this.socket} hideNavBar  />
         <Scene key='editor' component={Editor} title='editor' hideNavBar direction='vertical' panHandlers={null}  />
 

@@ -42,6 +42,7 @@ class Deployment extends Component {
         return r.json();
       })
       .then(({exercises}) => {
+        console.log(exercises);
         this.setState({exercises});
       })
       .catch(e => {
@@ -183,8 +184,46 @@ class Deployment extends Component {
       <Animatable.View style={DeploymentStyle.directionsWrapper}>
         {
           directions.map((d, index) => {
+
+            console.log(d);
+
             return (
               <Animatable.View style={[DeploymentStyle.directionImageWrapper]} ref={`direction${index}`} key={index}>
+                <View style={DeploymentStyle.lightsWrapper}>
+                  <View style={DeploymentStyle.lightsWrapperTop}>
+                    {
+                      d.directions.top.colors.map((color, index) => {
+                        return <View key={index} style={[DeploymentStyle.lightsWrapperColor, {backgroundColor: color}]}></View>;
+                      })
+                    }
+                  </View>
+
+                  <View style={DeploymentStyle.lightsWrapperMiddle}>
+                    <View style={DeploymentStyle.lightsWrapperLeft}>
+                      {
+                        d.directions.left.colors.map((color, index) => {
+                          return <View key={index} style={[DeploymentStyle.lightsWrapperColor, {backgroundColor: color}]}></View>;
+                        })
+                      }
+                    </View>
+
+                    <View style={[DeploymentStyle.lightsWrapperLeft, DeploymentStyle.lightsWrapperRight]}>
+                      {
+                        d.directions.right.colors.map((color, index) => {
+                          return <View key={index} style={[DeploymentStyle.lightsWrapperColor, {backgroundColor: color}]}></View>;
+                        })
+                      }
+                    </View>
+                  </View>
+
+                  <View style={[DeploymentStyle.lightsWrapperTop, DeploymentStyle.lightsWrapperBottom]}>
+                    {
+                      d.directions.bottom.colors.map((color, index) => {
+                        return <View key={index} style={[DeploymentStyle.lightsWrapperColor, {backgroundColor: color}]}></View>;
+                      })
+                    }
+                  </View>
+                </View>
                 <Image style={[DeploymentStyle.directionImage]} source={{uri: currentSelectedDirectionIndex === index ? `directionLighted` : `direction`}} />
               </Animatable.View>
             );
@@ -207,7 +246,6 @@ class Deployment extends Component {
 
   renderInstructions() {
 
-    console.log(`hey`);
     if (drawInstructions) {
 
       return (
