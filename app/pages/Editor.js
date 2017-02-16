@@ -692,12 +692,12 @@ class Editor extends Component {
   }
 
   toggleOptionsMenuHandler() {
-    const {optionsMenu} = this.state;
+    const {optionsMenu, editorDirections} = this.state;
     const {optionsMenuRef} = this.refs;
 
     optionsMenu.isActive = !optionsMenu.isActive;
 
-    if (!optionsMenu.isActive) {
+    if (!optionsMenu.isActive && editorDirections.length !== 0) {
       optionsMenuRef.transitionTo({transform: [{translateX: Dimensions.width}]}, 500, `ease-in`);
       setTimeout(() => {
         this.setState({optionsMenu});
@@ -736,15 +736,18 @@ class Editor extends Component {
       }
 
       currentEditorDirectionIndex = directionIndex;
-      currentRichting = `top`;
+      // currentRichting = `top`;
 
-      this.setState({currentRichting, currentEditorDirectionIndex});
+      this.setState({currentEditorDirectionIndex});
 
       // setTimeout(() => {
       //   this.toggleOptionsMenuHandler();
       //
       // }, 50);
     }
+
+    currentRichting = undefined;
+    this.setState({currentRichting});
 
 
   }
