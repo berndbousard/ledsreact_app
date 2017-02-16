@@ -476,11 +476,11 @@ class ExerciseDetail extends Component {
     return (
       <View style={[ExerciseDetailStyle.comment]}>
         <View style={ExerciseDetailStyle.commentTextWrapper}>
-          <Image style={ExerciseDetailStyle.commentImage} source={require(`../assets/png/dummyPerson2.png`)} />
+          <Image style={ExerciseDetailStyle.commentImage} source={require(`../assets/png/propic.jpg`)} />
           <View>
-            <Text style={[TextStyles.commentAuthor]}>Bernd Bousard</Text>
+            <Text style={[TextStyles.commentAuthor]}>Bernd</Text>
             <Text style={[TextStyles.commentDate]}>geregeerd op 17 jan 2017</Text>
-            <Text style={[TextStyles.copy, ExerciseDetailStyle.commentText]}>Ik vind dit een enorm leuke oefening om te doen met mijn spelers. De resultaten die onze ploeg hiermee boeken zijn niet te geloven.</Text>
+            <Text style={[TextStyles.copy, ExerciseDetailStyle.commentText]}>Na 30min te trainen zijn de spelers bekaf met deze oefening.{`\n`}Proberen meer variatie in te steken.</Text>
           </View>
         </View>
       </View>

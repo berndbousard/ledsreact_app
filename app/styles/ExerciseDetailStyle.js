@@ -423,13 +423,14 @@ const ExerciseDetailStyle = StyleSheet.create({
 
   commentImage: {
     width: 48, height: 48,
-    marginRight: 25
+    marginRight: 25,
+    borderRadius: 24
   },
 
   commentText: {
     width: 600,
     marginTop: 5,
-    lineHeight: 20
+    lineHeight: 25
   },
 
   commentInputWrapper: {
